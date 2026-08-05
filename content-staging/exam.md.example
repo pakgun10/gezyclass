@@ -1,0 +1,14 @@
+---
+kind: exam
+source_id: exam-kelas-7-uh1-bilangan-bulat
+class_source_id: class-7
+title: UH 1 - Bilangan Bulat
+description: Ulangan harian bilangan bulat.
+duration_min: 30
+question_source_ids:
+  - question-kelas-7-bilangan-bulat-001
+tokens:
+  - UH1-BIL-001
+  - UH1-BIL-002
+is_active: true
+---

@@ -1,0 +1,97 @@
+{{ define "main" }}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f0f2f5;min-height:100vh}
+.q-header{background:#1a1a2e;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
+.q-header .timer{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.q-header .progress{font-size:14px;opacity:.8}
+.q-container{max-width:700px;margin:0 auto;padding:16px}
+.q-card{background:#fff;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.q-text{font-size:17px;line-height:1.7;margin-bottom:20px}
+.q-option{display:block;width:100%;padding:14px 16px;margin:8px 0;border:2px solid #e0e0e0;border-radius:10px;background:#fff;font-size:16px;text-align:left;cursor:pointer;transition:all .15s}
+.q-option:hover{border-color:#1a1a2e}
+.q-option.selected{border-color:#1a1a2e;background:#f0f0f8}
+.q-nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+.q-nav button{width:40px;height:40px;border-radius:8px;border:1px solid #ddd;background:#fff;font-size:14px;cursor:pointer}
+.q-nav button.current{border:2px solid #1a1a2e;font-weight:700}
+.q-nav button.answered{background:#e8f5e9;border-color:#4caf50}
+.q-actions{display:flex;gap:12px;margin-top:20px}
+.q-actions button{flex:1;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer}
+.btn-prev{background:#e0e0e0;color:#333}
+.btn-next{background:#1a1a2e;color:#fff}
+.btn-submit{background:#d32f2f;color:#fff}
+.q-submit{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.q-submit h3{margin-bottom:12px}
+.q-submit button{width:100%;padding:16px;background:#d32f2f;color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;margin-top:12px}
+.loading{text-align:center;padding:60px 20px;color:#888;font-size:18px}
+</style>
+<div id="app">
+<div class="loading" id="loading">⏳ Memuat soal ujian...</div>
+<div id="quiz" style="display:none"></div>
+<div id="finished" style="display:none"></div>
+</div>
+<script>
+var API="/api",sessionId=new URLSearchParams(location.search).get("session"),state={questions:[],current:0,answers:{},timer:0,interval:null,examTitle:""};
+
+async function init(){
+if(!sessionId){document.getElementById("loading").innerHTML="Session tidak ditemukan.";return}
+try{
+var sr=await(await fetch(API+"/collections/exam_sessions/records/"+sessionId)).json();
+if(sr.status!=="ongoing"){document.getElementById("loading").innerHTML="Ujian sudah selesai.";return}
+state.examTitle=sr.exam_id;
+var er=await(await fetch(API+"/collections/exams/records/"+sr.exam_id)).json();
+state.timer=er.duration||1800;
+state.examTitle=er.title||"Ujian";
+startTimer();
+var eqs=await(await fetch(API+"/collections/exam_questions/records?filter=(exam_id=\""+sr.exam_id+"\")&perPage=500")).json();
+state.questions=[];
+for(var eq of eqs.items||[]){
+var qr=await(await fetch(API+"/collections/questions/records/"+eq.question_id)).json();
+state.questions.push({eqId:eq.id,qid:eq.question_id,question:qr.question,options:qr.options_json||[],points:eq.points||10});
+}
+shuffle(state.questions);
+render();
+}catch(e){document.getElementById("loading").innerHTML="Gagal: "+e.message}
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}}
+
+function startTimer(){state.interval=setInterval(function(){state.timer--;var el=document.getElementById("timer");if(el)el.textContent=fmt(state.timer);if(state.timer<=0)submit()},1000)}
+
+function fmt(s){var m=Math.floor(s/60),sec=s%60;return String(m).padStart(2,"0")+":"+String(sec).padStart(2,"0")}
+
+function render(){
+document.getElementById("loading").style.display="none";
+document.getElementById("quiz").style.display="block";
+var q=state.questions[state.current],optsHtml="";
+if(q.options&&q.options.length){
+(q.options).forEach(function(o,i){
+var sel=state.answers[q.eqId]===i?"selected":"";
+optsHtml+="<button class='q-option "+sel+"' onclick='answer("+q.eqId+","+i+")'>"+o.text+"</button>"
+});
+}
+var navHtml="";state.questions.forEach(function(_,i){var cls=i===state.current?"current":"";if(state.answers[state.questions[i].eqId]!==undefined)cls+=" answered";navHtml+="<button class='"+cls+"' onclick='goTo("+i+")'>"+(i+1)+"</button>"});
+var prevBtn=state.current>0?"<button class='btn-prev' onclick='goTo("+(state.current-1)+")'>Sebelumnya</button>":"";
+var nextBtn=state.current<state.questions.length-1?"<button class='btn-next' onclick='goTo("+(state.current+1)+")'>Selanjutnya</button>":"<button class='btn-submit' onclick='submit()'>Selesai Ujian</button>";
+document.getElementById("quiz").innerHTML="<div class='q-header'><span>📐 "+state.examTitle+"</span><span class='timer' id='timer'>"+fmt(state.timer)+"</span><span class='progress'>"+(state.current+1)+"/"+state.questions.length+"</span></div><div class='q-container'><div class='q-card'><div class='q-text'>"+q.question+"</div><div id='opts'>"+optsHtml+"</div></div><div class='q-nav'>"+navHtml+"</div><div class='q-actions'>"+prevBtn+nextBtn+"</div></div>"
+}
+
+async function answer(eqId,idx){
+state.answers[eqId]=idx;
+await fetch(API+"/collections/exam_answers/records",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,question_id:state.questions.find(function(q){return q.eqId===eqId}).qid,answer_json:{selected_index:idx},max_score:state.questions.find(function(q){return q.eqId===eqId}).points,submitted_at:new Date().toISOString()})});
+render()
+}
+
+function goTo(i){state.current=i;render()}
+
+async function submit(){
+clearInterval(state.interval);
+await fetch(API+"/collections/exam_sessions/records/"+sessionId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"submitted",ended_at:new Date().toISOString()})});
+document.getElementById("quiz").style.display="none";
+document.getElementById("finished").style.display="block";
+document.getElementById("finished").innerHTML="<div class='q-submit'><h2>✅ Ujian Selesai!</h2><p>Jawaban kamu sudah tersimpan.</p><p style='color:#888;margin-top:8px'>Session: "+sessionId+"</p><p style='color:#888'>Soal dijawab: "+Object.keys(state.answers).length+"/"+state.questions.length+"</p><a href='/cbt/' style='display:inline-block;margin-top:20px;color:#1a1a2e;font-weight:600'>Kembali ke CBT</a></div>"
+}
+
+init();
+</script>
+{{ end }}

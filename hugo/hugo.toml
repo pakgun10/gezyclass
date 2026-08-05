@@ -1,0 +1,10 @@
+baseURL = 'https://class.gezytech.web.id/'
+title = 'Class-Gezytech'
+languageCode = 'id-ID'
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[outputs]
+  home = ['HTML','RSS']
+  section = ['HTML','RSS']

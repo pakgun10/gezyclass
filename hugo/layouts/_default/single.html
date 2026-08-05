@@ -1,0 +1,52 @@
+{{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+<article class="prose">
+{{ with .Parent }}
+<a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
+{{ end }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ with .Parent }}
+  {{ $siblings := .Pages.ByWeight }}
+  {{ $nav := newScratch }}
+  {{ range $index, $page := $siblings }}
+    {{ if eq $page.RelPermalink $.RelPermalink }}
+      {{ if gt $index 0 }}{{ $nav.Set "prev" (index $siblings (sub $index 1)) }}{{ end }}
+      {{ if lt (add $index 1) (len $siblings) }}{{ $nav.Set "next" (index $siblings (add $index 1)) }}{{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $prev := $nav.Get "prev" }}
+  {{ $next := $nav.Get "next" }}
+  {{ if or $prev $next }}
+  <nav class="lesson-nav" aria-label="Navigasi subbab" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid #e5e7eb">
+    {{ with $prev }}
+    <a href="{{ .RelPermalink }}" class="card" style="margin:0;padding:18px">
+      <span style="display:block;color:#64748b;font-size:13px;font-weight:700;margin-bottom:6px">← Subbab sebelumnya</span>
+      <strong>{{ .Title }}</strong>
+      {{ with .Description }}<p style="margin-top:6px">{{ . }}</p>{{ end }}
+    </a>
+    {{ else }}
+    <div class="card" aria-disabled="true" style="margin:0;padding:18px;opacity:.55">
+      <span style="display:block;color:#64748b;font-size:13px;font-weight:700;margin-bottom:6px">← Subbab sebelumnya</span>
+      <strong>Ini subbab pertama</strong>
+    </div>
+    {{ end }}
+
+    {{ with $next }}
+    <a href="{{ .RelPermalink }}" class="card" style="margin:0;padding:18px;text-align:right">
+      <span style="display:block;color:#64748b;font-size:13px;font-weight:700;margin-bottom:6px">Subbab berikutnya →</span>
+      <strong>{{ .Title }}</strong>
+      {{ with .Description }}<p style="margin-top:6px">{{ . }}</p>{{ end }}
+    </a>
+    {{ else }}
+    <div class="card" aria-disabled="true" style="margin:0;padding:18px;text-align:right;opacity:.55">
+      <span style="display:block;color:#64748b;font-size:13px;font-weight:700;margin-bottom:6px">Subbab berikutnya →</span>
+      <strong>Ini subbab terakhir</strong>
+    </div>
+    {{ end }}
+  </nav>
+  {{ end }}
+{{ end }}
+</article>
+{{ end }}

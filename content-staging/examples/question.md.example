@@ -1,0 +1,22 @@
+---
+kind: question
+source_id: question-bilangan-bulat-001
+class_source_id: class-7
+subchapter_source_id: subchapter-bilangan-bulat-pengenalan
+type: pg
+difficulty: sedang
+options_json:
+  - text: "4"
+    score: 1
+  - text: "-4"
+    score: 0
+  - text: "8"
+    score: 0
+  - text: "-8"
+    score: 0
+answer_json:
+  selected_index: 0
+explanation: "Karena 12 lebih besar dari 8."
+---
+
+Hasil dari $(-8) + 12$ adalah ...

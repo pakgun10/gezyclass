@@ -1,0 +1,15 @@
+# PocketBase runtime
+pocketbase/pb_data/
+pocketbase/pocketbase
+
+# Environment
+.env
+
+# Generated output
+public/
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
+repo/

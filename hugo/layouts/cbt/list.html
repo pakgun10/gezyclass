@@ -1,0 +1,165 @@
+{{ define "main" }}
+<style>
+.cbt-shell{max-width:980px;margin:0 auto}
+.cbt-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:24px;padding:32px 28px;box-shadow:0 16px 40px rgba(15,23,42,.18)}
+.cbt-hero h1{font-size:clamp(28px,5vw,42px);margin:12px 0 10px}
+.cbt-hero p{max-width:720px;color:rgba(255,255,255,.82);font-size:16px}
+.cbt-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.cbt-back{display:inline-block;color:#e5e7eb;text-decoration:none;font-size:14px;margin-bottom:10px}
+.cbt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+.cbt-card{background:#fff;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.08);text-decoration:none;color:#111827;display:block;transition:transform .15s,box-shadow .15s}
+.cbt-card:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(15,23,42,.12)}
+.cbt-card h3{font-size:18px;margin-bottom:8px}
+.cbt-card p{color:#64748b;font-size:14px;line-height:1.5}
+.cbt-note{margin-top:18px;color:#64748b;font-size:14px}
+.cbt-list{margin-top:24px}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.exam-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(15,23,42,.08);transition:transform .15s;cursor:pointer}
+.exam-card:hover{transform:translateY(-2px)}
+.exam-card h3{font-size:18px;margin-bottom:8px}
+.exam-card p{color:#64748b;font-size:14px}
+.exam-card small{display:inline-block;margin-top:10px;color:#0f766e;font-weight:700}
+.token-box{margin-top:24px;background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(15,23,42,.08)}
+.token-box h3{margin-bottom:12px}
+.token-box label{display:block;font-weight:700;margin:14px 0 6px;color:#1f2937}
+.token-box input{width:100%;padding:12px 14px;border:1px solid #d1d5db;border-radius:10px;font-size:16px}
+.token-box button{width:100%;padding:14px;background:#111827;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:18px}
+.token-box button.secondary{background:#6b7280;margin-top:10px}
+.info{background:#ecfeff;border-radius:12px;padding:12px 14px;margin:16px 0;font-size:14px;color:#155e75}
+.loading{text-align:center;padding:40px;color:#64748b}
+.empty{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,.06);color:#64748b}
+</style>
+<div class="cbt-shell">
+{{ $root := eq .RelPermalink "/cbt/" }}
+{{ if $root }}
+<section class="cbt-hero">
+<span class="cbt-kicker">CBT Online</span>
+<h1>Pilih kategori ujian</h1>
+<p>Masuk ke kategori kelas yang sesuai supaya daftar tes yang tampil sudah relevan. Kategori lainnya dipakai untuk ujian campuran, remedial, dan tes khusus.</p>
+</section>
+<div class="cbt-grid">
+<a href="/cbt/kelas7/" class="cbt-card"><h3>Kelas 7</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 7.</p></a>
+<a href="/cbt/kelas8/" class="cbt-card"><h3>Kelas 8</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 8.</p></a>
+<a href="/cbt/kelas9/" class="cbt-card"><h3>Kelas 9</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 9.</p></a>
+<a href="/cbt/lainnya/" class="cbt-card"><h3>Lainnya</h3><p>Ujian campuran, remedial, dan tes khusus di luar kategori kelas utama.</p></a>
+</div>
+<div class="cbt-note">Setelah memilih kategori, siswa akan melihat daftar tes yang sudah disaring sesuai kelasnya.</div>
+{{ else }}
+<section class="cbt-hero">
+<a href="/cbt/" class="cbt-back">← Kembali ke CBT</a>
+<span class="cbt-kicker">Kategori</span>
+<h1>{{ .Title }}</h1>
+{{ with .Description }}<p>{{ . }}</p>{{ end }}
+</section>
+<div class="cbt-list">
+<div class="loading" id="loading">Memuat daftar ujian...</div>
+<div id="exam-list" style="display:none">
+<div class="info">Pilih ujian yang tersedia, lalu masukkan token dari guru Anda.</div>
+<div id="exams" class="exam-grid"></div>
+</div>
+<div id="token-form" class="token-box" style="display:none">
+<h3 id="exam-title"></h3>
+<label>Token Ujian</label>
+<input type="text" id="token" placeholder="Masukkan token" autocomplete="off" style="text-transform:uppercase;letter-spacing:2px">
+<label>Nama Lengkap</label>
+<input type="text" id="nama" placeholder="Nama Anda">
+<label>No. Absen</label>
+<input type="number" id="no_absen" placeholder="No. Absen">
+<label>Kelas</label>
+<input type="text" id="kelas" placeholder="Contoh: 7A">
+<button onclick="startExam()">Mulai Ujian</button>
+<button onclick="goBack()" class="secondary">Kembali ke daftar</button>
+</div>
+</div>
+{{ end }}
+</div>
+{{ if not $root }}
+<script>
+const API = "/api";
+const CLASS_KEY = {{ .Params.class_key | jsonify }};
+function N(v){ return (v || "").toString().toLowerCase().replace(/[^a-z0-9]+/g, ""); }
+function keyOfClass(c){ return N(c && (c.slug || c.name || "")); }
+function inferKey(e){
+  const t = N((e.title || "") + " " + (e.description || ""));
+  if (t.indexOf("kelas7") >= 0 || t.indexOf("kelas07") >= 0 || t.indexOf("smp7") >= 0) return "kelas7";
+  if (t.indexOf("kelas8") >= 0 || t.indexOf("kelas08") >= 0 || t.indexOf("smp8") >= 0) return "kelas8";
+  if (t.indexOf("kelas9") >= 0 || t.indexOf("kelas09") >= 0 || t.indexOf("smp9") >= 0) return "kelas9";
+  return "";
+}
+function resolveKey(e, classes){
+  const cid = e.class_id || e.class || "";
+  if (cid && classes[cid]) return keyOfClass(classes[cid]);
+  return inferKey(e);
+}
+function matchKey(e, classes){
+  const key = resolveKey(e, classes);
+  if (CLASS_KEY === "lainnya") return !key || (key !== "kelas7" && key !== "kelas8" && key !== "kelas9");
+  return key === CLASS_KEY;
+}
+function examCard(e){
+  const mins = Math.max(1, Math.round((e.duration || 1800) / 60));
+  return "<div class='exam-card' onclick='S(\"" + e.id + "\",\"" + String(e.title).replace(/'/g, "") + "\")'><h3>" + e.title + "</h3><p>" + (e.description || "Tes sesuai kategori ini.") + "</p><small>Durasi " + mins + " menit</small></div>";
+}
+async function loadExams() {
+  try {
+    let classData = { items: [] };
+    try {
+      classData = await (await fetch(API + "/collections/classes/records?perPage=100")).json();
+    } catch (err) {}
+    const classes = {};
+    (classData.items || []).forEach(function(c){ if (c && c.id) classes[c.id] = c; });
+    const r = await fetch(API + "/collections/exams/records?filter=(is_active=true)");
+    const data = await r.json();
+    const exams = (data.items || []).filter(function(e){ return matchKey(e, classes); });
+    document.getElementById("loading").style.display = "none";
+    if (exams.length === 0) {
+      document.getElementById("exam-list").style.display = "block";
+      document.getElementById("exams").innerHTML = "<div class='empty'>Belum ada ujian untuk kategori ini.</div>";
+      return;
+    }
+    document.getElementById("exam-list").style.display = "block";
+    let html = "";
+    exams.forEach(function(e) {
+      html += examCard(e);
+    });
+    document.getElementById("exams").innerHTML = html;
+  } catch(e) {
+    document.getElementById("loading").innerHTML = "Gagal memuat ujian.";
+  }
+}
+function selectExam(id, title) {
+  document.getElementById("exam-list").style.display = "none";
+  document.getElementById("token-form").style.display = "block";
+  document.getElementById("exam-title").textContent = title;
+  document.getElementById("token-form").dataset.examId = id;
+}
+function S(id, title){ selectExam(id, title); }
+function goBack(){ document.getElementById("token-form").style.display = "none"; document.getElementById("exam-list").style.display = "block"; }
+async function startExam() {
+  const examId = document.getElementById("token-form").dataset.examId;
+  const token = document.getElementById("token").value.trim();
+  const nama = document.getElementById("nama").value.trim();
+  const noAbsen = document.getElementById("no_absen").value.trim();
+  const kelas = document.getElementById("kelas").value.trim();
+  if (!token || !nama || !noAbsen || !kelas) { alert("Semua field wajib diisi!"); return; }
+  try {
+    const tr = await fetch(API + "/collections/exam_tokens/records", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({filter: `token="${token}" && exam_id="${examId}" && is_used=false`})
+    });
+    const td = await tr.json();
+    if (!td.items || td.items.length === 0) { alert("Token tidak valid atau sudah digunakan!"); return; }
+    const sr = await fetch(API + "/collections/exam_sessions/records", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({exam_id: examId, nama, no_absen: parseInt(noAbsen), kelas, status: "ongoing", started_at: new Date().toISOString()})
+    });
+    const session = await sr.json();
+    alert("Ujian akan dimulai! (Session: " + session.id + ")");
+  } catch(e) {
+    alert("Gagal: " + e.message);
+  }
+}
+loadExams();
+</script>
+{{ end }}
+{{ end }}
