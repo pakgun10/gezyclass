@@ -1,0 +1,15 @@
+{{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+{{ with .Parent }}
+<a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
+{{ end }}
+{{ .Content }}
+<div class="grid">
+  {{ range .Pages.ByWeight }}
+  <a href="{{ .RelPermalink }}" class="card">
+    <h3>{{ .Title }}</h3>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }}
