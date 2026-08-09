@@ -7,6 +7,16 @@
 <h1>{{ .Title }}</h1>
 {{ .Content }}
 
+{{ if and (eq .Section "materi") (ne .Kind "section") }}
+{{ $s := strings.TrimSuffix "/" .RelPermalink }}{{ $s = strings.TrimPrefix "/materi/" $s }}
+<div style="text-align:center;margin:36px 0 8px">
+  <a href="/latihan/?s={{ $s }}&v=2" class="card" style="display:inline-block;padding:18px 40px;font-weight:800;font-size:17px;background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:14px;text-decoration:none">
+    📝 Soal Latihan (CBT)
+  </a>
+</div>
+<div style="text-align:center;color:#64748b;font-size:13px;margin-bottom:12px">Kerjakan soal latihan interaktif — nilai langsung tampil, maksimal 3 kali.</div>
+{{ end }}
+
 {{ with .Parent }}
   {{ $siblings := .Pages.ByWeight }}
   {{ $nav := newScratch }}

@@ -1,0 +1,173 @@
+{{ define "title" }}Soal Latihan (CBT) — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text);min-height:100vh}
+.l-container{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px}
+.l-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:16px;padding:26px 24px;margin-bottom:18px}
+.l-hero h1{font-size:24px;margin-bottom:6px}
+.l-hero p{color:rgba(255,255,255,.82);font-size:14px}
+label{display:block;font-weight:700;margin:14px 0 4px;color:var(--text);font-size:14px}
+input[type=text],input[type=number]{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
+.btn{display:inline-block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;margin-top:18px}
+.btn-ghost{background:var(--btn-ghost);color:var(--btn-ghost-text);margin-top:10px}
+.btn-danger{background:var(--danger);color:#fff;margin-top:12px}
+.q-text{font-size:17px;line-height:1.7;margin-bottom:16px;font-weight:600}
+.q-option{display:block;width:100%;padding:13px 16px;margin:8px 0;border:2px solid var(--card-border);border-radius:10px;background:var(--card);color:var(--text);font-size:16px;text-align:left;cursor:pointer}
+.q-option:hover{border-color:var(--accent)}
+.q-option.selected{border-color:var(--accent);background:var(--sel-bg)}
+.q-nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.q-nav button{width:38px;height:38px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;cursor:pointer}
+.q-nav button.current{border:2px solid var(--accent);font-weight:700}
+.q-nav button.answered{background:var(--green-bg);border-color:var(--green-border)}
+.result-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:16px;padding:28px;text-align:center;margin-bottom:18px}
+.result-score{font-size:44px;font-weight:800;margin:10px 0}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.result-stat{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.result-stat .num{font-size:26px;font-weight:700}
+.result-stat.correct .num{color:var(--green)}
+.result-stat.wrong .num{color:var(--red)}
+.feedback{background:var(--feedback-bg);border:1px solid var(--feedback-border);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:15px;line-height:1.6;color:var(--text)}
+.alert{background:var(--alert-bg);border:1px solid var(--alert-border);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:15px;color:var(--alert-text)}
+.loading{text-align:center;padding:50px 20px;color:var(--sub);font-size:17px}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+.badge{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;font-weight:700;margin-left:8px}
+.badge.green{background:var(--green-bg);color:var(--green)}
+.badge.red{background:var(--red-bg);color:var(--red)}
+</style>
+<div class="l-container">
+<div id="view-load" class="loading">⏳ Memuat soal latihan...</div>
+<div id="view-form" style="display:none">
+  <div class="l-hero"><h1 id="f-judul"></h1><p id="f-desc"></p></div>
+  <div class="card">
+    <h3 style="margin-bottom:6px">Isi data kamu</h3>
+    <p class="note">Nama (maks 20 karakter) · No. Absen (maks 2 angka) · Kelas (maks 4 karakter, contoh 7A). Tanpa password.</p>
+    <label>Nama Lengkap</label><input type="text" id="f-nama" maxlength="20" placeholder="Nama kamu">
+    <label>No. Absen</label><input type="text" id="f-absen" maxlength="2" placeholder="Contoh: 12">
+    <label>Kelas</label><input type="text" id="f-kelas" maxlength="4" placeholder="Contoh: 7A">
+    <button class="btn btn-primary" onclick="mulai()">🚀 Mulai Mengerjakan</button>
+  </div>
+</div>
+<div id="view-quiz" style="display:none"></div>
+<div id="view-hasil" style="display:none"></div>
+</div>
+<script>
+var API="/api", SLUG=new URLSearchParams(location.search).get("s")||"", LAT=null, SID=null, KEY=null,
+    state={soal:[],idx:0,jwb:{}};
+
+async function jf(u,o){var r=await fetch(u,o);return r.json()}
+function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function rd(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+async function init(){
+  if(!SLUG){document.getElementById("view-load").innerHTML="⚠️ Link soal latihan tidak lengkap. Kembali ke halaman materi.";return}
+  var D={r1:"",r2:"",r3:""};
+  try{
+    // 1) API: filter slug + is_active
+    var u1=API+"/collections/latihan_soal/records?filter="+encodeURIComponent('slug="'+SLUG+'" && is_active=true')+"&_t="+Date.now();
+    try{var a=await jf(u1,{cache:"no-store"});D.r1=JSON.stringify(a).slice(0,160);if(a.items&&a.items.length){LAT=a.items[0];showForm();return}}catch(e){D.r1="ERR:"+e.message}
+    // 2) API: filter slug saja (tanpa is_active)
+    var u2=API+"/collections/latihan_soal/records?filter="+encodeURIComponent('slug="'+SLUG+'"')+"&_t="+Date.now();
+    try{var b=await jf(u2,{cache:"no-store"});D.r2=JSON.stringify(b).slice(0,160);if(b.items&&b.items.length){LAT=b.items[0];showForm();return}}catch(e){D.r2="ERR:"+e.message}
+    // 3) JSON statis langsung dari server (tanpa API/Cloudflare)
+    var u3="/latihan/data/"+SLUG+".json?v="+Date.now();
+    try{var c=await jf(u3,{cache:"no-store"});D.r3=JSON.stringify(c).slice(0,160);if(c&&c.items&&c.items.length){LAT=c.items[0];showForm();return}}catch(e){D.r3="ERR:"+e.message}
+    document.getElementById("view-load").innerHTML="Soal latihan belum tersedia untuk subbab ini.<br><small style='font-size:11px;color:var(--muted);word-break:break-all'>slug: "+esc(SLUG)+"<br>API1: "+esc(D.r1)+"<br>API2: "+esc(D.r2)+"<br>STATIC: "+esc(D.r3)+"</small>";
+  }catch(e){document.getElementById("view-load").innerHTML="Gagal memuat: "+e.message}
+}
+function showForm(){
+  document.getElementById("f-judul").textContent=LAT.judul||"Soal Latihan";
+  document.getElementById("f-desc").textContent=(LAT.kelas?"Kelas "+LAT.kelas+" · ":"")+(LAT.semester||"")+(LAT.bab?" · "+LAT.bab:"");
+  document.getElementById("view-load").style.display="none";
+  document.getElementById("view-form").style.display="block";
+}
+
+async function mulai(){
+  var nama=document.getElementById("f-nama").value.trim(), absen=document.getElementById("f-absen").value.trim(),
+      kelas=document.getElementById("f-kelas").value.trim();
+  if(!nama||!absen||!kelas){alert("Nama, no. absen, dan kelas wajib diisi!");return}
+  if(nama.length>20){alert("Nama maksimal 20 karakter");return}
+  if(!/^\d{1,2}$/.test(absen)){alert("No. absen maksimal 2 angka");return}
+  if(kelas.length>4){alert("Kelas maksimal 4 karakter");return}
+  try{
+    var q=encodeURIComponent('latihan_slug="'+SLUG+'" && nama="'+nama+'" && no_absen="'+absen+'" && kelas="'+kelas+'"');
+    var r=await jf(API+"/collections/latihan_sesi/records?perPage=100&filter="+q+"&_t="+Date.now(),{cache:"no-store"});
+    var n=(r.items||[]).length;
+    if(n>=3){document.getElementById("view-form").innerHTML="<div class='card'><div class='alert'>⛔ Kamu sudah mengerjakan latihan ini <b>3 kali</b>. Maksimal pengerjaan adalah 3 kali untuk nama, no. absen, dan kelas yang sama.</div><a class='btn btn-ghost' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke subbab</a></div>";return}
+    KEY="K"+Math.random().toString(36).slice(2,10);
+    var s=await jf(API+"/collections/latihan_sesi/records",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({latihan_slug:SLUG,nama:nama,no_absen:absen,kelas:kelas,attempt:n+1,access_key:KEY,status:"ongoing",started_at:new Date().toISOString()})});
+    if(!s.id){alert("Gagal membuat sesi: "+JSON.stringify(s));return}
+    SID=s.id;
+    state.soal=(LAT.soal_json||[]).map(function(q){return q});
+    rd(state.soal);
+    document.getElementById("view-form").style.display="none";
+    document.getElementById("view-quiz").style.display="block";
+    render();
+  }catch(e){alert("Gagal: "+e.message)}
+}
+
+function render(){
+  var q=state.soal[state.idx],i=state.idx;
+  var opts=(q.o||[]).map(function(o,oi){
+    var sel=state.jwb[i]===oi?"selected":"";
+    return "<button class='q-option "+sel+"' onclick='pilih("+oi+")'>"+esc(o)+"</button>";
+  }).join("");
+  var nav="";state.soal.forEach(function(_,k){
+    var c=k===i?"current":(state.jwb[k]!==undefined?"answered":"");
+    nav+="<button class='"+c+"' onclick='go("+k+")'>"+(k+1)+"</button>";
+  });
+  var prev=i>0?"<button class='btn btn-ghost' style='width:auto;padding:12px 20px' onclick='go("+(i-1)+")'>← Sebelumnya</button>":"";
+  var next=i<state.soal.length-1?"<button class='btn btn-primary' style='width:auto;padding:12px 28px' onclick='go("+(i+1)+")'>Selanjutnya →</button>":"<button class='btn btn-danger' onclick='kumpul()'>✅ Kumpulkan</button>";
+  document.getElementById("view-quiz").innerHTML=
+    "<div class='card' style='background:var(--accent);color:#fff;text-align:center'>Soal "+(i+1)+" dari "+state.soal.length+"</div>"+
+    "<div class='card'><div class='q-text'>"+(i+1)+". "+esc(q.q)+"</div><div>"+opts+"</div></div>"+
+    "<div class='card' style='padding:14px'><div class='q-nav' style='margin:0'>"+nav+"</div>"+
+    "<div style='display:flex;gap:10px'>"+prev+next+"</div></div>";
+  renderMath();
+}
+function renderMath(){if(typeof renderMathInElement==="function"){renderMathInElement(document.getElementById("view-quiz"),{delimiters:[{left:"$",right:"$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}]})}}
+function pilih(oi){state.jwb[state.idx]=oi;render()}
+function go(i){state.idx=i;render()}
+
+async function kumpul(){
+  if(!confirm("Yakin ingin mengumpulkan? Jawaban tidak bisa diubah lagi."))return;
+  var benar=0,salah=0,kosong=0,detail=[];
+  state.soal.forEach(function(q,i){
+    var s=state.jwb[i];
+    if(s===undefined){kosong++;detail.push({i:i,ok:0,st:"-"})}
+    else if(s===q.k){benar++;detail.push({i:i,ok:1,st:s})}
+    else{salah++;detail.push({i:i,ok:0,st:s})}
+  });
+  var total=benar, max=state.soal.length;
+  var res=await jf(API+"/collections/latihan_sesi/records/"+SID,{method:"PATCH",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({status:"submitted",ended_at:new Date().toISOString(),total_score:total,max_score:max,jawaban_json:detail,access_key:KEY})});
+  if(!res.id){alert("Gagal menyimpan: "+JSON.stringify(res));return}
+  var pct=Math.round(total/max*100);
+  var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
+  var fb="";
+  if(pct>=90)fb="🎉 Luar biasa! Kamu menguasai materi ini dengan sangat baik. Pertahankan!";
+  else if(pct>=75)fb="👍 Bagus sekali! Sedikit lagi menuju sempurna — periksa kembali nomor yang salah.";
+  else if(pct>=60)fb="💪 Cukup baik. Pelajari lagi bagian materi yang masih keliru, lalu coba lagi.";
+  else if(pct>=40)fb="📖 Masih perlu belajar. Baca ulang materinya, pahami contoh, lalu kerjakan lagi.";
+  else fb="🌱 Jangan menyerah! Diskusikan dengan guru/teman, pelajari pelan-pelan, lalu coba lagi.";
+  var noBenar=[],noSalah=[];
+  state.soal.forEach(function(_,i){ if(detail[i].ok===1)noBenar.push(i+1); else if(detail[i].st!=="-")noSalah.push(i+1); });
+  document.getElementById("view-quiz").style.display="none";
+  document.getElementById("view-hasil").style.display="block";
+  document.getElementById("view-hasil").innerHTML=
+    "<div class='result-hero'><h2>✅ Selesai!</h2><div class='result-score'>"+pct+"<span style='font-size:22px;opacity:.7'> / 100</span></div>"+
+    "<div style='font-size:18px'>Nilai: "+pct+" ("+grade+")</div>"+
+    "<div style='font-size:13px;opacity:.8;margin-top:8px'>Benar "+benar+" · Salah "+salah+" · Kosong "+kosong+"</div></div>"+
+    "<div class='feedback'>"+fb+"</div>"+
+    "<div class='card'><h3 style='margin-bottom:8px'>Ringkasan Jawaban</h3>"+
+    "<p style='font-size:14px;line-height:1.8'>Benar pada nomor: <b>"+(noBenar.length?noBenar.join(", "):"—")+"</b><br>"+
+    "Salah pada nomor: <b>"+(noSalah.length?noSalah.join(", "):"—")+"</b></p>"+
+    "<p class='note' style='margin-top:10px'>Kunci jawaban tidak ditampilkan. Tanyakan pada gurumu jika ingin pembahasan.</p></div>"+
+    "<a class='btn btn-primary' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke halaman subbab</a>";
+}
+init();
+</script>
+{{ end }}

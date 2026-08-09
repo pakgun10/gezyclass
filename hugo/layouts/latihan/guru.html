@@ -1,0 +1,120 @@
+{{ define "title" }}Dashboard Guru Latihan — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text);min-height:100vh}
+.g-container{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px}
+.g-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:16px;padding:24px;margin-bottom:18px}
+.g-hero h1{font-size:24px}
+label{display:block;font-weight:700;margin:12px 0 4px;font-size:14px}
+input,select{width:100%;padding:11px 13px;border:1px solid var(--input-border);border-radius:10px;font-size:15px;background:var(--input-bg);color:var(--text)}
+.btn{display:inline-block;padding:12px 22px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;margin-top:14px}
+.btn-green{background:var(--green);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--row-border);text-align:left}
+th{background:var(--thead-bg);font-size:13px;text-transform:uppercase;letter-spacing:.03em}
+.loading{text-align:center;padding:40px;color:var(--sub)}
+.badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700}
+.badge.green{background:var(--green-bg);color:var(--green)}
+.badge.amber{background:var(--amber-bg);color:var(--amber-text)}
+.small{font-size:13px;color:var(--muted)}
+#tbl{display:none}
+</style>
+<div class="g-container">
+<div class="g-hero"><h1>📊 Dashboard Guru — Soal Latihan</h1><p class="small" style="color:rgba(255,255,255,.8)">Lihat hasil pengerjaan murid & unduh CSV.</p></div>
+<div id="login-view" class="card" style="max-width:420px;margin:0 auto">
+  <h3 style="margin-bottom:4px">Login Guru</h3>
+  <p class="small">Khusus guru (Bapak).</p>
+  <label>Email</label><input type="text" id="g-email" placeholder="email guru">
+  <label>Password</label><input type="password" id="g-pass" placeholder="password">
+  <button class="btn btn-primary" style="width:100%" onclick="login()">Masuk</button>
+</div>
+<div id="main-view" style="display:none">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div><b id="g-nama"></b> <span class="small">· <a href="#" onclick="logout();return false">Keluar</a></span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-green" onclick="csv()">⬇️ Unduh CSV (Excel)</button>
+        <button class="btn btn-ghost" onclick="muat()" style="background:var(--btn-ghost);color:var(--btn-ghost-text)">🔄 Muat ulang</button>
+      </div>
+    </div>
+    <label>Pilih Latihan</label>
+    <select id="pilih-latihan" onchange="muatSesi()"></select>
+  </div>
+  <div class="loading" id="tbl-load">Memuat data...</div>
+  <div class="card" id="tbl">
+    <table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Ke-</th><th>Nilai</th><th>%</th><th>B/S</th><th>Waktu</th></tr></thead>
+    <tbody id="tbl-body"></tbody></table>
+    <p class="small" id="tbl-info" style="margin-top:10px"></p>
+  </div>
+</div>
+</div>
+<script>
+var API="/api",TOK=sessionStorage.getItem("guru_tok")||"", SESI=[], LAT=[], PILIH="";
+async function jf(u,o){var r=await fetch(u,o);return r.json()}
+function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function hdr(){return TOK?{"Authorization":"Bearer "+TOK}:{}}
+
+function init(){
+  if(TOK){document.getElementById("login-view").style.display="none";document.getElementById("main-view").style.display="block";muat()}
+}
+async function login(){
+  var em=document.getElementById("g-email").value.trim(),ps=document.getElementById("g-pass").value;
+  if(!em||!ps){alert("Isi email dan password");return}
+  var r=await jf("/api/collections/guru/auth-with-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identity:em,password:ps})});
+  if(!r.token){alert("Login gagal. Periksa email/password.");return}
+  TOK=r.token;sessionStorage.setItem("guru_tok",TOK);
+  document.getElementById("g-nama").textContent=r.record.email;
+  document.getElementById("login-view").style.display="none";
+  document.getElementById("main-view").style.display="block";
+  muat();
+}
+function logout(){TOK="";sessionStorage.removeItem("guru_tok");location.reload()}
+async function muat(){
+  try{
+    var r=await jf(API+"/collections/latihan_soal/records?perPage=500&filter="+encodeURIComponent("is_active=true"),{headers:hdr()});
+    LAT=r.items||[];
+    var sel=document.getElementById("pilih-latihan");sel.innerHTML="";
+    LAT.forEach(function(l){var o=document.createElement("option");o.value=l.slug;o.textContent=l.judul+" ("+l.kelas+" "+l.bab+")";sel.appendChild(o)});
+    if(LAT.length){PILIH=LAT[0].slug;muatSesi()}
+    else{document.getElementById("tbl-load").textContent="Belum ada latihan."}
+  }catch(e){document.getElementById("tbl-load").textContent="Gagal: "+e.message}
+}
+async function muatSesi(){
+  PILIH=document.getElementById("pilih-latihan").value;
+  document.getElementById("tbl-load").style.display="block";
+  document.getElementById("tbl").style.display="none";
+  var r=await jf(API+"/collections/latihan_sesi/records?perPage=1000&filter="+encodeURIComponent('latihan_slug="'+PILIH+'"'),{headers:hdr()});
+  SESI=(r.items||[]).filter(function(s){return s.status==="submitted"});
+  document.getElementById("tbl-load").style.display="none";
+  document.getElementById("tbl").style.display="block";
+  var h="";SESI.sort(function(a,b){return (a.kelas||"").localeCompare(b.kelas||"")||String(a.no_absen||"").localeCompare(String(b.no_absen||""))});
+  SESI.forEach(function(s,i){
+    var pct=s.max_score?Math.round(s.total_score/s.max_score*100):0;
+    var bs=(s.jawaban_json||[]).reduce(function(a,d){return a+(d.ok===1?1:0)},0)+" / "+(s.jawaban_json||[]).length;
+    h+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+(s.attempt||1)+"</td><td>"+(s.total_score||0)+"</td><td><span class='badge "+(pct>=70?"green":"amber")+"'>"+pct+"%</span></td><td>"+bs+"</td><td class='small'>"+(s.ended_at||"").slice(0,16).replace("T"," ")+"</td></tr>";
+  });
+  document.getElementById("tbl-body").innerHTML=h||"<tr><td colspan=9 style='text-align:center;color:var(--sub)'>Belum ada pengerjaan.</td></tr>";
+  document.getElementById("tbl-info").textContent=SESI.length+" sesi terkumpul · "+(LAT.find(function(l){return l.slug===PILIH})||{}).judul||"";
+}
+function csv(){
+  if(!SESI.length){alert("Belum ada data untuk diunduh");return}
+  var sep=";",rows=[["No","Nama","No_Absen","Kelas","Pengerjaan_ke","Nilai","Maks","Persen","Benar","Salah","Kosong","Detail_Jawaban","Waktu_Selesai"]];
+  SESI.forEach(function(s,i){
+    var dj=(s.jawaban_json||[]),benar=dj.filter(function(d){return d.ok===1}).length,
+        salah=dj.filter(function(d){return d.ok===0&&d.st!=="-"}).length,
+        kosong=dj.filter(function(d){return d.st==="-"}).length,
+        pct=s.max_score?Math.round(s.total_score/s.max_score*100):0;
+    var det=dj.map(function(d){return "n"+(d.i+1)+":"+d.st+(d.ok===1?"✓":"✗")}).join(" | ");
+    rows.push([i+1,s.nama,s.no_absen,s.kelas,s.attempt||1,s.total_score||0,s.max_score||0,pct,benar,salah,kosong,det,(s.ended_at||"").replace("T"," ")]);
+  });
+  var csvText=rows.map(function(r){return r.map(function(c){return '"'+String(c==null?"":c).replace(/"/g,'""')+'"'}).join(sep)}).join("\r\n");
+  var blob=new Blob(["\ufeff"+csvText],{type:"text/csv;charset=utf-8"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="hasil-latihan-"+PILIH+".csv";a.click();
+}
+init();
+</script>
+{{ end }}

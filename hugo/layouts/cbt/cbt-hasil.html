@@ -1,47 +1,47 @@
 {{ define "main" }}
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#f0f2f5;min-height:100vh}
+body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text);min-height:100vh}
 .result-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:32px 28px;text-align:center;margin-bottom:24px}
 .result-hero h2{font-size:28px;margin-bottom:8px}
 .result-score{font-size:48px;font-weight:800;margin:16px 0}
 .result-score .max{font-size:24px;opacity:.7}
 .result-meta{display:flex;justify-content:center;gap:24px;margin-top:12px;font-size:14px;opacity:.85;flex-wrap:wrap}
 .result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.result-stat{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.result-stat{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .result-stat .num{font-size:28px;font-weight:700}
-.result-stat .lbl{font-size:13px;color:#666;margin-top:4px}
-.result-stat.correct .num{color:#2e7d32}
-.result-stat.wrong .num{color:#d32f2f}
-.result-stat.empty .num{color:#999}
-.review-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.review-card.correct{border-left:4px solid #4caf50}
-.review-card.wrong{border-left:4px solid #d32f2f}
+.result-stat .lbl{font-size:13px;color:var(--sub);margin-top:4px}
+.result-stat.correct .num{color:var(--green)}
+.result-stat.wrong .num{color:var(--red)}
+.result-stat.empty .num{color:var(--num-empty)}
+.review-card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.review-card.correct{border-left:4px solid var(--green-border)}
+.review-card.wrong{border-left:4px solid var(--red-border)}
 .review-card.empty{border-left:4px solid #bbb}
 .review-q{font-size:16px;font-weight:600;margin-bottom:12px}
 .review-q .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
-.review-q .badge.correct{background:#e8f5e9;color:#2e7d32}
-.review-q .badge.wrong{background:#ffebee;color:#d32f2f}
-.review-q .badge.empty{background:#f5f5f5;color:#999}
+.review-q .badge.correct{background:var(--green-bg);color:var(--green)}
+.review-q .badge.wrong{background:var(--red-bg);color:var(--red)}
+.review-q .badge.empty{background:var(--btn-ghost);color:var(--num-empty)}
 .review-opt{padding:10px 14px;margin:6px 0;border-radius:8px;font-size:15px;display:flex;align-items:center;gap:8px}
-.review-opt.student-correct{background:#e8f5e9;border:1px solid #4caf50}
-.review-opt.student-wrong{background:#ffebee;border:1px solid #d32f2f}
-.review-opt.correct-answer{background:#e8f5e9;border:1px solid #4caf50}
+.review-opt.student-correct{background:var(--green-bg);border:1px solid var(--green-border)}
+.review-opt.student-wrong{background:var(--red-bg);border:1px solid var(--red-border)}
+.review-opt.correct-answer{background:var(--green-bg);border:1px solid var(--green-border)}
 .review-opt .icon{font-size:18px}
-.review-explanation{background:#f0f4ff;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:#333;line-height:1.6}
+.review-explanation{background:var(--expl-bg);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:var(--expl-text);line-height:1.6}
 .review-explanation strong{color:#1a1a2e}
 .result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px}
 .result-actions a{padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px}
 .result-actions a.primary{background:#1a1a2e;color:#fff}
-.result-actions a.secondary{background:#e0e0e0;color:#333}
+.result-actions a.secondary{background:var(--btn-ghost);color:var(--btn-ghost-text)}
 .q-container{max-width:700px;margin:0 auto;padding:16px}
-.loading{text-align:center;padding:60px 20px;color:#888;font-size:18px}
-.input-box{max-width:500px;margin:40px auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.loading{text-align:center;padding:60px 20px;color:var(--sub);font-size:18px}
+.input-box{max-width:500px;margin:40px auto;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .input-box h2{font-size:22px;margin-bottom:8px;text-align:center}
-.input-box p{color:#666;font-size:14px;text-align:center;margin-bottom:20px}
+.input-box p{color:var(--sub);font-size:14px;text-align:center;margin-bottom:20px}
 .input-box label{display:block;font-weight:600;margin:16px 0 4px}
-.input-box input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:16px}
-.input-box button{width:100%;padding:14px;background:#1a1a2e;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px}
+.input-box input{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
+.input-box button{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px}
 </style>
 <div id="app">
 <div id="input-view" class="input-box">
