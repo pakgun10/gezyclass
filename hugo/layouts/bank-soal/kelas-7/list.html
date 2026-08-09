@@ -1,0 +1,55 @@
+{{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+{{ with .Parent }}
+<a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
+{{ end }}
+
+{{ if .Content }}
+{{/* ===== Level BAB: paket soal sumatif ===== */}}
+<style>
+.bs-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:28px 26px;margin-bottom:22px}
+.bs-kicker{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.bs-hero h1{font-size:clamp(24px,4vw,34px);margin:12px 0 8px}
+.bs-hero p{color:rgba(255,255,255,.85);font-size:15px}
+.bs-dl{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.bs-btn{display:inline-block;padding:12px 20px;border-radius:10px;background:var(--btn-bg);color:var(--btn-text);text-decoration:none;font-weight:700;font-size:14px}
+.bs-btn-ghost{background:var(--btn-ghost);color:var(--btn-ghost-text)}
+.bs-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.bs-card p{margin:4px 0;color:var(--text)}
+.bs-card ul{margin:6px 0 4px 20px}
+.bs-card li{margin:4px 0;color:var(--text)}
+.bs-opt{list-style:none!important;margin:8px 0 0!important;padding:0!important}
+.bs-opt li{margin:4px 0!important;color:var(--text)}
+.bs-multi li::marker{content:"▢ "}
+.bs-note-q{background:var(--info-bg);border:1px solid var(--card-border);color:var(--info-text);font-size:14px}
+.bs-grup{margin:18px 0 10px;padding:12px 14px;border-left:4px solid var(--accent);background:var(--sel-bg);border-radius:0 10px 10px 0}
+.bs-grup-title{margin:0;font-size:15px;color:var(--text)}
+.bs-table{width:100%;border-collapse:collapse;margin:8px 0}
+.bs-table th,.bs-table td{border:1px solid var(--row-border);padding:8px 12px;text-align:left;font-size:14px;color:var(--text)}
+.bs-table th{background:var(--thead-bg)}
+.bs-bs td:first-child{width:78%}
+.bs-bs-cell{text-align:center;font-weight:800;letter-spacing:.1em}
+.bs-answer{color:var(--muted);font-size:14px}
+.bs-uraian{color:var(--input-border)}
+.bs-pembahasan{background:var(--expl-bg);border:1px solid var(--card-border);border-radius:14px;padding:0;margin:14px 0;overflow:hidden}
+.bs-pembahasan summary{cursor:pointer;padding:16px 20px;font-weight:700;color:var(--text);font-size:16px}
+.bs-pembahasan-item{padding:10px 20px;border-top:1px solid var(--row-border);color:var(--expl-text);font-size:14px;line-height:1.7}
+h2{font-size:clamp(19px,3vw,24px);margin:30px 0 12px;border-bottom:2px solid var(--card-border);padding-bottom:6px;color:var(--text)}
+</style>
+<div class="bs-shell" style="max-width:820px;margin:0 auto">
+{{ .Content }}
+</div>
+{{ else }}
+{{/* ===== Level kelas: grid card bab ===== */}}
+<h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
+{{ .Content }}
+<div class="grid">
+  {{ range .Pages.ByWeight }}
+  <a href="{{ .RelPermalink }}" class="card">
+    <h3>{{ .Title }}</h3>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}
