@@ -20,3 +20,4 @@ hugo/content/*
 hugo/static/images/*
 !hugo/static/images/README.md
 hugo/.hugo_build.lock
+hugo/_arsip-content/
