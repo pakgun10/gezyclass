@@ -124,7 +124,12 @@ Token yang sama, nilai gelap: `--bg/--page-bg:#0f0f1a`, `--card:#1e1e32`,
 
 ---
 
-## 4. Audit Otomatis (jalankan SEBELUM commit)
+## 4. Audit Otomatis (WAJIB sebelum commit — otomatis di deploy.sh)
+
+> Script: **`./cek-darkmode.sh`** — dipanggil otomatis oleh **`./deploy.sh`**
+> sebelum build & rsync. Jika ada pelanggaran: **exit 1 → build BERHENTI**
+> dan ditampilkan file:baris yang bermasalah (bukan sekadar warning).
+
 
 ```bash
 # 1) Hex yang TIDAK boleh muncul di layout (selain baseof.html)
