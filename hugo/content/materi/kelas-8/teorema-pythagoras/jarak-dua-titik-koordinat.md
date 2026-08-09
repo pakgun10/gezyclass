@@ -1,5 +1,5 @@
 +++
-title = "Jarak Dua Titik pada Bidang Koordinat Kartesius"
+title = "G. Jarak Dua Titik pada Bidang Koordinat Kartesius"
 description = "Menghitung jarak antara dua titik pada bidang koordinat menggunakan teorema Pythagoras"
 weight = 7
 +++

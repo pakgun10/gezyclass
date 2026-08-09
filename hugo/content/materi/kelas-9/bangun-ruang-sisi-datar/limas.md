@@ -1,7 +1,7 @@
 +++
-title = "Luas Permukaan dan Volume Limas"
+title = "E. Luas Permukaan dan Volume Limas"
 description = "Menghitung luas permukaan dan volume limas segitiga dan segiempat"
-weight = 4
+weight = 5
 +++
 
 ## Tujuan Pembelajaran

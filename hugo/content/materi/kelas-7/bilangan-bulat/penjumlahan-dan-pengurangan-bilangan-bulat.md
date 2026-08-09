@@ -1,7 +1,7 @@
 +++
-title = "Penjumlahan dan Pengurangan Bilangan Bulat"
+title = "D. Penjumlahan dan Pengurangan Bilangan Bulat"
 description = "Materi penjumlahan dan pengurangan bilangan bulat untuk kelas 7: garis bilangan, aturan operasi, dan contoh"
-weight = 3
+weight = 4
 +++
 
 ## Tujuan Pembelajaran

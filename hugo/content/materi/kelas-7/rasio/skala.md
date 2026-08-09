@@ -1,5 +1,5 @@
 +++
-title = "Skala"
+title = "C. Skala"
 description = "Pengertian skala pada peta, denah, dan model, serta cara menghitung jarak sebenarnya, jarak pada peta, dan skala"
 weight = 3
 +++

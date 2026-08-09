@@ -1,5 +1,5 @@
 +++
-title = "Keliling Lingkaran"
+title = "B. Keliling Lingkaran"
 description = "Menghitung keliling lingkaran menggunakan rumus K = 2πr atau K = πd"
 weight = 2
 +++

@@ -1,5 +1,5 @@
 +++
-title = "Diskon, Bruto, Netto, Tara, dan Pajak"
+title = "D. Diskon, Bruto, Netto, Tara, dan Pajak"
 description = "Menghitung diskon, bruto, netto, tara, dan pajak dalam kehidupan sehari-hari"
 weight = 4
 +++

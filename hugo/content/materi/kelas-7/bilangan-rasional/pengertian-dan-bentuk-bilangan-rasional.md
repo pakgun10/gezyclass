@@ -1,5 +1,5 @@
 +++
-title = "Pengertian dan Bentuk Bilangan Rasional"
+title = "A. Pengertian dan Bentuk Bilangan Rasional"
 description = "Definisi bilangan rasional, perbedaan dengan irasional, dan macam-macam bentuknya"
 weight = 1
 +++

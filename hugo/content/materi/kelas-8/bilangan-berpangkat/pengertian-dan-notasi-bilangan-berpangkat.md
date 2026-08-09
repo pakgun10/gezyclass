@@ -1,5 +1,5 @@
 +++
-title = "Pengertian dan Notasi Bilangan Berpangkat"
+title = "A. Pengertian dan Notasi Bilangan Berpangkat"
 description = "Materi bilangan berpangkat untuk kelas 8: pengertian, notasi, dan contoh"
 weight = 1
 aliases = ["/materi/kelas-8/pengertian-dan-notasi-bilangan-berpangkat/"]

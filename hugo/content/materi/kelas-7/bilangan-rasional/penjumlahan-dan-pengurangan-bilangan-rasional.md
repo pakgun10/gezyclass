@@ -1,5 +1,5 @@
 +++
-title = "Penjumlahan dan Pengurangan Bilangan Rasional"
+title = "D. Penjumlahan dan Pengurangan Bilangan Rasional"
 description = "Operasi penjumlahan dan pengurangan pada bilangan rasional (pecahan dan desimal)"
 weight = 4
 +++
@@ -70,9 +70,9 @@ $$\frac{a}{b} - \frac{c}{d} = \frac{a \times d - c \times b}{b \times d}$$
 ### Aturan: Luruskan Komanya
 
 $$\begin{aligned}
-3,25 + 1,7 &= 3,25 + 1,70 = 4,95 \\
-5,8 - 2,35 &= 5,80 - 2,35 = 3,45 \\
-12,4 + 0,625 &= 12,400 + 0,625 = 13,025 \\
+3,25 + 1,7 &= 3,25 + 1,70 = 4,95 \\\\
+5,8 - 2,35 &= 5,80 - 2,35 = 3,45 \\\\
+12,4 + 0,625 &= 12,400 + 0,625 = 13,025 \\\\
 7,5 - 3,125 &= 7,500 - 3,125 = 4,375
 \end{aligned}$$
 

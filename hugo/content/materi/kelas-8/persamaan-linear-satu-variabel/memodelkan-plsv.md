@@ -1,5 +1,5 @@
 +++
-title = "Menentukan dan Memodelkan Persamaan Linear Satu Variabel"
+title = "B. Menentukan dan Memodelkan Persamaan Linear Satu Variabel"
 description = "Menentukan ekuivalen PLSV dan memodelkan soal cerita ke bentuk matematika"
 weight = 2
 +++

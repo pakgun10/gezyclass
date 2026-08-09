@@ -1,5 +1,5 @@
 +++
-title = "Operasi Aljabar pada Bentuk Akar"
+title = "C. Operasi Aljabar pada Bentuk Akar"
 description = "Materi operasi aljabar bentuk akar untuk kelas 8: penjumlahan, pengurangan, perkalian, dan pembagian bentuk akar"
 weight = 3
 aliases = ["/materi/kelas-8/operasi-aljabar-bentuk-akar/"]
@@ -212,3 +212,81 @@ $$\sqrt{a}(b + \sqrt{c}) = b\sqrt{a} + \sqrt{ac}$$
 8. $(\sqrt{7} + \sqrt{2})^2 = 7 + 2\sqrt{14} + 2 = 9 + 2\sqrt{14}$
 9. $2\sqrt{12} - \sqrt{27} + \sqrt{48} = 4\sqrt{3} - 3\sqrt{3} + 4\sqrt{3} = 5\sqrt{3}$
 10. $(3 + \sqrt{2})(4 - \sqrt{8}) = 12 - 3\sqrt{8} + 4\sqrt{2} - \sqrt{16}$ <br> $= 12 - 6\sqrt{2} + 4\sqrt{2} - 4 = 8 - 2\sqrt{2}$
+
+---
+
+## H. Asesmen Sumatif
+
+Kerjakan soal-soal berikut dengan teliti. Pilih satu jawaban yang paling tepat untuk soal pilihan ganda, dan kerjakan soal uraian secara lengkap.
+
+### Bagian A — Soal Mudah (Skor 4 × 10 = 40)
+
+1. Hasil dari $5\sqrt{3} + 4\sqrt{3}$ adalah ...
+   - A. $9\sqrt{6}$
+   - B. $9\sqrt{3}$
+   - C. $20\sqrt{3}$
+   - D. $9$
+
+2. Hasil dari $\sqrt{2} \times \sqrt{8}$ adalah ...
+   - A. $\sqrt{10}$
+   - B. $4$
+   - C. $2\sqrt{2}$
+   - D. $16$
+
+3. Hasil dari $10\sqrt{7} - 3\sqrt{7}$ adalah ...
+   - A. $7\sqrt{7}$
+   - B. $7\sqrt{14}$
+   - C. $30\sqrt{7}$
+   - D. $7$
+
+4. Hasil dari $\dfrac{\sqrt{27}}{\sqrt{3}}$ adalah ...
+   - A. $3$
+   - B. $9$
+   - C. $\sqrt{9}$
+   - D. $3\sqrt{3}$
+
+### Bagian B — Soal Sedang (Skor 4 × 15 = 60)
+
+5. Hasil dari $\sqrt{18} + \sqrt{50} - \sqrt{32}$ adalah ...
+   - A. $3\sqrt{2}$
+   - B. $5\sqrt{2}$
+   - C. $6\sqrt{2}$
+   - D. $9\sqrt{2}$
+
+6. Hasil dari $2\sqrt{3} \times 4\sqrt{6}$ adalah ...
+   - A. $8\sqrt{18}$
+   - B. $24\sqrt{2}$
+   - C. $8\sqrt{9}$
+   - D. $48\sqrt{2}$
+
+7. Hasil dari $(\sqrt{6} + \sqrt{2})(\sqrt{6} - \sqrt{2})$ adalah ...
+   - A. $4$
+   - B. $8$
+   - C. $6 - 2 = 4$
+   - D. $6 + 2 = 8$
+
+8. Hasil dari $(\sqrt{5} + \sqrt{3})^2$ adalah ...
+   - A. $5 + 3 = 8$
+   - B. $8 + 2\sqrt{15}$
+   - C. $8 + \sqrt{15}$
+   - D. $5 + 2\sqrt{15} + 3$
+
+### Bagian C — Soal Sulit / HOTs (Skor 2 × 25 = 50)
+
+9. **Soal HOTS:** Sebuah taman berbentuk persegi panjang memiliki panjang $(2 + \sqrt{3})$ meter dan lebar $(3 - \sqrt{3})$ meter.
+   - (a) Hitunglah luas taman tersebut dalam bentuk $a + b\sqrt{c}$ yang paling sederhana.
+   - (b) Hitunglah keliling taman tersebut dalam bentuk $a + b\sqrt{c}$ yang paling sederhana.
+   - (c) Jika di sekeliling taman akan dipasang pagar seharga Rp 35.000 per meter, hitunglah biaya total pemasangan pagar. (Sederhanakan jawabanmu.)
+
+10. **Soal HOTS:** Tiga orang siswa diminta menghitung $(\sqrt{3} + \sqrt{2})^2$.
+    - **Andi** menjawab: $(\sqrt{3} + \sqrt{2})^2 = 3 + 2 = 5$
+    - **Budi** menjawab: $(\sqrt{3} + \sqrt{2})^2 = 3 + 2\sqrt{6} + 2 = 5 + 2\sqrt{6}$
+    - **Citra** menjawab: $(\sqrt{3} + \sqrt{2})^2 = (\sqrt{3})^2 + (\sqrt{2})^2 = 3 + 2 = 5$
+
+    - (a) Siapa yang menjawab **benar**? Jelaskan alasannya.
+    - (b) Jelaskan kesalahan konsep yang dilakukan oleh siswa yang menjawab salah.
+    - (c) Mengapa kesalahan ini sering terjadi? Buatlah satu contoh **lain** yang menunjukkan bahwa $(\sqrt{a} + \sqrt{b})^2 \neq a + b$, lalu hitunglah nilai sebenarnya.
+
+---
+
+**Total Skor Maksimal: 150**

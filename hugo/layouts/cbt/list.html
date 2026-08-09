@@ -76,7 +76,7 @@
 {{ if not $root }}
 <script>
 const API = "/api";
-const CLASS_KEY = {{ .Params.class_key | jsonify }};
+const CLASS_KEY = "{{ .Params.class_key }}";
 function N(v){ return (v || "").toString().toLowerCase().replace(/[^a-z0-9]+/g, ""); }
 function keyOfClass(c){ return N(c && (c.slug || c.name || "")); }
 function inferKey(e){
@@ -143,18 +143,21 @@ async function startExam() {
   const kelas = document.getElementById("kelas").value.trim();
   if (!token || !nama || !noAbsen || !kelas) { alert("Semua field wajib diisi!"); return; }
   try {
-    const tr = await fetch(API + "/collections/exam_tokens/records", {
-      method: "POST", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({filter: `token="${token}" && exam_id="${examId}" && is_used=false`})
-    });
+    const tr = await fetch(API + "/collections/exam_tokens/records?filter=" + encodeURIComponent(`token="${token}" && exam_id="${examId}" && is_used=false`));
     const td = await tr.json();
     if (!td.items || td.items.length === 0) { alert("Token tidak valid atau sudah digunakan!"); return; }
     const sr = await fetch(API + "/collections/exam_sessions/records", {
       method: "POST", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({exam_id: examId, nama, no_absen: parseInt(noAbsen), kelas, status: "ongoing", started_at: new Date().toISOString()})
+      body: JSON.stringify({exam_id: examId, token, nama, no_absen: parseInt(noAbsen), kelas, status: "ongoing", started_at: new Date().toISOString()})
     });
     const session = await sr.json();
-    alert("Ujian akan dimulai! (Session: " + session.id + ")");
+    /* Mark token as used */
+    await fetch(API + "/collections/exam_tokens/records/" + td.items[0].id, {
+      method: "PATCH", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({is_used: true, used_at: new Date().toISOString()})
+    });
+    /* Redirect to quiz page */
+    window.location.href = "/cbt/ujian/?session=" + session.id;
   } catch(e) {
     alert("Gagal: " + e.message);
   }

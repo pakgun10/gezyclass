@@ -1,5 +1,5 @@
 +++
-title = "Perbandingan Sisi Segitiga Siku-Siku Istimewa (30-60-90)"
+title = "F. Perbandingan Sisi Segitiga Siku-Siku Istimewa (30-60-90)"
 description = "Menentukan perbandingan sisi segitiga siku-siku dengan sudut 30 dan 60 derajat"
 weight = 6
 +++

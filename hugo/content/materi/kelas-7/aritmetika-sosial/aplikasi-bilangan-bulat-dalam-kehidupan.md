@@ -1,5 +1,5 @@
 +++
-title = "Aplikasi Bilangan Bulat dalam Kehidupan Sehari-hari"
+title = "A. Aplikasi Bilangan Bulat dalam Kehidupan Sehari-hari"
 description = "Menerapkan bilangan bulat dalam konteks sehari-hari: suhu, kedalaman, untung-rugi, dan utang-piutang"
 weight = 1
 +++

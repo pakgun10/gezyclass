@@ -1,5 +1,5 @@
 +++
-title = "Menentukan Rumus Suku ke-n"
+title = "D. Menentukan Rumus Suku ke-n"
 description = "Menemukan dan menggunakan rumus suku ke-n dari barisan bilangan"
 weight = 4
 +++

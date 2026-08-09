@@ -1,5 +1,5 @@
 +++
-title = "Mengubah Bentuk Bilangan Rasional"
+title = "B. Mengubah Bentuk Bilangan Rasional"
 description = "Mengubah antar bentuk pecahan, desimal, dan persen pada bilangan rasional"
 weight = 2
 +++

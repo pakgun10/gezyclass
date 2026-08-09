@@ -1,5 +1,5 @@
 +++
-title = "Pengantar Bangun Ruang"
+title = "A. Pengantar Bangun Ruang"
 description = "Pengenalan unsur, luas permukaan, dan volume bangun ruang."
 weight = 10
 +++

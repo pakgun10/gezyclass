@@ -1,0 +1,42 @@
+{{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
+{{ define "main" }}
+{{ with .Parent }}
+<a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
+{{ end }}
+
+{{ if .Params.semester }}
+{{/* Bab-level page: list submateri cards normally */}}
+<h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
+{{ .Content }}
+<div class="grid">
+  {{ range .Pages.ByWeight }}
+  <a href="{{ .RelPermalink }}" class="card">
+    <h3>{{ .Title }}</h3>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ else }}
+{{/* Kelas-level page: show semester grouping */}}
+<h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">Materi Kelas 8 Semester Ganjil</h1>
+<p>Pilih bab terlebih dahulu. Di dalam setiap bab tersedia kartu-kartu submateri yang bisa dibuka siswa secara terpisah.</p>
+<div class="grid">
+  {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "ganjil") }}
+  <a href="{{ $page.RelPermalink }}" class="card">
+    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  </a>
+  {{ end }}
+</div>
+
+<h2 style="font-size:clamp(20px,3.5vw,28px);margin-top:40px;margin-bottom:8px">Materi Kelas 8 Semester Genap</h2>
+<div class="grid">
+  {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "genap") }}
+  <a href="{{ $page.RelPermalink }}" class="card">
+    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}

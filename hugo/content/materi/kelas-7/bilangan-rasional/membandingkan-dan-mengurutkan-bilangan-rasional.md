@@ -1,5 +1,5 @@
 +++
-title = "Membandingkan dan Mengurutkan Bilangan Rasional"
+title = "C. Membandingkan dan Mengurutkan Bilangan Rasional"
 description = "Membandingkan nilai antar bilangan rasional (pecahan, desimal, persen) dan mengurutkannya"
 weight = 3
 +++

@@ -1,5 +1,5 @@
 +++
-title = "Konsep Sistem Persamaan Linear Dua Variabel"
+title = "A. Konsep Sistem Persamaan Linear Dua Variabel"
 description = "Pengertian SPLDV, bentuk umum, perbedaan dengan PLSV, dan contoh dalam kehidupan"
 weight = 1
 +++
@@ -23,7 +23,7 @@ Setelah mempelajari materi ini, siswa diharapkan mampu:
 ### Bentuk Umum
 
 $$\begin{cases}
-a_1x + b_1y = c_1 \\
+a_1x + b_1y = c_1 \\\\
 a_2x + b_2y = c_2
 \end{cases}$$
 
@@ -32,7 +32,7 @@ dengan $x, y$ = variabel; $a_1, a_2, b_1, b_2$ = koefisien; $c_1, c_2$ = konstan
 ### Contoh
 
 $$\begin{cases}
-2x + y = 7 \\
+2x + y = 7 \\\\
 x - 3y = -7
 \end{cases}$$
 
@@ -50,7 +50,7 @@ Konstanta: $7, -7$
 | **Jumlah persamaan** | 1 | 2 |
 | **Bentuk** | $ax + b = c$ | $a_1x + b_1y = c_1$ dan $a_2x + b_2y = c_2$ |
 | **Penyelesaian** | Satu nilai $x$ | Pasangan $(x, y)$ |
-| **Contoh** | $2x+3=7$ | $\begin{cases}2x+y=5\\x-y=1\end{cases}$ |
+| **Contoh** | $2x+3=7$ | $\begin{cases}2x+y=5\\\\x-y=1\end{cases}$ |
 
 ---
 
@@ -61,7 +61,7 @@ Penyelesaian SPLDV adalah **pasangan $(x, y)$** yang memenuhi **kedua persamaan*
 ### Contoh
 
 $$\begin{cases}
-x + y = 5 \\
+x + y = 5 \\\\
 x - y = 1
 \end{cases}$$
 
@@ -90,7 +90,7 @@ Harga 2 buku dan 3 pensil Rp14.000. Harga 1 buku dan 2 pensil Rp8.000.
 Misal: buku = $b$, pensil = $p$
 
 $$\begin{cases}
-2b + 3p = 14.000 \\
+2b + 3p = 14.000 \\\\
 b + 2p = 8.000
 \end{cases}$$
 
@@ -101,7 +101,7 @@ Umur Ayah 5 kali umur Adik. Jumlah umur mereka 48 tahun.
 Misal: Ayah = $a$, Adik = $d$
 
 $$\begin{cases}
-a = 5d \\
+a = 5d \\\\
 a + d = 48
 \end{cases}$$
 
@@ -128,9 +128,9 @@ a + d = 48
    a. $2x + y = 8$ dan $x - y = 2$
    b. $x^2 + y = 5$ dan $x + y = 3$
    c. $2x + 3 = 7$ dan $4x - 1 = 11$
-2. Tentukan koefisien, variabel, dan konstanta dari $\begin{cases}3x + 2y = 12\\ x - 4y = -10\end{cases}$
-3. Apakah $(2, 3)$ penyelesaian dari $\begin{cases}2x + y = 7\\ x - y = -1\end{cases}$?
-4. Apakah $(-1, 2)$ penyelesaian dari $\begin{cases}x + 3y = 5\\ 2x - y = -4\end{cases}$?
+2. Tentukan koefisien, variabel, dan konstanta dari $\begin{cases}3x + 2y = 12\\\\ x - 4y = -10\end{cases}$
+3. Apakah $(2, 3)$ penyelesaian dari $\begin{cases}2x + y = 7\\\\ x - y = -1\end{cases}$?
+4. Apakah $(-1, 2)$ penyelesaian dari $\begin{cases}x + 3y = 5\\\\ 2x - y = -4\end{cases}$?
 5. Buat model SPLDV: "Harga 3 kg apel dan 2 kg jeruk Rp85.000. Harga 1 kg apel dan 3 kg jeruk Rp55.000."
 6. Buat model: "Selisih umur dua bersaudara 5 tahun. Jumlah umur mereka 35 tahun."
-7. Tentukan nilai $m$ dan $n$ agar $(m, n) = (4, -1)$ memenuhi $\begin{cases}2x + y = 7\\ x - y = 5\end{cases}$.
+7. Tentukan nilai $m$ dan $n$ agar $(m, n) = (4, -1)$ memenuhi $\begin{cases}2x + y = 7\\\\ x - y = 5\end{cases}$.

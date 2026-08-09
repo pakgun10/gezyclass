@@ -1,6 +1,8 @@
 +++
 title = "Bangun Ruang Sisi Datar"
-weight = 40
+description = "Kubus, balok, prisma, limas, dan penerapannya"
+weight = 2
+semester = "ganjil"
 +++
 
 Pilih submateri Bangun Ruang Sisi Datar.

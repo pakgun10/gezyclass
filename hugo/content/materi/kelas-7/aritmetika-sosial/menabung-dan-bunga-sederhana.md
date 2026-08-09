@@ -1,5 +1,5 @@
 +++
-title = "Menabung dan Bunga Sederhana"
+title = "E. Menabung dan Bunga Sederhana"
 description = "Menghitung tabungan, bunga sederhana, dan membuat anggaran keuangan sederhana"
 weight = 5
 +++

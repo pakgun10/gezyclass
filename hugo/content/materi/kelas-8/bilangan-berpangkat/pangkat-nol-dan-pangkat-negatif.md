@@ -1,5 +1,5 @@
 +++
-title = "Pangkat Nol dan Pangkat Negatif"
+title = "C. Pangkat Nol dan Pangkat Negatif"
 description = "Materi bilangan berpangkat nol dan negatif untuk kelas 8: definisi, sifat, dan contoh"
 weight = 3
 aliases = ["/materi/kelas-8/pangkat-nol-dan-pangkat-negatif/"]

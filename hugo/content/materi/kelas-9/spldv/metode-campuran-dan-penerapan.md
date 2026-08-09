@@ -1,5 +1,5 @@
 +++
-title = "Metode Campuran dan Penerapan SPLDV"
+title = "E. Metode Campuran dan Penerapan SPLDV"
 description = "Menyelesaikan SPLDV dengan metode campuran (eliminasi + substitusi) dan soal cerita"
 weight = 5
 +++
@@ -27,24 +27,35 @@ Metode campuran = **eliminasi** salah satu variabel, lalu **substitusi** hasilny
 
 ### Contoh 1
 
-Selesaikan $\begin{cases} 3x + 2y = 13 \\ 2x + 3y = 12 \end{cases}$
+Selesaikan sistem persamaan:
+
+$$\begin{cases} 3x + 2y = 13 \\\\ 2x + 3y = 12 \end{cases}$$
 
 **Eliminasi $x$:**
-$3x + 2y = 13 \quad (\times 2)$ → $6x + 4y = 26$
-$2x + 3y = 12 \quad (\times 3)$ → $6x + 9y = 36$
 
-$6x + 4y = 26$
-$6x + 9y = 36 \quad (-)$
-$-5y = -10$
-$y = 2$
+$$\begin{aligned}
+3x + 2y &= 13 \quad (\times 2) \quad \Rightarrow \quad 6x + 4y = 26 \\\\
+2x + 3y &= 12 \quad (\times 3) \quad \Rightarrow \quad 6x + 9y = 36
+\end{aligned}$$
 
-**Substitusi $y = 2$ ke persamaan 1:**
-$3x + 2(2) = 13$
-$3x + 4 = 13$
-$3x = 9$
-$x = 3$
+$$\begin{array}{rl}
+6x + 4y &= 26 \\\\
+6x + 9y &= 36 \quad (-) \\\\
+\hline
+-5y &= -10 \\\\
+y &= 2
+\end{array}$$
 
-Penyelesaian: $(3, 2)$ ✅
+**Substitusi $y = 2$ ke persamaan (1):**
+
+$$\begin{aligned}
+3x + 2(2) &= 13 \\\\
+3x + 4 &= 13 \\\\
+3x &= 9 \\\\
+x &= 3
+\end{aligned}$$
+
+**Penyelesaian:** $(x, y) = (3, 2)$ $\checkmark$
 
 ---
 
@@ -56,28 +67,35 @@ Harga 2 buku dan 3 pensil Rp18.000. Harga 3 buku dan 2 pensil Rp22.000. Berapa h
 
 **Model:** buku = $b$, pensil = $p$
 
-$$\begin{cases} 2b + 3p = 18.000 \\ 3b + 2p = 22.000 \end{cases}$$
+$$\begin{cases} 2b + 3p = 18.000 \\\\ 3b + 2p = 22.000 \end{cases}$$
 
 **Eliminasi $p$:**
-$2b + 3p = 18.000 \quad (\times 2)$ → $4b + 6p = 36.000$
-$3b + 2p = 22.000 \quad (\times 3)$ → $9b + 6p = 66.000$
 
-$9b + 6p = 66.000$
-$4b + 6p = 36.000 \quad (-)$
-$5b = 30.000$
-$b = 6.000$
+$$\begin{aligned}
+2b + 3p &= 18.000 \quad (\times 2) \Rightarrow 4b + 6p = 36.000 \\\\
+3b + 2p &= 22.000 \quad (\times 3) \Rightarrow 9b + 6p = 66.000
+\end{aligned}$$
+
+$$\begin{array}{rl}
+9b + 6p &= 66.000 \\\\
+4b + 6p &= 36.000 \quad (-) \\\\
+\hline
+5b &= 30.000 \\\\
+b &= 6.000
+\end{array}$$
 
 **Substitusi $b = 6.000$:**
-$2(6.000) + 3p = 18.000$
-$12.000 + 3p = 18.000$
-$3p = 6.000$
-$p = 2.000$
 
-**Jadi:** 1 buku = Rp6.000, 1 pensil = Rp2.000.
+$$\begin{aligned}
+2(6.000) + 3p &= 18.000 \\\\
+12.000 + 3p &= 18.000 \\\\
+3p &= 6.000 \\\\
+p &= 2.000
+\end{aligned}$$
+
+**Penyelesaian:** 1 buku = Rp6.000 dan 1 pensil = Rp2.000 $\checkmark$
 
 ---
-
-## C. Soal Cerita: Umur
 
 ### Contoh 3
 
@@ -85,21 +103,28 @@ Jumlah umur Ayah dan Ibu 72 tahun. Selisih umur mereka 4 tahun (Ayah lebih tua).
 
 **Model:** Ayah = $a$, Ibu = $i$
 
-$$\begin{cases} a + i = 72 \\ a - i = 4 \end{cases}$$
+$$\begin{cases} a + i = 72 \\\\ a - i = 4 \end{cases}$$
 
 **Eliminasi:**
-$a + i = 72$
-$a - i = 4 \quad (+)$
-$2a = 76$
-$a = 38$
 
-$a + i = 72 \Rightarrow 38 + i = 72 \Rightarrow i = 34$
+$$\begin{aligned}
+a + i &= 72 \\\\
+a - i &= 4 \quad (+) \\\\
+\hline
+2a &= 76 \\\\
+a &= 38
+\end{aligned}$$
 
-**Jadi:** Ayah 38 tahun, Ibu 34 tahun.
+**Substitusi $a = 38$:**
+
+$$\begin{aligned}
+38 + i &= 72 \\\\
+i &= 34
+\end{aligned}$$
+
+**Penyelesaian:** Ayah 38 tahun dan Ibu 34 tahun $\checkmark$
 
 ---
-
-## D. Soal Cerita: Bilangan
 
 ### Contoh 4
 
@@ -107,20 +132,28 @@ Jumlah dua bilangan adalah 28. Selisihnya adalah 12. Tentukan bilangan-bilangan 
 
 **Model:** $x$ = bilangan pertama, $y$ = bilangan kedua
 
-$$\begin{cases} x + y = 28 \\ x - y = 12 \end{cases}$$
+$$\begin{cases} x + y = 28 \\\\ x - y = 12 \end{cases}$$
 
 **Eliminasi:**
-$x + y = 28$
-$x - y = 12 \quad (+)$
-$2x = 40$
-$x = 20$
 
-$20 + y = 28 \Rightarrow y = 8$
+$$\begin{aligned}
+x + y &= 28 \\\\
+x - y &= 12 \quad (+) \\\\
+\hline
+2x &= 40 \\\\
+x &= 20
+\end{aligned}$$
 
-**Jadi:** Bilangan 20 dan 8.
+**Substitusi $x = 20$:**
+
+$$\begin{aligned}
+20 + y &= 28 \\\\
+y &= 8
+\end{aligned}$$
+
+**Penyelesaian:** $(x, y) = (20, 8)$ $\checkmark$
 
 ---
-
 ## E. Rangkuman
 
 | No | Jenis Soal | Model | Metode |
@@ -138,7 +171,7 @@ $20 + y = 28 \Rightarrow y = 8$
 
 ## F. Latihan Soal
 
-1. Selesaikan SPLDV: $\begin{cases}4x + y = 14\\ 3x - y = 7\end{cases}$ dengan campuran!
+1. Selesaikan SPLDV: $\begin{cases}4x + y = 14\\\\ 3x - y = 7\end{cases}$ dengan campuran!
 2. Harga 3 kg beras dan 2 kg gula Rp49.000. Harga 2 kg beras dan 3 kg gula Rp46.000. Berapa harga 1 kg beras dan 1 kg gula?
 3. Jumlah umur kakak dan adik 30 tahun. Selisih umur mereka 6 tahun. Berapa umur masing-masing?
 4. Jumlah dua bilangan 45. Selisihnya 15. Tentukan bilangan tersebut!

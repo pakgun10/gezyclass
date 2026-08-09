@@ -1,7 +1,7 @@
 +++
-title = "Luas Permukaan dan Volume Balok"
+title = "C. Luas Permukaan dan Volume Balok"
 description = "Menghitung luas permukaan dan volume balok serta unsur-unsurnya"
-weight = 2
+weight = 3
 +++
 
 ## Tujuan Pembelajaran

@@ -1,7 +1,7 @@
 +++
-title = "Luas Permukaan dan Volume Gabungan Bangun Ruang Sisi Datar"
+title = "F. Luas Permukaan dan Volume Gabungan Bangun Ruang Sisi Datar"
 description = "Menghitung luas permukaan dan volume dari gabungan dua bangun ruang sisi datar"
-weight = 5
+weight = 6
 +++
 
 ## Tujuan Pembelajaran

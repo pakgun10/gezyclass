@@ -1,5 +1,5 @@
 +++
-title = "Luas Lingkaran"
+title = "C. Luas Lingkaran"
 description = "Menghitung luas lingkaran menggunakan rumus L = πr²"
 weight = 3
 +++

@@ -1,5 +1,5 @@
 +++
-title = "Menyelesaikan PLSV dengan Perkalian dan Pembagian"
+title = "D. Menyelesaikan PLSV dengan Perkalian dan Pembagian"
 description = "Menyelesaikan persamaan linear satu variabel menggunakan operasi perkalian dan pembagian"
 weight = 4
 +++

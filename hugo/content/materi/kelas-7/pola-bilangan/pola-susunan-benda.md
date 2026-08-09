@@ -1,5 +1,5 @@
 +++
-title = "Pola Susunan Benda"
+title = "C. Pola Susunan Benda"
 description = "Pola geometri dari susunan benda seperti korek api, ubin, dan lingkaran"
 weight = 3
 +++

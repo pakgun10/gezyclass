@@ -24,6 +24,39 @@ body{font-family:system-ui,sans-serif;background:#f0f2f5;min-height:100vh}
 .q-submit h3{margin-bottom:12px}
 .q-submit button{width:100%;padding:16px;background:#d32f2f;color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;margin-top:12px}
 .loading{text-align:center;padding:60px 20px;color:#888;font-size:18px}
+/* Results page styles */
+.result-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:32px 28px;text-align:center;margin-bottom:24px}
+.result-hero h2{font-size:28px;margin-bottom:8px}
+.result-score{font-size:48px;font-weight:800;margin:16px 0}
+.result-score .max{font-size:24px;opacity:.7}
+.result-meta{display:flex;justify-content:center;gap:24px;margin-top:12px;font-size:14px;opacity:.85}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.result-stat{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.result-stat .num{font-size:28px;font-weight:700}
+.result-stat .lbl{font-size:13px;color:#666;margin-top:4px}
+.result-stat.correct .num{color:#2e7d32}
+.result-stat.wrong .num{color:#d32f2f}
+.result-stat.empty .num{color:#999}
+.review-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.review-card.correct{border-left:4px solid #4caf50}
+.review-card.wrong{border-left:4px solid #d32f2f}
+.review-card.empty{border-left:4px solid #bbb}
+.review-q{font-size:16px;font-weight:600;margin-bottom:12px}
+.review-q .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.review-q .badge.correct{background:#e8f5e9;color:#2e7d32}
+.review-q .badge.wrong{background:#ffebee;color:#d32f2f}
+.review-q .badge.empty{background:#f5f5f5;color:#999}
+.review-opt{padding:10px 14px;margin:6px 0;border-radius:8px;font-size:15px;display:flex;align-items:center;gap:8px}
+.review-opt.student-correct{background:#e8f5e9;border:1px solid #4caf50}
+.review-opt.student-wrong{background:#ffebee;border:1px solid #d32f2f}
+.review-opt.correct-answer{background:#e8f5e9;border:1px solid #4caf50}
+.review-opt .icon{font-size:18px}
+.review-explanation{background:#f0f4ff;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:#333;line-height:1.6}
+.review-explanation strong{color:#1a1a2e}
+.result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px}
+.result-actions a{padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px}
+.result-actions a.primary{background:#1a1a2e;color:#fff}
+.result-actions a.secondary{background:#e0e0e0;color:#333}
 </style>
 <div id="app">
 <div class="loading" id="loading">⏳ Memuat soal ujian...</div>
@@ -31,23 +64,33 @@ body{font-family:system-ui,sans-serif;background:#f0f2f5;min-height:100vh}
 <div id="finished" style="display:none"></div>
 </div>
 <script>
-var API="/api",sessionId=new URLSearchParams(location.search).get("session"),state={questions:[],current:0,answers:{},timer:0,interval:null,examTitle:""};
+var API="/api",sessionId=new URLSearchParams(location.search).get("session"),state={questions:[],current:0,answers:{},timer:0,interval:null,examTitle:"",examSettings:{},sessionData:{}};
 
 async function init(){
 if(!sessionId){document.getElementById("loading").innerHTML="Session tidak ditemukan.";return}
 try{
 var sr=await(await fetch(API+"/collections/exam_sessions/records/"+sessionId)).json();
+state.sessionData=sr;
+if(sr.status==="submitted"&&sr.total_score!==undefined&&sr.max_score>0){
+  /* Already submitted & scored — show results directly */
+  document.getElementById("loading").style.display="none";
+  await loadAndShowResults();
+  return;
+}
 if(sr.status!=="ongoing"){document.getElementById("loading").innerHTML="Ujian sudah selesai.";return}
 state.examTitle=sr.exam_id;
 var er=await(await fetch(API+"/collections/exams/records/"+sr.exam_id)).json();
 state.timer=er.duration||1800;
 state.examTitle=er.title||"Ujian";
+state.examSettings={show_score:er.show_score_after,show_explanation:er.show_explanation_after};
 startTimer();
 var eqs=await(await fetch(API+"/collections/exam_questions/records?filter=(exam_id=\""+sr.exam_id+"\")&perPage=500")).json();
 state.questions=[];
 for(var eq of eqs.items||[]){
 var qr=await(await fetch(API+"/collections/questions/records/"+eq.question_id)).json();
-state.questions.push({eqId:eq.id,qid:eq.question_id,question:qr.question,options:qr.options_json||[],points:eq.points||10});
+var opts=qr.options_json||[];
+shuffle(opts);
+state.questions.push({eqId:eq.id,qid:eq.question_id,question:qr.question,options:opts,points:eq.points||10,explanation:qr.explanation||"",difficulty:qr.difficulty||""});
 }
 shuffle(state.questions);
 render();
@@ -67,13 +110,27 @@ var q=state.questions[state.current],optsHtml="";
 if(q.options&&q.options.length){
 (q.options).forEach(function(o,i){
 var sel=state.answers[q.eqId]===i?"selected":"";
-optsHtml+="<button class='q-option "+sel+"' onclick='answer("+q.eqId+","+i+")'>"+o.text+"</button>"
+optsHtml+="<button class='q-option "+sel+"' onclick=\"answer('"+q.eqId+"',"+i+")\">"+o.text+"</button>"
 });
 }
 var navHtml="";state.questions.forEach(function(_,i){var cls=i===state.current?"current":"";if(state.answers[state.questions[i].eqId]!==undefined)cls+=" answered";navHtml+="<button class='"+cls+"' onclick='goTo("+i+")'>"+(i+1)+"</button>"});
 var prevBtn=state.current>0?"<button class='btn-prev' onclick='goTo("+(state.current-1)+")'>Sebelumnya</button>":"";
 var nextBtn=state.current<state.questions.length-1?"<button class='btn-next' onclick='goTo("+(state.current+1)+")'>Selanjutnya</button>":"<button class='btn-submit' onclick='submit()'>Selesai Ujian</button>";
-document.getElementById("quiz").innerHTML="<div class='q-header'><span>📐 "+state.examTitle+"</span><span class='timer' id='timer'>"+fmt(state.timer)+"</span><span class='progress'>"+(state.current+1)+"/"+state.questions.length+"</span></div><div class='q-container'><div class='q-card'><div class='q-text'>"+q.question+"</div><div id='opts'>"+optsHtml+"</div></div><div class='q-nav'>"+navHtml+"</div><div class='q-actions'>"+prevBtn+nextBtn+"</div></div>"
+document.getElementById("quiz").innerHTML="<div class='q-header'><span>📐 "+state.examTitle+"</span><span class='timer' id='timer'>"+fmt(state.timer)+"</span><span class='progress'>"+(state.current+1)+"/"+state.questions.length+"</span></div><div class='q-container'><div class='q-card'><div class='q-text'>"+q.question+"</div><div id='opts'>"+optsHtml+"</div></div><div class='q-nav'>"+navHtml+"</div><div class='q-actions'>"+prevBtn+nextBtn+"</div></div>";
+renderMath();
+}
+
+function renderMath(){
+if(typeof renderMathInElement==="function"){
+renderMathInElement(document.getElementById("quiz"),{
+delimiters:[
+{left:"$",right:"$",display:true},
+{left:"$",right:"$",display:false},
+{left:"\\[",right:"\\]",display:true},
+{left:"\\(",right:"\\)",display:false}
+]
+});
+}
 }
 
 async function answer(eqId,idx){
@@ -86,10 +143,158 @@ function goTo(i){state.current=i;render()}
 
 async function submit(){
 clearInterval(state.interval);
-await fetch(API+"/collections/exam_sessions/records/"+sessionId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"submitted",ended_at:new Date().toISOString()})});
+var totalScore=0,maxScore=0;
+var answerRecords=[];
+
+/* Fetch all existing answer records for this session */
+try{
+  var ar=await(await fetch(API+"/collections/exam_answers/records?filter=(session_id=\""+sessionId+"\")&perPage=500")).json();
+  answerRecords=(ar.items||[]);
+}catch(e){}
+
+/* Score each question */
+for(var i=0;i<state.questions.length;i++){
+  var q=state.questions[i];
+  maxScore+=q.points;
+  var selectedIdx=state.answers[q.eqId];
+  var isCorrect=false,score=0;
+  if(selectedIdx!==undefined&&q.options[selectedIdx]&&q.options[selectedIdx].score===1){
+    isCorrect=true;score=q.points;
+  }
+  totalScore+=score;
+  /* Find the answer record for this question and PATCH it */
+  var rec=answerRecords.find(function(r){return r.question_id===q.qid});
+  if(rec){
+    await fetch(API+"/collections/exam_answers/records/"+rec.id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({is_correct:isCorrect,score:score})});
+  }
+}
+
+/* Update session with scores */
+await fetch(API+"/collections/exam_sessions/records/"+sessionId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"submitted",ended_at:new Date().toISOString(),total_score:totalScore,max_score:maxScore})});
+
+state.sessionData.total_score=totalScore;
+state.sessionData.max_score=maxScore;
+state.sessionData.status="submitted";
+
+/* Show results */
+await showResults(totalScore,maxScore);
+}
+
+async function loadAndShowResults(){
+/* Load exam + questions for review */
+var sr=state.sessionData;
+var er=await(await fetch(API+"/collections/exams/records/"+sr.exam_id)).json();
+state.examTitle=er.title||"Ujian";
+state.examSettings={show_score:er.show_score_after,show_explanation:er.show_explanation_after};
+
+var eqs=await(await fetch(API+"/collections/exam_questions/records?filter=(exam_id=\""+sr.exam_id+"\")&perPage=500")).json();
+state.questions=[];
+for(var eq of eqs.items||[]){
+  var qr=await(await fetch(API+"/collections/questions/records/"+eq.question_id)).json();
+  var opts=qr.options_json||[];
+  shuffle(opts);
+  state.questions.push({eqId:eq.id,qid:eq.question_id,question:qr.question,options:opts,points:eq.points||10,explanation:qr.explanation||"",difficulty:qr.difficulty||""});
+}
+
+/* Fetch answers */
+var ar=await(await fetch(API+"/collections/exam_answers/records?filter=(session_id=\""+sessionId+"\")&perPage=500")).json();
+var answersMap={};
+(ar.items||[]).forEach(function(a){answersMap[a.question_id]=a;});
+
+await showResults(sr.total_score||0,sr.max_score||0,answersMap);
+}
+
+async function showResults(totalScore,maxScore,answersMap){
+if(!answersMap){
+  /* Build answersMap from state.answers (just submitted) */
+  answersMap={};
+  for(var i=0;i<state.questions.length;i++){
+    var q=state.questions[i];
+    var sel=state.answers[q.eqId];
+    if(sel!==undefined){
+      answersMap[q.qid]={answer_json:{selected_index:sel},is_correct:q.options[sel]&&q.options[sel].score===1,score:q.options[sel]&&q.options[sel].score===1?q.points:0};
+    }
+  }
+}
+
+var correct=0,wrong=0,empty=0;
+var reviewHtml="";
+
+for(var i=0;i<state.questions.length;i++){
+  var q=state.questions[i];
+  var ans=answersMap[q.qid];
+  var selIdx=ans?ans.answer_json.selected_index:undefined;
+  var isCorrect=ans?ans.is_correct:false;
+  var hasAnswer=selIdx!==undefined&&selIdx!==null;
+
+  if(!hasAnswer){empty++;}
+  else if(isCorrect){correct++;}
+  else{wrong++;}
+
+  var cls=!hasAnswer?"empty":(isCorrect?"correct":"wrong");
+  var badgeCls=!hasAnswer?"empty":(isCorrect?"correct":"wrong");
+  var badgeTxt=!hasAnswer?"Tidak Dijawab":(isCorrect?"Benar":"Salah");
+
+  var optsReviewHtml="";
+  for(var j=0;j<q.options.length;j++){
+    var opt=q.options[j];
+    var optCls="";
+    var icon="";
+    if(j===selIdx&&opt.score===1){optCls="student-correct";icon="✅";}
+    else if(j===selIdx&&opt.score!==1){optCls="student-wrong";icon="❌";}
+    else if(opt.score===1){optCls="correct-answer";icon="✓";}
+    optsReviewHtml+="<div class='review-opt "+optCls+"'><span class='icon'>"+icon+"</span>"+opt.text+"</div>";
+  }
+
+  var explHtml="";
+  if(state.examSettings.show_explanation&&q.explanation){
+    explHtml="<div class='review-explanation'><strong>💡 Penjelasan:</strong> "+q.explanation+"</div>";
+  }
+
+  reviewHtml+="<div class='review-card "+cls+"'>"+
+    "<div class='review-q'>"+(i+1)+". "+q.question+" <span class='badge "+badgeCls+"'>"+badgeTxt+"</span></div>"+
+    optsReviewHtml+explHtml+
+  "</div>";
+}
+
+var showScore=state.examSettings.show_score;
+var scoreHtml="";
+if(showScore){
+  var pct=maxScore>0?Math.round(totalScore/maxScore*100):0;
+  var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
+  scoreHtml="<div class='result-hero'>"+
+    "<h2>✅ Ujian Selesai!</h2>"+
+    "<div class='result-score'>"+totalScore+"<span class='max'> / "+maxScore+"</span></div>"+
+    "<div style='font-size:18px;opacity:.9'>Nilai: "+pct+" ("+grade+")</div>"+
+    "<div class='result-meta'>"+
+      "<span>📝 "+state.examTitle+"</span>"+
+      "<span>👤 "+(state.sessionData.nama||"")+"</span>"+
+      "<span>🏫 "+(state.sessionData.kelas||"")+"</span>"+
+    "</div>"+
+  "</div>"+
+  "<div class='result-stats'>"+
+    "<div class='result-stat correct'><div class='num'>"+correct+"</div><div class='lbl'>Benar</div></div>"+
+    "<div class='result-stat wrong'><div class='num'>"+wrong+"</div><div class='lbl'>Salah</div></div>"+
+    "<div class='result-stat empty'><div class='num'>"+empty+"</div><div class='lbl'>Kosong</div></div>"+
+  "</div>";
+}else{
+  scoreHtml="<div class='result-hero'>"+
+    "<h2>✅ Ujian Selesai!</h2>"+
+    "<p>Jawaban kamu sudah tersimpan.</p>"+
+    "<div class='result-meta'>"+
+      "<span>📝 "+state.examTitle+"</span>"+
+      "<span>👤 "+(state.sessionData.nama||"")+"</span>"+
+    "</div>"+
+  "</div>";
+}
+
+var actionsHtml="<div class='result-actions'>"+
+  "<a href='/cbt/' class='primary'>Kembali ke CBT</a>"+
+"</div>";
+
 document.getElementById("quiz").style.display="none";
 document.getElementById("finished").style.display="block";
-document.getElementById("finished").innerHTML="<div class='q-submit'><h2>✅ Ujian Selesai!</h2><p>Jawaban kamu sudah tersimpan.</p><p style='color:#888;margin-top:8px'>Session: "+sessionId+"</p><p style='color:#888'>Soal dijawab: "+Object.keys(state.answers).length+"/"+state.questions.length+"</p><a href='/cbt/' style='display:inline-block;margin-top:20px;color:#1a1a2e;font-weight:600'>Kembali ke CBT</a></div>"
+document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreHtml+actionsHtml+"</div>";
 }
 
 init();

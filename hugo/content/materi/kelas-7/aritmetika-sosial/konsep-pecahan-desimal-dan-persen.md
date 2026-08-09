@@ -1,5 +1,5 @@
 +++
-title = "Konsep Pecahan, Desimal, dan Persen dalam Konteks Sehari-hari"
+title = "B. Konsep Pecahan, Desimal, dan Persen dalam Konteks Sehari-hari"
 description = "Mengubah, membandingkan, dan mengurutkan nilai uang dalam bentuk pecahan, desimal, dan persen"
 weight = 2
 +++

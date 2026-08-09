@@ -1,5 +1,5 @@
 +++
-title = "Tripel Pythagoras"
+title = "C. Tripel Pythagoras"
 description = "Mengidentifikasi dan menentukan tripel Pythagoras serta kelipatannya"
 weight = 3
 +++

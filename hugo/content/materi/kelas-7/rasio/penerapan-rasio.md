@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Rasio dalam Kehidupan Sehari-hari"
+title = "F. Penerapan Rasio dalam Kehidupan Sehari-hari"
 description = "Soal cerita kontekstual campuran yang melibatkan rasio, skala, proporsi, dan laju perubahan"
 weight = 6
 +++

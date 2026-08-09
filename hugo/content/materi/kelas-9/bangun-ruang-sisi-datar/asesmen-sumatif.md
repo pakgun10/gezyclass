@@ -1,7 +1,7 @@
 +++
-title = "Asesmen Sumatif Bangun Ruang Sisi Datar"
+title = "H. Asesmen Sumatif Bangun Ruang Sisi Datar"
 description = "Soal kompleks campuran luas permukaan dan volume kubus, balok, prisma, dan limas"
-weight = 7
+weight = 8
 +++
 
 ## Tujuan Pembelajaran

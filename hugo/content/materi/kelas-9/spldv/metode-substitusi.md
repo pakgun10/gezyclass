@@ -1,5 +1,5 @@
 +++
-title = "Menyelesaikan SPLDV dengan Metode Substitusi"
+title = "C. Menyelesaikan SPLDV dengan Metode Substitusi"
 description = "Menyelesaikan SPLDV dengan metode substitusi — mengganti variabel"
 weight = 3
 +++
@@ -26,7 +26,7 @@ Setelah mempelajari materi ini, siswa diharapkan mampu:
 
 ## B. Contoh 1
 
-Selesaikan $\begin{cases} x + y = 5 \\ 2x - y = 4 \end{cases}$
+Selesaikan $\begin{cases} x + y = 5 \\\\ 2x - y = 4 \end{cases}$
 
 Dari persamaan 1: $y = 5 - x$
 
@@ -45,7 +45,7 @@ Penyelesaian: $(3, 2)$ ✅
 
 ## C. Contoh 2
 
-Selesaikan $\begin{cases} 2x + 3y = 13 \\ x - 2y = -4 \end{cases}$
+Selesaikan $\begin{cases} 2x + 3y = 13 \\\\ x - 2y = -4 \end{cases}$
 
 Dari persamaan 2: $x = 2y - 4$
 
@@ -65,9 +65,9 @@ Penyelesaian: $(2, 3)$ ✅
 
 | SPLDV | Langkah | Penyelesaian |
 |:------|:--------|:-------------|
-| $\begin{cases}x+2y=7\\ 3x-y=7\end{cases}$ | $x=7-2y$ → $3(7-2y)-y=7$ → $21-7y=7$ → $y=2$, $x=3$ | $(3,2)$ |
-| $\begin{cases}3x+y=11\\ 2x-3y=-11\end{cases}$ | $y=11-3x$ → $2x-3(11-3x)=-11$ → $11x=22$ → $x=2$, $y=5$ | $(2,5)$ |
-| $\begin{cases}x-2y=7\\ 3x+4y=1\end{cases}$ | $x=2y+7$ → $3(2y+7)+4y=1$ → $10y=-20$ → $y=-2$, $x=3$ | $(3,-2)$ |
+| $\begin{cases}x+2y=7\\\\ 3x-y=7\end{cases}$ | $x=7-2y$ → $3(7-2y)-y=7$ → $21-7y=7$ → $y=2$, $x=3$ | $(3,2)$ |
+| $\begin{cases}3x+y=11\\\\ 2x-3y=-11\end{cases}$ | $y=11-3x$ → $2x-3(11-3x)=-11$ → $11x=22$ → $x=2$, $y=5$ | $(2,5)$ |
+| $\begin{cases}x-2y=7\\\\ 3x+4y=1\end{cases}$ | $x=2y+7$ → $3(2y+7)+4y=1$ → $10y=-20$ → $y=-2$, $x=3$ | $(3,-2)$ |
 
 ---
 
@@ -83,8 +83,8 @@ $$\boxed{\text{Nyatakan } \to \text{ Substitusi } \to \text{ Selesaikan } \to \t
 
 ## F. Latihan Soal
 
-1. Selesaikan $\begin{cases}x + y = 8\\ x - y = 2\end{cases}$
-2. Selesaikan $\begin{cases}2x + y = 10\\ x - 3y = -2\end{cases}$
-3. Selesaikan $\begin{cases}3x + 2y = 18\\ x - y = 1\end{cases}$
-4. Selesaikan $\begin{cases}2x + 3y = 8\\ 4x + y = 6\end{cases}$
+1. Selesaikan $\begin{cases}x + y = 8\\\\ x - y = 2\end{cases}$
+2. Selesaikan $\begin{cases}2x + y = 10\\\\ x - 3y = -2\end{cases}$
+3. Selesaikan $\begin{cases}3x + 2y = 18\\\\ x - y = 1\end{cases}$
+4. Selesaikan $\begin{cases}2x + 3y = 8\\\\ 4x + y = 6\end{cases}$
 5. Harga 2 buku dan 3 pensil Rp14.000. Harga 1 buku dan 2 pensil Rp8.000. Berapa harga 1 buku dan 1 pensil?

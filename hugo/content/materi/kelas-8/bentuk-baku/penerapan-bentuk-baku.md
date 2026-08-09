@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Bentuk Baku"
+title = "C. Penerapan Bentuk Baku"
 description = "Menyelesaikan permasalahan kontekstual yang melibatkan bentuk baku dalam sains dan kehidupan"
 weight = 3
 +++

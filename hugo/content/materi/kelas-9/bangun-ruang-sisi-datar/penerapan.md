@@ -1,7 +1,7 @@
 +++
-title = "Penerapan Bangun Ruang Sisi Datar"
+title = "G. Penerapan Bangun Ruang Sisi Datar"
 description = "Menyelesaikan masalah kontekstual yang melibatkan luas permukaan dan volume bangun ruang sisi datar"
-weight = 6
+weight = 7
 +++
 
 ## Tujuan Pembelajaran

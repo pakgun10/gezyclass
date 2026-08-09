@@ -1,5 +1,5 @@
 +++
-title = "Panjang Busur Lingkaran"
+title = "E. Panjang Busur Lingkaran"
 description = "Menghitung panjang busur lingkaran berdasarkan sudut pusat dan jari-jari"
 weight = 5
 +++

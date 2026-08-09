@@ -1,5 +1,5 @@
 +++
-title = "Penerapan dan Asesmen Sumatif Teorema Pythagoras"
+title = "H. Penerapan dan Asesmen Sumatif Teorema Pythagoras"
 description = "Soal kompleks campuran teorema Pythagoras, tripel, segitiga istimewa, dan jarak koordinat"
 weight = 8
 +++

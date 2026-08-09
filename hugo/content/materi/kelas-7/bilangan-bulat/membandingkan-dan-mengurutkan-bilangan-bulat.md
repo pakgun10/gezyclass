@@ -1,7 +1,7 @@
 +++
-title = "Membandingkan dan Mengurutkan Bilangan Bulat"
+title = "C. Membandingkan dan Mengurutkan Bilangan Bulat"
 description = "Materi membandingkan dan mengurutkan bilangan bulat untuk kelas 7: garis bilangan, tanda < > =, dan urutan bilangan"
-weight = 2
+weight = 3
 +++
 
 ## Tujuan Pembelajaran

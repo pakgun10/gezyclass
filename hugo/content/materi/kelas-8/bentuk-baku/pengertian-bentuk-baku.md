@@ -1,5 +1,5 @@
 +++
-title = "Pengertian Bentuk Baku (Notasi Ilmiah)"
+title = "A. Pengertian Bentuk Baku (Notasi Ilmiah)"
 description = "Definisi, syarat, dan contoh bentuk baku (notasi ilmiah) untuk bilangan besar dan kecil"
 weight = 1
 +++

@@ -1,5 +1,5 @@
 +++
-title = "Perbandingan Sisi Segitiga Siku-Siku Istimewa (45-45-90)"
+title = "E. Perbandingan Sisi Segitiga Siku-Siku Istimewa (45-45-90)"
 description = "Menentukan perbandingan sisi segitiga siku-siku sama kaki (45-45-90)"
 weight = 5
 +++

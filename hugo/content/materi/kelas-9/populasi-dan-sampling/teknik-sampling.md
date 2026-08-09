@@ -1,5 +1,5 @@
 +++
-title = "Teknik Sampling dalam Penelitian"
+title = "B. Teknik Sampling dalam Penelitian"
 description = "Teknik pengambilan sampel: probability sampling dan non-probability sampling"
 weight = 2
 +++

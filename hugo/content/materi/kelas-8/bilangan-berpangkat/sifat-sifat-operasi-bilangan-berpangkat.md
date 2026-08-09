@@ -1,5 +1,5 @@
 +++
-title = "Sifat-Sifat Operasi Bilangan Berpangkat"
+title = "B. Sifat-Sifat Operasi Bilangan Berpangkat"
 description = "Materi sifat-sifat operasi bilangan berpangkat untuk kelas 8: perkalian, pembagian, perpangkatan, dan contohnya"
 weight = 2
 aliases = ["/materi/kelas-8/sifat-sifat-operasi-bilangan-berpangkat/"]

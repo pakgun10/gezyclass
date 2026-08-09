@@ -1,4 +1,4 @@
 ---
 title: "Ujian CBT"
-layout: "cbt-quiz"
+layout: "quiz"
 ---

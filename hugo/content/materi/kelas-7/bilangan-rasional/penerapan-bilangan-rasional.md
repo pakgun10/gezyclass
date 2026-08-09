@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Bilangan Rasional dalam Kehidupan Sehari-hari"
+title = "G. Penerapan Bilangan Rasional dalam Kehidupan Sehari-hari"
 description = "Menyelesaikan masalah kontekstual yang melibatkan bilangan rasional dalam kehidupan sehari-hari"
 weight = 7
 +++

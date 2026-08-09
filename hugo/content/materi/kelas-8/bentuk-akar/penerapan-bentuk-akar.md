@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Bentuk Akar dalam Kehidupan Sehari-hari"
+title = "E. Penerapan Bentuk Akar dalam Kehidupan Sehari-hari"
 description = "Materi penerapan bentuk akar untuk kelas 8: teorema Pythagoras, geometri, dan permasalahan kontekstual"
 weight = 5
 aliases = ["/materi/kelas-8/penerapan-bentuk-akar/"]
@@ -21,9 +21,15 @@ Setelah mempelajari materi ini, siswa diharapkan mampu:
 
 ### Rumus
 
-$$c = \sqrt{a^2 + b^2}$$
+$c = \sqrt{a^2 + b^2}$
 
 dengan $c$ adalah sisi miring segitiga siku-siku, $a$ dan $b$ adalah sisi tegaknya.
+
+<div class="note">
+Ilustrasi visual teorema Pythagoras dengan bukti luas:
+</div>
+
+![Teorema Pythagoras — visualisasi bukti luas](/images/pythagoras-visual.png?v=2)
 
 ### Contoh 1: Diagonal Persegi Panjang
 
@@ -196,6 +202,83 @@ Jadi, skala peta adalah $\mathbf{1 : 2.000.000}$.
 6. $s = \sqrt[3]{216} = 6$ cm
 7. Skala $= 5 : 15.000.000 = 1 : 3.000.000$
 8. $c = \sqrt{4^2 + 4^2} = \sqrt{16 + 16} = \sqrt{32} = 4\sqrt{2}$ cm
+
+---
+
+## G. Asesmen Sumatif
+
+Kerjakan soal-soal berikut dengan teliti. Pilih satu jawaban yang paling tepat untuk soal pilihan ganda, dan kerjakan soal uraian secara lengkap.
+
+### Bagian A — Soal LOTS / Mudah (Skor 5 × 10 = 50)
+
+1. Sebuah persegi panjang memiliki panjang $6$ cm dan lebar $8$ cm. Panjang diagonal persegi panjang tersebut adalah ... cm.
+   - A. $10$
+   - B. $12$
+   - C. $14$
+   - D. $48$
+
+2. Sebuah segitiga siku-siku memiliki sisi tegak $3$ cm dan $4$ cm. Panjang sisi miringnya adalah ... cm.
+   - A. $5$
+   - B. $7$
+   - C. $12$
+   - D. $25$
+
+3. Luas sebuah persegi adalah $49 \text{ cm}^2$. Panjang sisi persegi tersebut adalah ... cm.
+   - A. $6$
+   - B. $7$
+   - C. $8$
+   - D. $24{,}5$
+
+4. Volume sebuah kubus adalah $125 \text{ cm}^3$. Panjang rusuk kubus tersebut adalah ... cm.
+   - A. $5$
+   - B. $25$
+   - C. $15$
+   - D. $125$
+
+5. Sebuah tangga sepanjang $10$ meter bersandar pada tembok. Jika jarak kaki tangga dari tembok adalah $6$ meter, maka tinggi tembok yang dicapai tangga adalah ... meter.
+   - A. $4$
+   - B. $6$
+   - C. $8$
+   - D. $10$
+
+### Bagian B — Soal MOTS / Sedang (Skor 3 × 15 = 45)
+
+6. Luas sebuah persegi adalah $72 \text{ cm}^2$. Panjang sisi persegi tersebut dalam bentuk akar paling sederhana adalah ... cm.
+   - A. $6\sqrt{2}$
+   - B. $8\sqrt{2}$
+   - C. $36\sqrt{2}$
+   - D. $12\sqrt{6}$
+
+7. Sebuah segitiga siku-siku memiliki sisi tegak $5$ cm dan $7$ cm. Panjang sisi miringnya dalam bentuk akar paling sederhana adalah ... cm.
+   - A. $\sqrt{12}$
+   - B. $\sqrt{35}$
+   - C. $\sqrt{74}$
+   - D. $2\sqrt{3}$
+
+8. Sebuah balok berukuran $p = 4$ cm, $l = 4$ cm, $t = 7$ cm. Diagonal ruang balok tersebut dalam bentuk akar paling sederhana adalah ... cm.
+   - A. $9$
+   - B. $\sqrt{65}$
+   - C. $\sqrt{81}$
+   - D. $15$
+
+### Bagian C — Soal HOTS / Sulit (Skor 2 × 27,5 = 55)
+
+9. **Soal HOTS:** Sebuah taman berbentuk persegi panjang dengan panjang $(3 + \sqrt{2})$ meter dan lebar $(3 - \sqrt{2})$ meter.
+   - (a) Hitunglah luas taman tersebut dalam bentuk $a + b\sqrt{c}$ yang paling sederhana.
+   - (b) Hitunglah panjang diagonal taman tersebut dalam bentuk akar yang paling sederhana.
+   - (c) Jika di sekeliling taman akan dipasang pagar seharga Rp 40.000 per meter, hitunglah biaya total pemasangan pagar. (Sederhanakan jawabanmu.)
+
+10. **Soal HOTS:** Diketahui dua buah segitiga siku-siku:
+    - **Segitiga A** memiliki sisi tegak $a$ dan $b$, dengan sisi miring $c = \sqrt{a^2 + b^2}$.
+    - **Segitiga B** memiliki sisi tegak $a$ dan $b$ seperti Segitiga A, tetapi setiap sisi diperbesar sehingga sisi miringnya menjadi $2c$.
+
+    - (a) Jika sisi miring Segitiga B adalah $2c = 2\sqrt{a^2 + b^2}$, tunjukkan bahwa sisi tegak Segitiga B masing-masing menjadi $2a$ dan $2b$.
+    - (b) Jika $a = 3$ dan $b = 4$, hitunglah luas Segitiga A dan luas Segitiga B. Berapa kali lipat luas Segitiga B dibanding Segitiga A?
+    - (c) Berdasarkan jawaban (b), buatlah **kesimpulan umum** tentang hubungan antara perbesaran sisi dengan perbesaran luas pada segitiga siku-siku. Buktikan secara matematis.
+
+---
+
+**Total Skor Maksimal: 150**
 
 ---
 

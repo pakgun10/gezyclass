@@ -1,5 +1,5 @@
 +++
-title = "Pola Barisan Bilangan"
+title = "B. Pola Barisan Bilangan"
 description = "Menentukan suku berikutnya, barisan aritmetika, beda tetap, dan aturan barisan bilangan"
 weight = 2
 +++

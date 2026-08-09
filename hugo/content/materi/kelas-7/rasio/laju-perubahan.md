@@ -1,5 +1,5 @@
 +++
-title = "Laju Perubahan"
+title = "D. Laju Perubahan"
 description = "Konsep laju perubahan, harga satuan, kecepatan, dan debit dalam kehidupan sehari-hari"
 weight = 4
 +++

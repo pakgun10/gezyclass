@@ -1,5 +1,5 @@
 +++
-title = "Populasi dan Sampel dalam Statistika"
+title = "A. Populasi dan Sampel dalam Statistika"
 description = "Konsep populasi, sampel, dan perbedaannya dalam penelitian dan survei"
 weight = 1
 +++

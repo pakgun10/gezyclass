@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Survei dan Penelitian Sederhana"
+title = "C. Penerapan Survei dan Penelitian Sederhana"
 description = "Merancang survei sederhana: menentukan populasi, memilih sampel, dan menganalisis hasil"
 weight = 3
 +++

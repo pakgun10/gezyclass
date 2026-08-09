@@ -1,7 +1,7 @@
 +++
-title = "Konsep dan Garis Bilangan Bulat"
+title = "B. Konsep dan Garis Bilangan Bulat"
 description = "Memahami bilangan bulat positif, negatif, nol, dan letaknya pada garis bilangan."
-weight = 10
+weight = 2
 aliases = ["/materi/kelas-7/konsep-dan-garis-bilangan-bulat/"]
 +++
 

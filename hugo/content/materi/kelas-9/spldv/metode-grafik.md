@@ -1,5 +1,5 @@
 +++
-title = "Menyelesaikan SPLDV dengan Metode Grafik"
+title = "B. Menyelesaikan SPLDV dengan Metode Grafik"
 description = "Menyelesaikan SPLDV menggunakan metode grafik — menggambar garis dan mencari titik potong"
 weight = 2
 +++
@@ -25,7 +25,7 @@ Setelah mempelajari materi ini, siswa diharapkan mampu:
 
 ## B. Contoh 1: Satu Penyelesaian
 
-Selesaikan $\begin{cases} x + y = 5 \\ x - y = 1 \end{cases}$
+Selesaikan $\begin{cases} x + y = 5 \\\\ x - y = 1 \end{cases}$
 
 **Gambar grafik:**
 
@@ -51,19 +51,19 @@ Penyelesaian: $x = 3$, $y = 2$.
 
 | Kondisi | Arti | Contoh |
 |:--------|:-----|:-------|
-| **Berpotongan** | Satu penyelesaian | $\begin{cases}x+y=5\\x-y=1\end{cases}$ → $(3,2)$ |
-| **Sejajar** | Tidak punya penyelesaian | $\begin{cases}x+y=3\\x+y=7\end{cases}$ |
-| **Berimpit** | Tak hingga penyelesaian | $\begin{cases}x+y=3\\2x+2y=6\end{cases}$ |
+| **Berpotongan** | Satu penyelesaian | $\begin{cases}x+y=5\\\\x-y=1\end{cases}$ → $(3,2)$ |
+| **Sejajar** | Tidak punya penyelesaian | $\begin{cases}x+y=3\\\\x+y=7\end{cases}$ |
+| **Berimpit** | Tak hingga penyelesaian | $\begin{cases}x+y=3\\\\2x+2y=6\end{cases}$ |
 
 ### Contoh 2: Sejajar
 
-$$\begin{cases} x + y = 3 \\ x + y = 7 \end{cases}$$
+$$\begin{cases} x + y = 3 \\\\ x + y = 7 \end{cases}$$
 
 Kedua garis sejajar → **tidak ada penyelesaian**.
 
 ### Contoh 3: Berimpit
 
-$$\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$$
+$$\begin{cases} x + y = 3 \\\\ 2x + 2y = 6 \end{cases}$$
 
 Persamaan kedua = $2 \times$ persamaan pertama → **tak hingga penyelesaian**.
 
@@ -81,8 +81,8 @@ $$\boxed{\text{Penyelesaian SPLDV = Titik potong kedua garis}}$$
 
 ## E. Latihan Soal
 
-1. Selesaikan $\begin{cases}x + y = 4\\ x - y = 2\end{cases}$ dengan grafik!
-2. Selesaikan $\begin{cases}2x + y = 6\\ x - y = 3\end{cases}$ dengan grafik!
-3. Apakah $\begin{cases}x + 2y = 8\\ 2x + 4y = 16\end{cases}$ punya penyelesaian? Jelaskan!
-4. Apakah $\begin{cases}3x + y = 5\\ 3x + y = 10\end{cases}$ punya penyelesaian?
-5. Tentukan penyelesaian dari $\begin{cases}x + y = 6\\ y = x + 2\end{cases}$ dengan grafik!
+1. Selesaikan $\begin{cases}x + y = 4\\\\ x - y = 2\end{cases}$ dengan grafik!
+2. Selesaikan $\begin{cases}2x + y = 6\\\\ x - y = 3\end{cases}$ dengan grafik!
+3. Apakah $\begin{cases}x + 2y = 8\\\\ 2x + 4y = 16\end{cases}$ punya penyelesaian? Jelaskan!
+4. Apakah $\begin{cases}3x + y = 5\\\\ 3x + y = 10\end{cases}$ punya penyelesaian?
+5. Tentukan penyelesaian dari $\begin{cases}x + y = 6\\\\ y = x + 2\end{cases}$ dengan grafik!

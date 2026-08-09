@@ -1,7 +1,7 @@
 +++
-title = "Perkalian, Pembagian, dan Operasi Campuran Bilangan Bulat"
+title = "E. Perkalian, Pembagian, dan Operasi Campuran Bilangan Bulat"
 description = "Materi perkalian, pembagian, dan operasi campuran bilangan bulat untuk kelas 7: aturan tanda, sifat, dan prioritas KABATAKU"
-weight = 4
+weight = 5
 +++
 
 ## Tujuan Pembelajaran

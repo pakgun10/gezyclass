@@ -1,5 +1,5 @@
 +++
-title = "Menyederhanakan Bentuk Akar"
+title = "B. Menyederhanakan Bentuk Akar"
 description = "Materi menyederhanakan bentuk akar untuk kelas 8: konsep √(a×b), metode faktorisasi, dan contoh"
 weight = 2
 aliases = ["/materi/kelas-8/menyederhanakan-bentuk-akar/"]
@@ -203,4 +203,86 @@ Sederhanakan bentuk akar berikut!
 8. $\sqrt{108} = \sqrt{36 \times 3} = 6\sqrt{3}$
 9. $\sqrt{128} = \sqrt{64 \times 2} = 8\sqrt{2}$
 10. $\sqrt{\frac{50}{9}} = \frac{\sqrt{50}}{\sqrt{9}} = \frac{5\sqrt{2}}{3}$
+
+---
+
+## I. Asesmen Sumatif
+
+Kerjakan soal-soal berikut dengan teliti. Pilih satu jawaban yang paling tepat untuk soal pilihan ganda, dan kerjakan soal uraian secara lengkap.
+
+### Bagian A — Soal Mudah (Skor 4 × 10 = 40)
+
+1. Hasil penyederhanaan dari $\sqrt{20}$ adalah ...
+   - A. $2\sqrt{5}$
+   - B. $4\sqrt{5}$
+   - C. $5\sqrt{2}$
+   - D. $10$
+
+2. Bentuk sederhana dari $\sqrt{50}$ adalah ...
+   - A. $2\sqrt{25}$
+   - B. $5\sqrt{2}$
+   - C. $25\sqrt{2}$
+   - D. $10\sqrt{5}$
+
+3. Di antara bilangan berikut, yang **sudah** dalam bentuk akar paling sederhana adalah ...
+   - A. $\sqrt{12}$
+   - B. $\sqrt{18}$
+   - C. $\sqrt{7}$
+   - D. $\sqrt{27}$
+
+4. Hasil dari $\sqrt{45}$ adalah ...
+   - A. $3\sqrt{5}$
+   - B. $5\sqrt{3}$
+   - C. $9\sqrt{5}$
+   - D. $15$
+
+### Bagian B — Soal Sedang (Skor 4 × 15 = 60)
+
+5. Bentuk sederhana dari $\sqrt{98}$ adalah ...
+   - A. $2\sqrt{49}$
+   - B. $7\sqrt{2}$
+   - C. $14\sqrt{7}$
+   - D. $49\sqrt{2}$
+
+6. Nilai dari $\sqrt{\frac{27}{4}}$ dalam bentuk sederhana adalah ...
+   - A. $\frac{3\sqrt{3}}{4}$
+   - B. $\frac{3\sqrt{3}}{2}$
+   - C. $\frac{\sqrt{27}}{2}$
+   - D. $\frac{9}{2}$
+
+7. Diketahui $\sqrt{a} = 6\sqrt{2}$. Nilai $a$ yang memenuhi adalah ...
+   - A. $12$
+   - B. $24$
+   - C. $36$
+   - D. $72$
+
+8. Perhatikan dua pernyataan berikut:
+   - (i) $\sqrt{9 + 16} = \sqrt{25} = 5$
+   - (ii) $\sqrt{9} + \sqrt{16} = 3 + 4 = 7$
+
+   Pernyataan yang benar tentang hubungan (i) dan (ii) adalah ...
+   - A. Keduanya bernilai sama
+   - B. (i) lebih besar dari (ii)
+   - C. (ii) lebih besar dari (i)
+   - D. Tidak dapat ditentukan
+
+### Bagian C — Soal Sulit / HOTs (Skor 2 × 25 = 50)
+
+9. **Soal HOTS:** Sebuah taman berbentuk persegi panjang dengan panjang $\sqrt{180}$ meter dan lebar $\sqrt{80}$ meter.
+   - (a) Sederhanakan $\sqrt{180}$ dan $\sqrt{80}$ masing-masing ke bentuk akar paling sederhana.
+   - (b) Hitunglah luas taman tersebut dalam bentuk akar yang paling sederhana.
+   - (c) Jika di sekeliling taman akan dipasang pagar seharga Rp 25.000 per meter, hitunglah biaya total pemasangan pagar.
+
+10. **Soal HOTS:** Tiga orang siswa diminta menyederhanakan $\sqrt{200}$.
+    - **Andi** menjawab: $\sqrt{200} = 2\sqrt{100} = 2 \times 10 = 20$
+    - **Budi** menjawab: $\sqrt{200} = \sqrt{100 \times 2} = 10\sqrt{2}$
+    - **Citra** menjawab: $\sqrt{200} = \sqrt{4 \times 50} = 2\sqrt{50}$
+
+    - (a) Siapa yang menjawab **benar**? Jelaskan alasannya.
+    - (b) Jelaskan kesalahan yang dilakukan oleh siswa yang menjawab salah.
+    - (c) Mengapa jawaban Citra, meskipun secara matematis tidak salah, **belum** dianggap bentuk paling sederhana? Sederhanakan jawaban Citra hingga mencapai bentuk akar paling sederhana.
+
+---
+
+**Total Skor Maksimal: 150**
 

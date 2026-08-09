@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Bilangan Berpangkat dalam Kehidupan Sehari-hari"
+title = "D. Penerapan Bilangan Berpangkat dalam Kehidupan Sehari-hari"
 description = "Materi penerapan bilangan berpangkat dalam kehidupan sehari-hari: bunga bank, pertumbuhan bakteri, dosis obat, volume, dan notasi ilmiah"
 weight = 4
 aliases = ["/materi/kelas-8/penerapan-bilangan-berpangkat/"]

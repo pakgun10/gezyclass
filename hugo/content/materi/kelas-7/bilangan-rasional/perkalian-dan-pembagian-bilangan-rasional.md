@@ -1,5 +1,5 @@
 +++
-title = "Perkalian dan Pembagian Bilangan Rasional"
+title = "E. Perkalian dan Pembagian Bilangan Rasional"
 description = "Operasi perkalian dan pembagian pada bilangan rasional (pecahan dan desimal)"
 weight = 5
 +++

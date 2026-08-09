@@ -1,7 +1,7 @@
 +++
-title = "Luas Permukaan dan Volume Prisma"
+title = "D. Luas Permukaan dan Volume Prisma"
 description = "Menghitung luas permukaan dan volume prisma segitiga dan prisma lainnya"
-weight = 3
+weight = 4
 +++
 
 ## Tujuan Pembelajaran

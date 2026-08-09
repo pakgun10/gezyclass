@@ -1,5 +1,5 @@
 +++
-title = "Konsep Persamaan Linear Satu Variabel"
+title = "A. Konsep Persamaan Linear Satu Variabel"
 description = "Pengertian persamaan linear satu variabel (PLSV), bentuk umum, dan contoh"
 weight = 1
 +++

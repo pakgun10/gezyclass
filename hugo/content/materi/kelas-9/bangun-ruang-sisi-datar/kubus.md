@@ -1,7 +1,7 @@
 +++
-title = "Luas Permukaan dan Volume Kubus"
+title = "B. Luas Permukaan dan Volume Kubus"
 description = "Menghitung luas permukaan dan volume kubus serta unsur-unsurnya"
-weight = 1
+weight = 2
 +++
 
 ## Tujuan Pembelajaran

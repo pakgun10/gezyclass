@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Persamaan Linear Satu Variabel"
+title = "E. Penerapan Persamaan Linear Satu Variabel"
 description = "Menyelesaikan permasalahan kontekstual yang melibatkan PLSV dalam kehidupan sehari-hari"
 weight = 5
 +++

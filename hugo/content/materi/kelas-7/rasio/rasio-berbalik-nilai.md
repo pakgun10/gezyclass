@@ -1,5 +1,5 @@
 +++
-title = "Rasio Berbalik Nilai"
+title = "E. Rasio Berbalik Nilai"
 description = "Konsep perbandingan berbalik nilai, ciri-ciri, rumus, tabel, grafik, dan penerapannya"
 weight = 5
 +++

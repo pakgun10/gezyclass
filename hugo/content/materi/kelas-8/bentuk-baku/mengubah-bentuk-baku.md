@@ -1,5 +1,5 @@
 +++
-title = "Mengubah Bentuk Baku"
+title = "B. Mengubah Bentuk Baku"
 description = "Mengubah bilangan biasa ke bentuk baku dan sebaliknya, untuk bilangan besar dan kecil"
 weight = 2
 +++

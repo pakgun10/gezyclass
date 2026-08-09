@@ -1,5 +1,5 @@
 +++
-title = "Untung, Rugi, dan Persentase dalam Jual Beli"
+title = "C. Untung, Rugi, dan Persentase dalam Jual Beli"
 description = "Menghitung untung, rugi, dan persentasenya dalam perdagangan sederhana"
 weight = 3
 +++

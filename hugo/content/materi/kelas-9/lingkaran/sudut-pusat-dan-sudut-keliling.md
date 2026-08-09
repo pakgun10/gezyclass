@@ -1,5 +1,5 @@
 +++
-title = "Sudut Pusat dan Sudut Keliling Lingkaran"
+title = "D. Sudut Pusat dan Sudut Keliling Lingkaran"
 description = "Hubungan sudut pusat dan sudut keliling yang menghadap busur yang sama"
 weight = 4
 +++

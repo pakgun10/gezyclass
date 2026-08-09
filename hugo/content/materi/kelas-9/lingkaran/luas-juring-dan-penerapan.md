@@ -1,5 +1,5 @@
 +++
-title = "Luas Juring dan Penerapan Lingkaran"
+title = "F. Luas Juring dan Penerapan Lingkaran"
 description = "Menghitung luas juring, luas tembereng, dan menyelesaikan masalah kontekstual lingkaran"
 weight = 6
 +++

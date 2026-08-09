@@ -1,5 +1,5 @@
 +++
-title = "Pengertian dan Notasi Bentuk Akar"
+title = "A. Pengertian dan Notasi Bentuk Akar"
 description = "Materi bentuk akar untuk kelas 8: pengertian, notasi √a, syarat bilangan real, dan bilangan rasional vs irasional"
 weight = 1
 aliases = ["/materi/kelas-8/pengertian-dan-notasi-bentuk-akar/"]
@@ -235,3 +235,74 @@ Bentuk $\sqrt{32}$ adalah **bentuk akar** (irasional).
 8. $\sqrt{169} = 13$ lebih besar dari $\sqrt{144} = 12$
 9. $\sqrt[3]{-\frac{1}{8}} = -\frac{1}{2}$ karena $\left(-\frac{1}{2}\right)^3 = -\frac{1}{8}$
 10. $x = \sqrt{50}$
+
+---
+
+## J. Asesmen Sumatif
+
+Kerjakan soal-soal berikut dengan teliti. Pilih satu jawaban yang paling tepat untuk soal pilihan ganda, dan kerjakan soal uraian secara lengkap.
+
+### Bagian A — Soal Mudah (Skor 4 × 10 = 40)
+
+1. Hasil dari $\sqrt{64}$ adalah ...
+   - A. $6$
+   - B. $7$
+   - C. $8$
+   - D. $9$
+
+2. Di antara bilangan berikut, yang **bukan** merupakan bilangan real adalah ...
+   - A. $\sqrt{25}$
+   - B. $\sqrt{0}$
+   - C. $\sqrt{-4}$
+   - D. $\sqrt{1}$
+
+3. Nilai dari $\sqrt[3]{27}$ adalah ...
+   - A. $2$
+   - B. $3$
+   - C. $4$
+   - D. $9$
+
+4. Bentuk pangkat dari $\sqrt[4]{3}$ adalah ...
+   - A. $3^4$
+   - B. $3^{\frac{1}{4}}$
+   - C. $3^{\frac{1}{2}}$
+   - D. $4^3$
+
+### Bagian B — Soal Sedang (Skor 4 × 15 = 60)
+
+5. Di antara bilangan berikut, manakah yang merupakan bilangan **irasional**?
+   - A. $\sqrt{81}$
+   - B. $\sqrt{\frac{9}{4}}$
+   - C. $\sqrt{12}$
+   - D. $\sqrt{0,25}$
+
+6. Diketahui luas sebuah persegi adalah $144 \text{ cm}^2$. Panjang diagonal persegi tersebut adalah ... cm.
+   - A. $12$
+   - B. $12\sqrt{2}$
+   - C. $24$
+   - D. $144$
+
+7. Nilai dari $\sqrt{0,09} + \sqrt{0,16}$ adalah ...
+   - A. $0,7$
+   - B. $0,25$
+   - C. $0,5$
+   - D. $0,07$
+
+8. Diketahui $x^2 = 72$. Nilai $x$ dalam bentuk akar yang paling sederhana adalah ...
+   - A. $\sqrt{72}$
+   - B. $6\sqrt{2}$
+   - C. $8\sqrt{2}$
+   - D. $36$
+
+### Bagian C — Soal Sulit / HOTs (Skor 2 × 25 = 50)
+
+9. **Soal HOTS:** Sebuah taman berbentuk persegi memiliki luas $98 \text{ m}^2$. Di tengah taman terdapat sebuah kolam berbentuk persegi dengan luas $18 \text{ m}^2$. Jika sisa area taman (di luar kolam) akan ditanami rumput, berapakah panjang sisi taman tersebut? Kemudian, tunjukkan apakah panjang sisi kolam dapat dinyatakan sebagai bilangan rasional atau irasional. Jelaskan jawabanmu.
+
+10. **Soal HOTS:** Andi menyatakan bahwa "$\sqrt{a + b} = \sqrt{a} + \sqrt{b}$ untuk semua bilangan real $a$ dan $b$ yang positif."
+    - (a) Berikan satu contoh yang **menunjukkan pernyataan Andi salah**.
+    - (b) Jelaskan secara matematis mengapa pernyataan tersebut **tidak berlaku secara umum**.
+    - (c) Untuk nilai $a$ dan $b$ seperti apa pernyataan Andi **benar**? Buktikan.
+
+---
+
+**Total Skor Maksimal: 150**

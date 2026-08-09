@@ -1,5 +1,5 @@
 +++
-title = "Konsep Rasio"
+title = "A. Konsep Rasio"
 description = "Pengertian rasio, cara menulis, menyederhanakan, dan membandingkan rasio dalam kehidupan sehari-hari"
 weight = 1
 +++

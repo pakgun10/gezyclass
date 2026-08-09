@@ -1,5 +1,5 @@
 +++
-title = "Penerapan Pola Bilangan"
+title = "E. Penerapan Pola Bilangan"
 description = "Menyelesaikan masalah kontekstual yang melibatkan pola bilangan dalam kehidupan sehari-hari"
 weight = 5
 +++

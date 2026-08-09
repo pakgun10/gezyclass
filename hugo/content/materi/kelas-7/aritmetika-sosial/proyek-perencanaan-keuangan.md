@@ -1,5 +1,5 @@
 +++
-title = "Proyek Perencanaan Keuangan Sederhana"
+title = "F. Proyek Perencanaan Keuangan Sederhana"
 description = "Proyek literasi finansial: studi kasus perencanaan keuangan, anggaran, dan pengambilan keputusan"
 weight = 6
 +++

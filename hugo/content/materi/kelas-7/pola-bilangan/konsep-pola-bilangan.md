@@ -1,5 +1,5 @@
 +++
-title = "Konsep Pola Bilangan"
+title = "A. Konsep Pola Bilangan"
 description = "Pengertian pola bilangan, pola bilangan genap, ganjil, kelipatan, persegi, dan segitiga"
 weight = 1
 +++

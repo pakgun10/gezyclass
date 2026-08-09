@@ -1,0 +1,176 @@
+{{ define "main" }}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f0f2f5;min-height:100vh}
+.result-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:32px 28px;text-align:center;margin-bottom:24px}
+.result-hero h2{font-size:28px;margin-bottom:8px}
+.result-score{font-size:48px;font-weight:800;margin:16px 0}
+.result-score .max{font-size:24px;opacity:.7}
+.result-meta{display:flex;justify-content:center;gap:24px;margin-top:12px;font-size:14px;opacity:.85;flex-wrap:wrap}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.result-stat{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.result-stat .num{font-size:28px;font-weight:700}
+.result-stat .lbl{font-size:13px;color:#666;margin-top:4px}
+.result-stat.correct .num{color:#2e7d32}
+.result-stat.wrong .num{color:#d32f2f}
+.result-stat.empty .num{color:#999}
+.review-card{background:#fff;border-radius:12px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.review-card.correct{border-left:4px solid #4caf50}
+.review-card.wrong{border-left:4px solid #d32f2f}
+.review-card.empty{border-left:4px solid #bbb}
+.review-q{font-size:16px;font-weight:600;margin-bottom:12px}
+.review-q .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.review-q .badge.correct{background:#e8f5e9;color:#2e7d32}
+.review-q .badge.wrong{background:#ffebee;color:#d32f2f}
+.review-q .badge.empty{background:#f5f5f5;color:#999}
+.review-opt{padding:10px 14px;margin:6px 0;border-radius:8px;font-size:15px;display:flex;align-items:center;gap:8px}
+.review-opt.student-correct{background:#e8f5e9;border:1px solid #4caf50}
+.review-opt.student-wrong{background:#ffebee;border:1px solid #d32f2f}
+.review-opt.correct-answer{background:#e8f5e9;border:1px solid #4caf50}
+.review-opt .icon{font-size:18px}
+.review-explanation{background:#f0f4ff;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:#333;line-height:1.6}
+.review-explanation strong{color:#1a1a2e}
+.result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px}
+.result-actions a{padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px}
+.result-actions a.primary{background:#1a1a2e;color:#fff}
+.result-actions a.secondary{background:#e0e0e0;color:#333}
+.q-container{max-width:700px;margin:0 auto;padding:16px}
+.loading{text-align:center;padding:60px 20px;color:#888;font-size:18px}
+.input-box{max-width:500px;margin:40px auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.input-box h2{font-size:22px;margin-bottom:8px;text-align:center}
+.input-box p{color:#666;font-size:14px;text-align:center;margin-bottom:20px}
+.input-box label{display:block;font-weight:600;margin:16px 0 4px}
+.input-box input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:16px}
+.input-box button{width:100%;padding:14px;background:#1a1a2e;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px}
+</style>
+<div id="app">
+<div id="input-view" class="input-box">
+<h2>🔍 Lihat Hasil Ujian</h2>
+<p>Masukkan ID sesi ujian kamu untuk melihat hasil.</p>
+<label>ID Sesi</label>
+<input type="text" id="session-input" placeholder="Contoh: 1m7y246e557j696" autocomplete="off">
+<button onclick="loadResult()">Lihat Hasil</button>
+</div>
+<div id="loading" style="display:none" class="loading">⏳ Memuat hasil...</div>
+<div id="result" style="display:none"></div>
+</div>
+<script>
+var API="/api";
+var sid=new URLSearchParams(location.search).get("session");
+if(sid){document.getElementById("session-input").value=sid;loadResult();}
+
+async function loadResult(){
+var sessionId=(document.getElementById("session-input").value||sid||"").trim();
+if(!sessionId){alert("Masukkan ID sesi!");return;}
+document.getElementById("input-view").style.display="none";
+document.getElementById("loading").style.display="block";
+
+try{
+var sr=await(await fetch(API+"/collections/exam_sessions/records/"+sessionId)).json();
+if(sr.code||!sr.id){document.getElementById("loading").innerHTML="Sesi tidak ditemukan.";return;}
+if(sr.status!=="submitted"){document.getElementById("loading").innerHTML="Ujian belum diselesaikan.";return;}
+
+var er=await(await fetch(API+"/collections/exams/records/"+sr.exam_id)).json();
+var examTitle=er.title||"Ujian";
+var showScore=er.show_score_after;
+var showExpl=er.show_explanation_after;
+
+var eqs=await(await fetch(API+"/collections/exam_questions/records?filter=(exam_id=\""+sr.exam_id+"\")&perPage=500")).json();
+var questions=[];
+for(var eq of eqs.items||[]){
+  var qr=await(await fetch(API+"/collections/questions/records/"+eq.question_id)).json();
+  questions.push({question:qr.question,options:qr.options_json||[],points:eq.points||10,explanation:qr.explanation||"",qid:eq.question_id});
+}
+
+var ar=await(await fetch(API+"/collections/exam_answers/records?filter=(session_id=\""+sessionId+"\")&perPage=500")).json();
+var answersMap={};
+(ar.items||[]).forEach(function(a){answersMap[a.question_id]=a;});
+
+var totalScore=sr.total_score||0;
+var maxScore=sr.max_score||0;
+var correct=0,wrong=0,empty=0;
+var reviewHtml="";
+
+for(var i=0;i<questions.length;i++){
+  var q=questions[i];
+  var ans=answersMap[q.qid];
+  var selIdx=ans?ans.answer_json.selected_index:undefined;
+  var isCorrect=ans?ans.is_correct:false;
+  var hasAnswer=selIdx!==undefined&&selIdx!==null;
+
+  if(!hasAnswer){empty++;}
+  else if(isCorrect){correct++;}
+  else{wrong++;}
+
+  var cls=!hasAnswer?"empty":(isCorrect?"correct":"wrong");
+  var badgeCls=cls;
+  var badgeTxt=!hasAnswer?"Tidak Dijawab":(isCorrect?"Benar":"Salah");
+
+  var optsReviewHtml="";
+  for(var j=0;j<q.options.length;j++){
+    var opt=q.options[j];
+    var optCls="",icon="";
+    if(j===selIdx&&opt.score===1){optCls="student-correct";icon="✅";}
+    else if(j===selIdx&&opt.score!==1){optCls="student-wrong";icon="❌";}
+    else if(opt.score===1){optCls="correct-answer";icon="✓";}
+    optsReviewHtml+="<div class='review-opt "+optCls+"'><span class='icon'>"+icon+"</span>"+opt.text+"</div>";
+  }
+
+  var explHtml="";
+  if(showExpl&&q.explanation){
+    explHtml="<div class='review-explanation'><strong>💡 Penjelasan:</strong> "+q.explanation+"</div>";
+  }
+
+  reviewHtml+="<div class='review-card "+cls+"'>"+
+    "<div class='review-q'>"+(i+1)+". "+q.question+" <span class='badge "+badgeCls+"'>"+badgeTxt+"</span></div>"+
+    optsReviewHtml+explHtml+
+  "</div>";
+}
+
+var scoreHtml="";
+if(showScore){
+  var pct=maxScore>0?Math.round(totalScore/maxScore*100):0;
+  var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
+  scoreHtml="<div class='result-hero'>"+
+    "<h2>📊 Hasil Ujian</h2>"+
+    "<div class='result-score'>"+totalScore+"<span class='max'> / "+maxScore+"</span></div>"+
+    "<div style='font-size:18px;opacity:.9'>Nilai: "+pct+" ("+grade+")</div>"+
+    "<div class='result-meta'>"+
+      "<span>📝 "+examTitle+"</span>"+
+      "<span>👤 "+(sr.nama||"-")+"</span>"+
+      "<span>🏫 "+(sr.kelas||"-")+"</span>"+
+      "<span>🔢 No. Absen: "+(sr.no_absen||"-")+"</span>"+
+    "</div>"+
+  "</div>"+
+  "<div class='result-stats'>"+
+    "<div class='result-stat correct'><div class='num'>"+correct+"</div><div class='lbl'>Benar</div></div>"+
+    "<div class='result-stat wrong'><div class='num'>"+wrong+"</div><div class='lbl'>Salah</div></div>"+
+    "<div class='result-stat empty'><div class='num'>"+empty+"</div><div class='lbl'>Kosong</div></div>"+
+  "</div>";
+}else{
+  scoreHtml="<div class='result-hero'>"+
+    "<h2>📊 Hasil Ujian</h2>"+
+    "<p>Ujian telah diselesaikan.</p>"+
+    "<div class='result-meta'><span>📝 "+examTitle+"</span><span>👤 "+(sr.nama||"-")+"</span></div>"+
+  "</div>";
+}
+
+var reviewSection="";
+if(showScore||showExpl){
+  reviewSection="<h3 style='margin:24px 0 12px;font-size:18px'>Review Jawaban</h3>"+reviewHtml;
+}
+
+var actionsHtml="<div class='result-actions'>"+
+  "<a href='/cbt/' class='primary'>Kembali ke CBT</a>"+
+"</div>";
+
+document.getElementById("loading").style.display="none";
+document.getElementById("result").style.display="block";
+document.getElementById("result").innerHTML="<div class='q-container'>"+scoreHtml+reviewSection+actionsHtml+"</div>";
+
+}catch(e){
+  document.getElementById("loading").innerHTML="Gagal memuat hasil: "+e.message;
+}
+}
+</script>
+{{ end }}

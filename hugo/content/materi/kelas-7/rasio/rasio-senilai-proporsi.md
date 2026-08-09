@@ -1,5 +1,5 @@
 +++
-title = "Rasio Senilai (Proporsi)"
+title = "B. Rasio Senilai (Proporsi)"
 description = "Konsep perbandingan senilai, rumus proporsi, tabel, grafik, dan penerapannya dalam kehidupan sehari-hari"
 weight = 2
 +++

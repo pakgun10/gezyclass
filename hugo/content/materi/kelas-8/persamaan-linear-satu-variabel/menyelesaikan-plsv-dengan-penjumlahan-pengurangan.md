@@ -1,5 +1,5 @@
 +++
-title = "Menyelesaikan PLSV dengan Penjumlahan dan Pengurangan"
+title = "C. Menyelesaikan PLSV dengan Penjumlahan dan Pengurangan"
 description = "Menyelesaikan persamaan linear satu variabel menggunakan operasi penjumlahan dan pengurangan"
 weight = 3
 +++
