@@ -32,3 +32,10 @@ hugo/static/materi-interaktif/
 
 # Folder sementara
 tmp-*/
+
+# File sudah tak dipakai
+/bilangan-bulat.html
+/cbt-final.html
+/cbt-list-v3.html
+/quiz-page.html
+/scripts/
