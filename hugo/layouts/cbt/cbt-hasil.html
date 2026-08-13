@@ -33,7 +33,24 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 .tab{display:flex;gap:8px;margin-bottom:16px}
 .tab button{padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
 .tab button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab a{display:inline-block;text-decoration:none;padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600}
+.tab a.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .link-pill{display:inline-block;font-size:12px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:10px;padding:2px 8px;margin-left:6px}
+.rekap-layout{max-width:1180px;margin:32px auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:20px;align-items:start}
+.sidebar{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,.06);position:sticky;top:20px}
+.sidebar-title{font-size:16px;font-weight:700;margin-bottom:12px}
+.exam-menu{display:none;margin-top:10px}
+.exam-menu.open{display:block}
+.exam-menu a{display:block;width:100%;text-align:left;text-decoration:none;border:0;border-radius:9px;padding:10px 11px;margin:3px 0;background:transparent;color:var(--text);cursor:pointer;font-size:13px}
+.exam-menu a:hover,.exam-menu a.active{background:var(--accent);color:#fff}
+.menu-toggle{width:100%;padding:11px;border:1px solid var(--card-border);border-radius:9px;background:var(--btn-ghost);color:var(--btn-ghost-text);font-weight:700;cursor:pointer}
+.content-box{min-width:0}
+.sidebar-toggle{float:right;width:28px;height:28px;border:1px solid var(--card-border);border-radius:7px;background:var(--btn-ghost);color:var(--btn-ghost-text);cursor:pointer;font-weight:700}
+.rekap-layout.sidebar-collapsed{grid-template-columns:58px minmax(0,1fr)}
+.sidebar.collapsed{padding:10px}
+.sidebar.collapsed .sidebar-title,.sidebar.collapsed .menu-toggle,.sidebar.collapsed .exam-menu{display:none}
+.sidebar.collapsed .sidebar-toggle{float:none;width:36px;height:36px}
+@media(max-width:760px){.rekap-layout{display:block;margin:16px auto}.sidebar{position:static;margin:0 12px 16px}.content-box{margin:0 12px}.box{margin:0 auto}}
 </style>
 <div id="app">
 <div id="login-view" class="box">
@@ -47,22 +64,38 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 <p class="small" id="login-msg"></p>
 </div>
 <div id="main-view" class="hidden">
-<div class="box" style="max-width:980px">
+<div class="rekap-layout">
+<aside class="sidebar">
+<button class="sidebar-toggle" title="Perkecil/perbesar sidebar" onclick="toggleSidebar()">‹</button>
+<div class="sidebar-title">📋 Navigasi</div>
+<button class="menu-toggle" onclick="toggleExamMenu()">Daftar Ujian <span id="menu-arrow">▾</span></button>
+<div id="exam-menu" class="exam-menu"></div>
+</aside>
+<main class="content-box">
+<div class="box" style="max-width:none">
 <div class="rekap-head">
 <h2>📊 Rekap Hasil CBT <span id="admin-name"></span></h2>
 <button class="ghost" style="width:auto;padding:8px 16px;margin:0" onclick="doLogout()">Keluar</button>
 </div>
 <div class="tab">
-<button class="active" data-t="ujian" onclick="showTab('ujian')">Per Ujian</button>
-<button data-t="murid" onclick="showTab('murid')">Per Murid</button>
+<a data-t="ujian" class="active" href="/cbt/hasil/?view=ujian">Per Ujian</a>
+<a data-t="murid" href="/cbt/hasil/?view=murid">Per Murid</a>
 </div>
 <div id="ujian-tab"></div>
 <div id="murid-tab" class="hidden"></div>
 </div>
+</main>
 </div>
 </div>
 <script>
-var API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],TAB="ujian";
+var QUERY=new URLSearchParams(location.search),API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],TAB=QUERY.get("view")==="murid"?"murid":"ujian",SELECTED=(QUERY.get("exam")||"");
+function toggleSidebar(){
+  var s=document.querySelector(".sidebar"),l=document.querySelector(".rekap-layout"),collapsed=s.classList.toggle("collapsed");
+  l.classList.toggle("sidebar-collapsed",collapsed);
+  document.querySelector(".sidebar-toggle").textContent=collapsed?"›":"‹";
+  try{localStorage.setItem("gezyclass-sidebar-collapsed",collapsed?"1":"0")}catch(e){}
+}
+try{if(localStorage.getItem("gezyclass-sidebar-collapsed")==="1")toggleSidebar()}catch(e){}
 function hdr(){return {"Authorization":TOK}}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function fmtDate(s){if(!s)return "-";try{var d=new Date(s);return d.toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return s}}
@@ -91,16 +124,32 @@ try{
   var d=await r.json();
   if(d.message&&!d.items){el.innerHTML='<p style="text-align:center;color:var(--red)">'+esc(d.message)+'</p>';return;}
   DATA=d.items||[];
+  renderExamMenu();
   renderUjian();
   renderMurid();
+  showTab(TAB);
 }catch(e){el.innerHTML='<p style="text-align:center;color:var(--red)">Gagal: '+esc(e.message)+'</p>'}
 }
 
-function showTab(t){TAB=t;document.querySelectorAll(".tab button").forEach(function(b){b.classList.toggle("active",b.dataset.t===t)});document.getElementById("ujian-tab").classList.toggle("hidden",t!=="ujian");document.getElementById("murid-tab").classList.toggle("hidden",t!=="murid")}
+function toggleExamMenu(){var m=document.getElementById("exam-menu"),open=m.classList.toggle("open");document.getElementById("menu-arrow").textContent=open?"▴":"▾"}
+function renderExamMenu(){
+  var m=document.getElementById("exam-menu");
+  if(!DATA.length){m.innerHTML='<div class="small">Belum ada ujian.</div>';return;}
+  m.innerHTML=DATA.map(function(ex){return "<a href='/cbt/hasil/?exam="+encodeURIComponent(ex.exam_id)+"' class='"+(SELECTED===ex.exam_id?"active":"")+"'>"+esc(ex.title)+"</a>"}).join("");
+  if(SELECTED)m.classList.add("open");
+}
+function showTab(t){
+  TAB=t;
+  document.querySelectorAll(".tab a").forEach(function(a){a.classList.toggle("active",a.dataset.t===t)});
+  document.getElementById("ujian-tab").classList.toggle("hidden",t!=="ujian");
+  document.getElementById("murid-tab").classList.toggle("hidden",t!=="murid");
+}
+function selectExam(id){SELECTED=id;showTab("ujian");renderExamMenu();renderUjian();}
 
 function renderUjian(){
+if(!SELECTED){document.getElementById("ujian-tab").innerHTML='<div class="loading">Pilih nama ujian pada menu “Daftar Ujian” untuk melihat hasilnya.</div>';return;}
 var html="";
-DATA.forEach(function(ex){
+DATA.filter(function(ex){return ex.exam_id===SELECTED}).forEach(function(ex){
   var done=ex.sesi.filter(function(s){return s.status==="submitted"});
   var ongoing=ex.sesi.filter(function(s){return s.status==="ongoing"});
   html+="<div class='exam-card'><h3>"+esc(ex.title)+" <span class='badge'>"+esc(ex.class_name||"-")+"</span></h3>";

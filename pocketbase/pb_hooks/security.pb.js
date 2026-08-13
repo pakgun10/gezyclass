@@ -445,6 +445,65 @@ routerAdd("GET", "/api/guru/latihan", function (c) {
   }
 });
 
+// ---------- GURU: rekap hasil CBT (auth guru) ----------
+routerAdd("GET", "/api/guru/exam-recap", function (c) {
+  try {
+    var ri = c.requestInfo();
+    if (!ri.auth || ri.auth.collection().name !== "guru") {
+      return c.json(403, { message: "Akses khusus guru." });
+    }
+
+    var exams = $app.findRecordsByFilter(
+      $app.findCollectionByNameOrId("exams"),
+      "is_active = true", "title", 500, 0
+    );
+    var sessionsCol = $app.findCollectionByNameOrId("exam_sessions");
+    var classesCol = $app.findCollectionByNameOrId("classes");
+    var out = [];
+
+    for (var i = 0; i < exams.length; i++) {
+      var exam = exams[i];
+      var className = "";
+      var classID = String(exam.get("class_id") || "");
+      if (classID) {
+        try {
+          className = String($app.findRecordById(classesCol, classID).get("name") || "");
+        } catch (classErr) {}
+      }
+
+      var sessionList = $app.findRecordsByFilter(
+        sessionsCol, "exam_id = '" + exam.id.replace(/'/g, "''") + "'",
+        "-started_at", 1000, 0
+      );
+      var sesi = [];
+      for (var k = 0; k < sessionList.length; k++) {
+        var session = sessionList[k];
+        sesi.push({
+          id: session.id,
+          nama: session.get("nama") || "",
+          no_absen: session.get("no_absen"),
+          kelas: session.get("kelas") || "",
+          status: session.get("status") || "",
+          total_score: session.get("total_score") || 0,
+          max_score: session.get("max_score") || 0,
+          started_at: session.get("started_at") || "",
+          ended_at: session.get("ended_at") || ""
+        });
+      }
+      out.push({
+        exam_id: exam.id,
+        title: exam.get("title") || "Ujian",
+        class_name: className,
+        duration: exam.get("duration") || 0,
+        sesi: sesi
+      });
+    }
+    return c.json(200, { items: out });
+  } catch (e) {
+    return c.json(500, { message: "Terjadi kesalahan: " + e.message });
+  }
+});
+
 // ---------- EXAM: autosave jawaban ----------
 routerAdd("POST", "/api/exam/autosave", function (c) {
   try {
