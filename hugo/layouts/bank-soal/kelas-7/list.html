@@ -7,6 +7,7 @@
 {{ if .Params.bab }}
 {{/* ===== Level BAB: paket soal sumatif ===== */}}
 <style>
+.bs-num{display:inline-block;min-width:26px;height:26px;line-height:26px;text-align:center;background:var(--btn-bg);color:var(--btn-text);border-radius:50%;font-size:14px;margin-right:8px}
 .bs-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:28px 26px;margin-bottom:22px}
 .bs-kicker{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 .bs-hero h1{font-size:clamp(24px,4vw,34px);margin:12px 0 8px}
@@ -44,10 +45,10 @@ h2{font-size:clamp(19px,3vw,24px);margin:30px 0 12px;border-bottom:2px solid var
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
 {{ .Content }}
 <div class="grid">
-  {{ range .Pages.ByWeight }}
-  <a href="{{ .RelPermalink }}" class="card">
-    <h3>{{ .Title }}</h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  {{ range $i, $page := .Pages.ByWeight }}
+  <a href="{{ $page.RelPermalink }}" class="card">
+    <h3><span class="bs-num">{{ add $i 1 }}.</span> {{ $page.Title }}</h3>
+    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
   </a>
   {{ end }}
 </div>

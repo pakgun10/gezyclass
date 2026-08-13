@@ -10,9 +10,11 @@
 {{ .Content }}
 <div class="grid">
   {{ range .Pages.ByWeight }}
+  {{ $pg := . }}
   <a href="{{ .RelPermalink }}" class="card">
     <h3>{{ .Title }}</h3>
     {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{ with $pg.Params.cta_url }}<span class="card-cta" style="display:block;margin-top:10px"><a href="{{ . }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px">{{ with $pg.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</a></span>{{ end }}
   </a>
   {{ end }}
 </div>

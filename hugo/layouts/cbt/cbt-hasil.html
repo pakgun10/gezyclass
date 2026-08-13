@@ -2,175 +2,165 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text);min-height:100vh}
-.result-hero{background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:20px;padding:32px 28px;text-align:center;margin-bottom:24px}
-.result-hero h2{font-size:28px;margin-bottom:8px}
-.result-score{font-size:48px;font-weight:800;margin:16px 0}
-.result-score .max{font-size:24px;opacity:.7}
-.result-meta{display:flex;justify-content:center;gap:24px;margin-top:12px;font-size:14px;opacity:.85;flex-wrap:wrap}
-.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.result-stat{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.result-stat .num{font-size:28px;font-weight:700}
-.result-stat .lbl{font-size:13px;color:var(--sub);margin-top:4px}
-.result-stat.correct .num{color:var(--green)}
-.result-stat.wrong .num{color:var(--red)}
-.result-stat.empty .num{color:var(--num-empty)}
-.review-card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.review-card.correct{border-left:4px solid var(--green-border)}
-.review-card.wrong{border-left:4px solid var(--red-border)}
-.review-card.empty{border-left:4px solid var(--num-empty)}
-.review-q{font-size:16px;font-weight:600;margin-bottom:12px}
-.review-q .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
-.review-q .badge.correct{background:var(--green-bg);color:var(--green)}
-.review-q .badge.wrong{background:var(--red-bg);color:var(--red)}
-.review-q .badge.empty{background:var(--btn-ghost);color:var(--num-empty)}
-.review-opt{padding:10px 14px;margin:6px 0;border-radius:8px;font-size:15px;display:flex;align-items:center;gap:8px}
-.review-opt.student-correct{background:var(--green-bg);border:1px solid var(--green-border)}
-.review-opt.student-wrong{background:var(--red-bg);border:1px solid var(--red-border)}
-.review-opt.correct-answer{background:var(--green-bg);border:1px solid var(--green-border)}
-.review-opt .icon{font-size:18px}
-.review-explanation{background:var(--expl-bg);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:14px;color:var(--expl-text);line-height:1.6}
-.review-explanation strong{color:var(--expl-text)}
-.result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px}
-.result-actions a{padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px}
-.result-actions a.primary{background:var(--accent);color:#fff}
-.result-actions a.secondary{background:var(--btn-ghost);color:var(--btn-ghost-text)}
-.q-container{max-width:700px;margin:0 auto;padding:16px}
-.loading{text-align:center;padding:60px 20px;color:var(--sub);font-size:18px}
-.input-box{max-width:500px;margin:40px auto;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
-.input-box h2{font-size:22px;margin-bottom:8px;text-align:center}
-.input-box p{color:var(--sub);font-size:14px;text-align:center;margin-bottom:20px}
-.input-box label{display:block;font-weight:600;margin:16px 0 4px}
-.input-box input{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
-.input-box button{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px}
+.box{max-width:760px;margin:32px auto;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.box h2{font-size:22px;margin-bottom:8px;text-align:center}
+.box p{color:var(--sub);font-size:14px;text-align:center;margin-bottom:18px}
+.box label{display:block;font-weight:600;margin:14px 0 4px}
+.box input{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
+.box button{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:18px}
+.box button.ghost{background:var(--btn-ghost);color:var(--btn-ghost-text);margin-top:10px}
+.small{font-size:13px;color:var(--sub);text-align:center;margin-top:10px}
+.loading{text-align:center;padding:40px;color:var(--sub);font-size:17px}
+.rekap-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.rekap-head h2{font-size:20px}
+.badge{display:inline-block;background:var(--amber-bg);color:var(--amber-text);font-size:11px;padding:2px 10px;border-radius:12px}
+table{width:100%;border-collapse:collapse;margin:10px 0 20px;font-size:14px}
+th,td{border:1px solid var(--row-border);padding:8px 10px;text-align:left}
+th{background:var(--thead-bg);font-weight:600}
+tr:nth-child(even){background:rgba(0,0,0,0.02)}
+.chip{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.chip.submitted{background:var(--green-bg);color:var(--green)}
+.chip.ongoing{background:var(--amber-bg);color:var(--amber-text)}
+.exam-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.exam-card h3{font-size:17px;margin-bottom:4px}
+.exam-card .meta{font-size:13px;color:var(--sub);margin-bottom:12px}
+.btn-line{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.btn-line button{flex:0 0 auto;padding:9px 16px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-csv{background:var(--accent);color:#fff}
+.btn-print{background:var(--btn-ghost);color:var(--btn-ghost-text)}
+.wrap-table{overflow-x:auto}
+.hidden{display:none}
+.tab{display:flex;gap:8px;margin-bottom:16px}
+.tab button{padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+.tab button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.link-pill{display:inline-block;font-size:12px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:10px;padding:2px 8px;margin-left:6px}
 </style>
 <div id="app">
-<div id="input-view" class="input-box">
-<h2>🔍 Lihat Hasil Ujian</h2>
-<p>Masukkan ID sesi ujian kamu untuk melihat hasil.</p>
-<label>ID Sesi</label>
-<input type="text" id="session-input" placeholder="Contoh: 1m7y246e557j696" autocomplete="off">
-<button onclick="loadResult()">Lihat Hasil</button>
+<div id="login-view" class="box">
+<h2>🔐 Rekap Hasil CBT</h2>
+<p>Halaman khusus guru — masuk dengan akun guru untuk melihat rekap & mengunduh CSV.</p>
+<label>Email</label>
+<input type="text" id="g-email" placeholder="email guru" autocomplete="username">
+<label>Password</label>
+<input type="password" id="g-pass" placeholder="password" autocomplete="current-password">
+<button onclick="doLogin()">Masuk</button>
+<p class="small" id="login-msg"></p>
 </div>
-<div id="loading" style="display:none" class="loading">⏳ Memuat hasil...</div>
-<div id="result" style="display:none"></div>
+<div id="main-view" class="hidden">
+<div class="box" style="max-width:980px">
+<div class="rekap-head">
+<h2>📊 Rekap Hasil CBT <span id="admin-name"></span></h2>
+<button class="ghost" style="width:auto;padding:8px 16px;margin:0" onclick="doLogout()">Keluar</button>
+</div>
+<div class="tab">
+<button class="active" data-t="ujian" onclick="showTab('ujian')">Per Ujian</button>
+<button data-t="murid" onclick="showTab('murid')">Per Murid</button>
+</div>
+<div id="ujian-tab"></div>
+<div id="murid-tab" class="hidden"></div>
+</div>
+</div>
 </div>
 <script>
-var API="/api";
-var sid=new URLSearchParams(location.search).get("session");
-if(sid){document.getElementById("session-input").value=sid;loadResult();}
+var API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],TAB="ujian";
+function hdr(){return {"Authorization":TOK}}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function fmtDate(s){if(!s)return "-";try{var d=new Date(s);return d.toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return s}}
+function grade(pct){return pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E"}
+function pctOf(t,m){return m>0?Math.round(t/m*100):0}
 
-async function loadResult(){
-var sessionId=(document.getElementById("session-input").value||sid||"").trim();
-if(!sessionId){alert("Masukkan ID sesi!");return;}
-document.getElementById("input-view").style.display="none";
-document.getElementById("loading").style.display="block";
-
+async function doLogin(){
+var em=document.getElementById("g-email").value.trim(),ps=document.getElementById("g-pass").value;
+document.getElementById("login-msg").textContent="⏳ Memeriksa...";
 try{
-var sr=await(await fetch(API+"/collections/exam_sessions/records/"+sessionId)).json();
-if(sr.code||!sr.id){document.getElementById("loading").innerHTML="Sesi tidak ditemukan.";return;}
-if(sr.status!=="submitted"){document.getElementById("loading").innerHTML="Ujian belum diselesaikan.";return;}
+  var r=await fetch(API+"/collections/guru/auth-with-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identity:em,password:ps})});
+  var d=await r.json();
+  if(d.token){TOK=d.token;sessionStorage.setItem("guru_tok",TOK);document.getElementById("admin-name").textContent="· "+em;await loadData();}
+  else{document.getElementById("login-msg").textContent="❌ Login gagal: email/password salah.";}
+}catch(e){document.getElementById("login-msg").textContent="❌ Gagal terhubung: "+e.message}
+}
+function doLogout(){TOK="";sessionStorage.removeItem("guru_tok");location.reload()}
 
-var er=await(await fetch(API+"/collections/exams/records/"+sr.exam_id)).json();
-var examTitle=er.title||"Ujian";
-var showScore=er.show_score_after;
-var showExpl=er.show_explanation_after;
-
-var eqs=await(await fetch(API+"/collections/exam_questions/records?filter=(exam_id=\""+sr.exam_id+"\")&perPage=500")).json();
-var questions=[];
-for(var eq of eqs.items||[]){
-  var qr=await(await fetch(API+"/collections/questions/records/"+eq.question_id)).json();
-  questions.push({question:qr.question,options:qr.options_json||[],points:eq.points||10,explanation:qr.explanation||"",qid:eq.question_id});
+async function loadData(){
+document.getElementById("login-view").style.display="none";
+document.getElementById("main-view").classList.remove("hidden");
+var el=document.getElementById("ujian-tab");
+el.innerHTML='<div class="loading">⏳ Memuat rekap...</div>';
+try{
+  var r=await fetch(API+"/guru/exam-recap",{headers:hdr()});
+  var d=await r.json();
+  if(d.message&&!d.items){el.innerHTML='<p style="text-align:center;color:var(--red)">'+esc(d.message)+'</p>';return;}
+  DATA=d.items||[];
+  renderUjian();
+  renderMurid();
+}catch(e){el.innerHTML='<p style="text-align:center;color:var(--red)">Gagal: '+esc(e.message)+'</p>'}
 }
 
-var ar=await(await fetch(API+"/collections/exam_answers/records?filter=(session_id=\""+sessionId+"\")&perPage=500")).json();
-var answersMap={};
-(ar.items||[]).forEach(function(a){answersMap[a.question_id]=a;});
+function showTab(t){TAB=t;document.querySelectorAll(".tab button").forEach(function(b){b.classList.toggle("active",b.dataset.t===t)});document.getElementById("ujian-tab").classList.toggle("hidden",t!=="ujian");document.getElementById("murid-tab").classList.toggle("hidden",t!=="murid")}
 
-var totalScore=sr.total_score||0;
-var maxScore=sr.max_score||0;
-var correct=0,wrong=0,empty=0;
-var reviewHtml="";
-
-for(var i=0;i<questions.length;i++){
-  var q=questions[i];
-  var ans=answersMap[q.qid];
-  var selIdx=ans?ans.answer_json.selected_index:undefined;
-  var isCorrect=ans?ans.is_correct:false;
-  var hasAnswer=selIdx!==undefined&&selIdx!==null;
-
-  if(!hasAnswer){empty++;}
-  else if(isCorrect){correct++;}
-  else{wrong++;}
-
-  var cls=!hasAnswer?"empty":(isCorrect?"correct":"wrong");
-  var badgeCls=cls;
-  var badgeTxt=!hasAnswer?"Tidak Dijawab":(isCorrect?"Benar":"Salah");
-
-  var optsReviewHtml="";
-  for(var j=0;j<q.options.length;j++){
-    var opt=q.options[j];
-    var optCls="",icon="";
-    if(j===selIdx&&opt.score===1){optCls="student-correct";icon="✅";}
-    else if(j===selIdx&&opt.score!==1){optCls="student-wrong";icon="❌";}
-    else if(opt.score===1){optCls="correct-answer";icon="✓";}
-    optsReviewHtml+="<div class='review-opt "+optCls+"'><span class='icon'>"+icon+"</span>"+opt.text+"</div>";
-  }
-
-  var explHtml="";
-  if(showExpl&&q.explanation){
-    explHtml="<div class='review-explanation'><strong>💡 Penjelasan:</strong> "+q.explanation+"</div>";
-  }
-
-  reviewHtml+="<div class='review-card "+cls+"'>"+
-    "<div class='review-q'>"+(i+1)+". "+q.question+" <span class='badge "+badgeCls+"'>"+badgeTxt+"</span></div>"+
-    optsReviewHtml+explHtml+
-  "</div>";
+function renderUjian(){
+var html="";
+DATA.forEach(function(ex){
+  var done=ex.sesi.filter(function(s){return s.status==="submitted"});
+  var ongoing=ex.sesi.filter(function(s){return s.status==="ongoing"});
+  html+="<div class='exam-card'><h3>"+esc(ex.title)+" <span class='badge'>"+esc(ex.class_name||"-")+"</span></h3>";
+  html+="<div class='meta'>⏱ "+Math.round((ex.duration||0)/60)+" menit · peserta: "+ex.sesi.length+" (selesai "+done.length+", berjalan "+ongoing.length+")</div>";
+  html+="<div class='btn-line'><button class='btn-csv' onclick='downloadCsv(\""+ex.exam_id+"\")'>⬇ Unduh CSV</button><button class='btn-print' onclick='printExam(\""+ex.exam_id+"\")'>🖨 Cetak</button></div>";
+  html+="<div class='wrap-table'><table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Status</th><th>Nilai</th><th>%</th><th>Mulai</th><th>Selesai</th><th>Detail</th></tr></thead><tbody>";
+  var rows=ex.sesi.slice().sort(function(a,b){return (a.status==="submitted"?0:1)-(b.status==="submitted"?0:1)||b.total_score-a.total_score});
+  rows.forEach(function(s,i){
+    var pct=pctOf(s.total_score,s.max_score);
+    var st=s.status==="submitted"?"<span class='chip submitted'>Selesai</span>":"<span class='chip ongoing'>Berjalan</span>";
+    var val=s.status==="submitted"?(s.total_score+" / "+s.max_score+" ("+pct+"%)"):"-";
+    html+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+st+"</td><td>"+val+"</td><td>"+(s.status==="submitted"?(pct+"% "+(grade(pct))):"-")+"</td><td>"+fmtDate(s.started_at)+"</td><td>"+fmtDate(s.ended_at)+"</td><td><a class='link-pill' target='_blank' href='/cbt/ujian/?session="+s.id+"'>buka</a></td></tr>";
+  });
+  html+="</tbody></table></div></div>";
+});
+document.getElementById("ujian-tab").innerHTML=html;
 }
 
-var scoreHtml="";
-if(showScore){
-  var pct=maxScore>0?Math.round(totalScore/maxScore*100):0;
-  var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
-  scoreHtml="<div class='result-hero'>"+
-    "<h2>📊 Hasil Ujian</h2>"+
-    "<div class='result-score'>"+totalScore+"<span class='max'> / "+maxScore+"</span></div>"+
-    "<div style='font-size:18px;opacity:.9'>Nilai: "+pct+" ("+grade+")</div>"+
-    "<div class='result-meta'>"+
-      "<span>📝 "+examTitle+"</span>"+
-      "<span>👤 "+(sr.nama||"-")+"</span>"+
-      "<span>🏫 "+(sr.kelas||"-")+"</span>"+
-      "<span>🔢 No. Absen: "+(sr.no_absen||"-")+"</span>"+
-    "</div>"+
-  "</div>"+
-  "<div class='result-stats'>"+
-    "<div class='result-stat correct'><div class='num'>"+correct+"</div><div class='lbl'>Benar</div></div>"+
-    "<div class='result-stat wrong'><div class='num'>"+wrong+"</div><div class='lbl'>Salah</div></div>"+
-    "<div class='result-stat empty'><div class='num'>"+empty+"</div><div class='lbl'>Kosong</div></div>"+
-  "</div>";
-}else{
-  scoreHtml="<div class='result-hero'>"+
-    "<h2>📊 Hasil Ujian</h2>"+
-    "<p>Ujian telah diselesaikan.</p>"+
-    "<div class='result-meta'><span>📝 "+examTitle+"</span><span>👤 "+(sr.nama||"-")+"</span></div>"+
-  "</div>";
+function renderMurid(){
+var map={};
+DATA.forEach(function(ex){
+  ex.sesi.forEach(function(s){
+    if(s.status!=="submitted")return;
+    var key=(s.nama||"-")+"|"+(s.kelas||"");
+    if(!map[key])map[key]={nama:s.nama,kelas:s.kelas,rows:[]};
+    map[key].rows.push({title:ex.title,score:s.total_score,max:s.max_score,ended:s.ended_at});
+  });
+});
+var list=Object.keys(map).map(function(k){return map[k]}).sort(function(a,b){return (a.kelas||"").localeCompare(b.kelas||"")||(a.nama||"").localeCompare(b.nama||"")});
+var html="<div class='wrap-table'><table><thead><tr><th>Nama</th><th>Kelas</th><th>Ujian</th><th>Nilai</th><th>%</th><th>Waktu</th></tr></thead><tbody>";
+list.forEach(function(m){
+  var rows=m.rows.map(function(r){return "<tr><td>"+esc(m.nama)+"</td><td>"+esc(m.kelas)+"</td><td>"+esc(r.title)+"</td><td>"+r.score+" / "+r.max+"</td><td>"+pctOf(r.score,r.max)+"% ("+grade(pctOf(r.score,r.max))+")</td><td>"+fmtDate(r.ended)+"</td></tr>"}).join("");
+  html+=rows;
+});
+html+="</tbody></table></div>";
+document.getElementById("murid-tab").innerHTML=html;
 }
 
-var reviewSection="";
-if(showScore||showExpl){
-  reviewSection="<h3 style='margin:24px 0 12px;font-size:18px'>Review Jawaban</h3>"+reviewHtml;
+function csvEscape(v){var s=String(v==null?"":v);if(/[",;\n]/.test(s))return '"'+s.replace(/"/g,'""')+'"';return s}
+function downloadCsv(examId){
+var ex=DATA.filter(function(e){return e.exam_id===examId})[0];
+if(!ex)return;
+var lines=["Nama,No Absen,Kelas,Status,Nilai,Max,Persen,Grade,Mulai,Selesai"];
+ex.sesi.forEach(function(s){
+  var pct=pctOf(s.total_score,s.max_score);
+  lines.push([s.nama,s.no_absen,s.kelas,s.status==="submitted"?"Selesai":"Berjalan",s.status==="submitted"?s.total_score:"",s.max_score,s.status==="submitted"?pct+"%":"",s.status==="submitted"?grade(pct):"",s.started_at,s.ended_at].map(csvEscape).join(","));
+});
+var blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
+var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rekap-"+ex.title.replace(/[^\w\- ]+/g,"").replace(/\s+/g,"-")+".csv";a.click();
 }
 
-var actionsHtml="<div class='result-actions'>"+
-  "<a href='/cbt/' class='primary'>Kembali ke CBT</a>"+
-"</div>";
-
-document.getElementById("loading").style.display="none";
-document.getElementById("result").style.display="block";
-document.getElementById("result").innerHTML="<div class='q-container'>"+scoreHtml+reviewSection+actionsHtml+"</div>";
-
-}catch(e){
-  document.getElementById("loading").innerHTML="Gagal memuat hasil: "+e.message;
+function printExam(examId){
+var ex=DATA.filter(function(e){return e.exam_id===examId})[0];
+if(!ex)return;
+var w=window.open("","_blank");
+var rows=ex.sesi.filter(function(s){return s.status==="submitted"}).map(function(s,i){return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+s.total_score+" / "+s.max_score+" ("+pctOf(s.total_score,s.max_score)+"%)</td></tr>"}).join("");
+w.document.write("<html><head><title>"+esc(ex.title)+"</title><style>table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--row-border);padding:6px 10px;font-size:13px}th{background:var(--thead-bg)}</style></head><body><h2>"+esc(ex.title)+" — "+esc(ex.class_name)+"</h2><table><thead><tr><th>No</th><th>Nama</th><th>Kelas</th><th>Nilai</th></tr></thead><tbody>"+rows+"</tbody></table><p style='font-size:12px;color:var(--muted)'>Dicetak "+new Date().toLocaleString("id-ID")+"</p></body></html>");
+w.document.close();w.print();
 }
-}
+
+if(TOK){document.getElementById("login-view").style.display="none";document.getElementById("main-view").classList.remove("hidden");loadData();}
 </script>
 {{ end }}

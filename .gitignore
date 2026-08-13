@@ -21,3 +21,14 @@ hugo/static/images/*
 !hugo/static/images/README.md
 hugo/.hugo_build.lock
 hugo/_arsip-content/
+
+# Rahasia & key lokal (jangan pernah masuk git)
+.autofinalize_key
+
+# Konten GezyClass (di-backup harian, bukan di git)
+hugo/static/bank-soal/
+hugo/static/guru-wali/
+hugo/static/materi-interaktif/
+
+# Folder sementara
+tmp-*/

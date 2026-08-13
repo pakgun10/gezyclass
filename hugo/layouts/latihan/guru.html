@@ -74,8 +74,9 @@ async function login(){
 function logout(){TOK="";sessionStorage.removeItem("guru_tok");location.reload()}
 async function muat(){
   try{
-    var r=await jf(API+"/collections/latihan_soal/records?perPage=500&filter="+encodeURIComponent("is_active=true"),{headers:hdr()});
-    LAT=r.items||[];
+    var r=await jf(API+"/guru/latihan",{headers:hdr()});
+    if(r.message&&!r.items){document.getElementById("tbl-load").textContent=r.message;return}
+    LAT=(r.items||[]);
     var sel=document.getElementById("pilih-latihan");sel.innerHTML="";
     LAT.forEach(function(l){var o=document.createElement("option");o.value=l.slug;o.textContent=l.judul+" ("+l.kelas+" "+l.bab+")";sel.appendChild(o)});
     if(LAT.length){PILIH=LAT[0].slug;muatSesi()}
@@ -86,8 +87,8 @@ async function muatSesi(){
   PILIH=document.getElementById("pilih-latihan").value;
   document.getElementById("tbl-load").style.display="block";
   document.getElementById("tbl").style.display="none";
-  var r=await jf(API+"/collections/latihan_sesi/records?perPage=1000&filter="+encodeURIComponent('latihan_slug="'+PILIH+'"'),{headers:hdr()});
-  SESI=(r.items||[]).filter(function(s){return s.status==="submitted"});
+  var item=(LAT||[]).find(function(l){return l.slug===PILIH})||{};
+  SESI=item.sesi||[];
   document.getElementById("tbl-load").style.display="none";
   document.getElementById("tbl").style.display="block";
   var h="";SESI.sort(function(a,b){return (a.kelas||"").localeCompare(b.kelas||"")||String(a.no_absen||"").localeCompare(String(b.no_absen||""))});
@@ -97,7 +98,7 @@ async function muatSesi(){
     h+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+(s.attempt||1)+"</td><td>"+(s.total_score||0)+"</td><td><span class='badge "+(pct>=70?"green":"amber")+"'>"+pct+"%</span></td><td>"+bs+"</td><td class='small'>"+(s.ended_at||"").slice(0,16).replace("T"," ")+"</td></tr>";
   });
   document.getElementById("tbl-body").innerHTML=h||"<tr><td colspan=9 style='text-align:center;color:var(--sub)'>Belum ada pengerjaan.</td></tr>";
-  document.getElementById("tbl-info").textContent=SESI.length+" sesi terkumpul · "+(LAT.find(function(l){return l.slug===PILIH})||{}).judul||"";
+  document.getElementById("tbl-info").textContent=SESI.length+" sesi terkumpul · "+(item.judul||"");
 }
 function csv(){
   if(!SESI.length){alert("Belum ada data untuk diunduh");return}

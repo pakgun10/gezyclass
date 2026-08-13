@@ -10,6 +10,7 @@
   <a href="{{ .RelPermalink }}" class="card">
     <h3>{{ .Title }}</h3>
     {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{ with .Params.cta_url }}<span class="card-cta"><a href="{{ . }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px;margin-top:10px">{{ with $.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</a></span>{{ end }}
   </a>
   {{ end }}
 </div>

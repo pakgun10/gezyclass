@@ -63,18 +63,11 @@ function rd(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1
 
 async function init(){
   if(!SLUG){document.getElementById("view-load").innerHTML="⚠️ Link soal latihan tidak lengkap. Kembali ke halaman materi.";return}
-  var D={r1:"",r2:"",r3:""};
   try{
-    // 1) API: filter slug + is_active
-    var u1=API+"/collections/latihan_soal/records?filter="+encodeURIComponent('slug="'+SLUG+'" && is_active=true')+"&_t="+Date.now();
-    try{var a=await jf(u1,{cache:"no-store"});D.r1=JSON.stringify(a).slice(0,160);if(a.items&&a.items.length){LAT=a.items[0];showForm();return}}catch(e){D.r1="ERR:"+e.message}
-    // 2) API: filter slug saja (tanpa is_active)
-    var u2=API+"/collections/latihan_soal/records?filter="+encodeURIComponent('slug="'+SLUG+'"')+"&_t="+Date.now();
-    try{var b=await jf(u2,{cache:"no-store"});D.r2=JSON.stringify(b).slice(0,160);if(b.items&&b.items.length){LAT=b.items[0];showForm();return}}catch(e){D.r2="ERR:"+e.message}
-    // 3) JSON statis langsung dari server (tanpa API/Cloudflare)
-    var u3="/latihan/data/"+SLUG+".json?v="+Date.now();
-    try{var c=await jf(u3,{cache:"no-store"});D.r3=JSON.stringify(c).slice(0,160);if(c&&c.items&&c.items.length){LAT=c.items[0];showForm();return}}catch(e){D.r3="ERR:"+e.message}
-    document.getElementById("view-load").innerHTML="Soal latihan belum tersedia untuk subbab ini.<br><small style='font-size:11px;color:var(--muted);word-break:break-all'>slug: "+esc(SLUG)+"<br>API1: "+esc(D.r1)+"<br>API2: "+esc(D.r2)+"<br>STATIC: "+esc(D.r3)+"</small>";
+    var r=await jf(API+"/pub/latihan?slug="+encodeURIComponent(SLUG)+"&_t="+Date.now(),{cache:"no-store"});
+    if(r.message&&!r.soal){document.getElementById("view-load").innerHTML="Soal latihan belum tersedia untuk subbab ini.<br><small style='font-size:11px;color:var(--muted);word-break:break-all'>slug: "+esc(SLUG)+"<br>pesan: "+esc(r.message)+"</small>";return}
+    LAT={judul:r.judul,kelas:r.kelas,semester:r.semester,bab:r.bab,back_url:r.back_url,soal_json:(r.soal||[]).map(function(q){return {q:q.q,o:q.o}})}; 
+    showForm();
   }catch(e){document.getElementById("view-load").innerHTML="Gagal memuat: "+e.message}
 }
 function showForm(){
@@ -92,14 +85,9 @@ async function mulai(){
   if(!/^\d{1,2}$/.test(absen)){alert("No. absen maksimal 2 angka");return}
   if(kelas.length>4){alert("Kelas maksimal 4 karakter");return}
   try{
-    var q=encodeURIComponent('latihan_slug="'+SLUG+'" && nama="'+nama+'" && no_absen="'+absen+'" && kelas="'+kelas+'"');
-    var r=await jf(API+"/collections/latihan_sesi/records?perPage=100&filter="+q+"&_t="+Date.now(),{cache:"no-store"});
-    var n=(r.items||[]).length;
-    if(n>=3){document.getElementById("view-form").innerHTML="<div class='card'><div class='alert'>⛔ Kamu sudah mengerjakan latihan ini <b>3 kali</b>. Maksimal pengerjaan adalah 3 kali untuk nama, no. absen, dan kelas yang sama.</div><a class='btn btn-ghost' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke subbab</a></div>";return}
-    KEY="K"+Math.random().toString(36).slice(2,10);
-    var s=await jf(API+"/collections/latihan_sesi/records",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({latihan_slug:SLUG,nama:nama,no_absen:absen,kelas:kelas,attempt:n+1,access_key:KEY,status:"ongoing",started_at:new Date().toISOString()})});
-    if(!s.id){alert("Gagal membuat sesi: "+JSON.stringify(s));return}
+    var s=await jf(API+"/latihan/start",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({slug:SLUG,nama:nama,no_absen:absen,kelas:kelas})});
+    if(!s.id){document.getElementById("view-form").innerHTML="<div class='card'><div class='alert'>⛔ "+esc(s.message||"Gagal mulai")+"</div><a class='btn btn-ghost' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke subbab</a></div>";return}
     SID=s.id;
     state.soal=(LAT.soal_json||[]).map(function(q){return q});
     rd(state.soal);
@@ -128,45 +116,40 @@ function render(){
     "<div style='display:flex;gap:10px'>"+prev+next+"</div></div>";
   renderMath();
 }
-function renderMath(){if(typeof renderMathInElement==="function"){renderMathInElement(document.getElementById("view-quiz"),{delimiters:[{left:"$",right:"$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}]})}}
+function renderMath(){if(typeof renderMathInElement==="function"){renderMathInElement(document.getElementById("view-quiz"),{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}]})}}
 function pilih(oi){state.jwb[state.idx]=oi;render()}
 function go(i){state.idx=i;render()}
 
 async function kumpul(){
   if(!confirm("Yakin ingin mengumpulkan? Jawaban tidak bisa diubah lagi."))return;
-  var benar=0,salah=0,kosong=0,detail=[];
-  state.soal.forEach(function(q,i){
-    var s=state.jwb[i];
-    if(s===undefined){kosong++;detail.push({i:i,ok:0,st:"-"})}
-    else if(s===q.k){benar++;detail.push({i:i,ok:1,st:s})}
-    else{salah++;detail.push({i:i,ok:0,st:s})}
-  });
-  var total=benar, max=state.soal.length;
-  var res=await jf(API+"/collections/latihan_sesi/records/"+SID,{method:"PATCH",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({status:"submitted",ended_at:new Date().toISOString(),total_score:total,max_score:max,jawaban_json:detail,access_key:KEY})});
-  if(!res.id){alert("Gagal menyimpan: "+JSON.stringify(res));return}
-  var pct=Math.round(total/max*100);
-  var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
-  var fb="";
-  if(pct>=90)fb="🎉 Luar biasa! Kamu menguasai materi ini dengan sangat baik. Pertahankan!";
-  else if(pct>=75)fb="👍 Bagus sekali! Sedikit lagi menuju sempurna — periksa kembali nomor yang salah.";
-  else if(pct>=60)fb="💪 Cukup baik. Pelajari lagi bagian materi yang masih keliru, lalu coba lagi.";
-  else if(pct>=40)fb="📖 Masih perlu belajar. Baca ulang materinya, pahami contoh, lalu kerjakan lagi.";
-  else fb="🌱 Jangan menyerah! Diskusikan dengan guru/teman, pelajari pelan-pelan, lalu coba lagi.";
-  var noBenar=[],noSalah=[];
-  state.soal.forEach(function(_,i){ if(detail[i].ok===1)noBenar.push(i+1); else if(detail[i].st!=="-")noSalah.push(i+1); });
-  document.getElementById("view-quiz").style.display="none";
-  document.getElementById("view-hasil").style.display="block";
-  document.getElementById("view-hasil").innerHTML=
-    "<div class='result-hero'><h2>✅ Selesai!</h2><div class='result-score'>"+pct+"<span style='font-size:22px;opacity:.7'> / 100</span></div>"+
-    "<div style='font-size:18px'>Nilai: "+pct+" ("+grade+")</div>"+
-    "<div style='font-size:13px;opacity:.8;margin-top:8px'>Benar "+benar+" · Salah "+salah+" · Kosong "+kosong+"</div></div>"+
-    "<div class='feedback'>"+fb+"</div>"+
-    "<div class='card'><h3 style='margin-bottom:8px'>Ringkasan Jawaban</h3>"+
-    "<p style='font-size:14px;line-height:1.8'>Benar pada nomor: <b>"+(noBenar.length?noBenar.join(", "):"—")+"</b><br>"+
-    "Salah pada nomor: <b>"+(noSalah.length?noSalah.join(", "):"—")+"</b></p>"+
-    "<p class='note' style='margin-top:10px'>Kunci jawaban tidak ditampilkan. Tanyakan pada gurumu jika ingin pembahasan.</p></div>"+
-    "<a class='btn btn-primary' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke halaman subbab</a>";
+  try{
+    var res=await jf(API+"/latihan/submit",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({session_id:SID,answers:state.jwb})});
+    if(res.message&&!res.total_score){alert(res.message);return}
+    var benar=res.correct||0, salah=res.wrong||0, kosong=res.empty||0, total=res.total_score||0, max=res.max_score||1;
+    var pct=Math.round(total/max*100);
+    var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
+    var fb="";
+    if(pct>=90)fb="🎉 Luar biasa! Kamu menguasai materi ini dengan sangat baik. Pertahankan!";
+    else if(pct>=75)fb="👍 Bagus sekali! Sedikit lagi menuju sempurna — periksa kembali nomor yang salah.";
+    else if(pct>=60)fb="💪 Cukup baik. Pelajari lagi bagian materi yang masih keliru, lalu coba lagi.";
+    else if(pct>=40)fb="📖 Masih perlu belajar. Baca ulang materinya, pahami contoh, lalu kerjakan lagi.";
+    else fb="🌱 Jangan menyerah! Diskusikan dengan guru/teman, pelajari pelan-pelan, lalu coba lagi.";
+    var bn=(res.benar_nomor||[]).join(", ")||"—";
+    var sn=(res.salah_nomor||[]).join(", ")||"—";
+    document.getElementById("view-quiz").style.display="none";
+    document.getElementById("view-hasil").style.display="block";
+    document.getElementById("view-hasil").innerHTML=
+      "<div class='result-hero'><h2>✅ Selesai!</h2><div class='result-score'>"+pct+"<span style='font-size:22px;opacity:.7'> / 100</span></div>"+
+      "<div style='font-size:18px'>Nilai: "+pct+" ("+grade+")</div>"+
+      "<div style='font-size:13px;opacity:.8;margin-top:8px'>Benar "+benar+" · Salah "+salah+" · Kosong "+kosong+"</div></div>"+
+      "<div class='feedback'>"+fb+"</div>"+
+      "<div class='card'><h3 style='margin-bottom:8px'>Ringkasan Jawaban</h3>"+
+      "<p style='font-size:14px;line-height:1.8'>Benar pada nomor: <b>"+bn+"</b><br>"+
+      "Salah pada nomor: <b>"+sn+"</b></p>"+
+      "<p class='note' style='margin-top:10px'>Kunci jawaban tidak ditampilkan. Tanyakan pada gurumu jika ingin pembahasan.</p></div>"+
+      "<a class='btn btn-primary' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke halaman subbab</a>";
+  }catch(e){alert("Gagal mengumpulkan: "+e.message)}
 }
 init();
 </script>

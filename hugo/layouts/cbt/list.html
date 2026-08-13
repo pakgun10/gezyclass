@@ -143,21 +143,13 @@ async function startExam() {
   const kelas = document.getElementById("kelas").value.trim();
   if (!token || !nama || !noAbsen || !kelas) { alert("Semua field wajib diisi!"); return; }
   try {
-    const tr = await fetch(API + "/collections/exam_tokens/records?filter=" + encodeURIComponent(`token="${token}" && exam_id="${examId}" && is_used=false`));
-    const td = await tr.json();
-    if (!td.items || td.items.length === 0) { alert("Token tidak valid atau sudah digunakan!"); return; }
-    const sr = await fetch(API + "/collections/exam_sessions/records", {
+    const r = await fetch(API + "/exam/start", {
       method: "POST", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({exam_id: examId, token, nama, no_absen: parseInt(noAbsen), kelas, status: "ongoing", started_at: new Date().toISOString()})
+      body: JSON.stringify({token, exam_id: examId, nama, no_absen: noAbsen, kelas})
     });
-    const session = await sr.json();
-    /* Mark token as used */
-    await fetch(API + "/collections/exam_tokens/records/" + td.items[0].id, {
-      method: "PATCH", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({is_used: true, used_at: new Date().toISOString()})
-    });
-    /* Redirect to quiz page */
-    window.location.href = "/cbt/ujian/?session=" + session.id;
+    const d = await r.json();
+    if (!d.id) { alert(d.message || "Token tidak valid atau sudah digunakan!"); return; }
+    window.location.href = "/cbt/ujian/?session=" + d.id;
   } catch(e) {
     alert("Gagal: " + e.message);
   }
