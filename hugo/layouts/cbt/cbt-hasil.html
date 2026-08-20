@@ -31,30 +31,59 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 .wrap-table{overflow-x:auto}
 .hidden{display:none}
 .tab{display:flex;gap:8px;margin-bottom:16px}
-.tab button{padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
-.tab button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tab a{display:inline-block;text-decoration:none;padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600}
+.tab a{padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
 .tab a.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.link-pill{display:inline-block;font-size:12px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:10px;padding:2px 8px;margin-left:6px}
-.rekap-layout{max-width:1180px;margin:32px auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:20px;align-items:start}
+.link-pill{display:inline-block;font-size:12px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:10px;padding:2px 8px;margin-left:6px;cursor:pointer;background:none}
+/* Layout sidebar */
+.rekap-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:20px;align-items:start;max-width:1100px;margin:24px auto;padding:0 16px}
 .sidebar{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,.06);position:sticky;top:20px}
 .sidebar-title{font-size:16px;font-weight:700;margin-bottom:12px}
-.exam-menu{display:none;margin-top:10px}
-.exam-menu.open{display:block}
-.exam-menu a{display:block;width:100%;text-align:left;text-decoration:none;border:0;border-radius:9px;padding:10px 11px;margin:3px 0;background:transparent;color:var(--text);cursor:pointer;font-size:13px}
-.exam-menu a:hover,.exam-menu a.active{background:var(--accent);color:#fff}
-.menu-toggle{width:100%;padding:11px;border:1px solid var(--card-border);border-radius:9px;background:var(--btn-ghost);color:var(--btn-ghost-text);font-weight:700;cursor:pointer}
-.content-box{min-width:0}
 .sidebar-toggle{float:right;width:28px;height:28px;border:1px solid var(--card-border);border-radius:7px;background:var(--btn-ghost);color:var(--btn-ghost-text);cursor:pointer;font-weight:700}
 .rekap-layout.sidebar-collapsed{grid-template-columns:58px minmax(0,1fr)}
-.sidebar.collapsed{padding:10px}
 .sidebar.collapsed .sidebar-title,.sidebar.collapsed .menu-toggle,.sidebar.collapsed .exam-menu{display:none}
-.sidebar.collapsed .sidebar-toggle{float:none;width:36px;height:36px}
-@media(max-width:760px){.rekap-layout{display:block;margin:16px auto}.sidebar{position:static;margin:0 12px 16px}.content-box{margin:0 12px}.box{margin:0 auto}}
+.sidebar.collapsed{padding:10px}
+.content-box{min-width:0}
+.menu-toggle{display:block;width:100%;text-align:left;padding:10px 12px;margin:4px 0;border:1px solid var(--card-border);border-radius:10px;background:var(--btn-ghost);color:var(--btn-ghost-text);font-size:14px;font-weight:600;cursor:pointer}
+.menu-toggle .arrow{float:right}
+.exam-menu{display:none;margin:4px 0 8px;padding:6px;background:var(--page-bg);border:1px solid var(--card-border);border-radius:10px;max-height:340px;overflow-y:auto}
+.exam-menu.open{display:block}
+.exam-menu a{display:block;padding:7px 10px;border-radius:8px;font-size:13px;color:var(--text);text-decoration:none}
+.exam-menu a:hover{background:var(--btn-ghost)}
+.exam-menu a.active{background:var(--accent);color:#fff}
+.mg{font-size:13px;margin:2px 0}
+.mg-btn{display:block;width:100%;text-align:left;padding:7px 10px;border:none;border-radius:8px;background:none;color:var(--text);font-weight:700;font-size:13px;cursor:pointer}
+.mg-btn:hover{background:var(--btn-ghost)}
+.mg-btn .arrow{float:right;font-size:11px}
+.mg-body{display:none;padding-left:8px;border-left:2px solid var(--card-border);margin-left:6px}
+.mg-body.open{display:block}
+.mb-btn{display:block;width:100%;text-align:left;padding:6px 8px;border:none;border-radius:7px;background:none;color:var(--text);font-size:13px;cursor:pointer}
+.mb-btn:hover{background:var(--btn-ghost)}
+.mb-btn .arrow{float:right;font-size:11px}
+.mb-body{display:none;padding-left:8px;border-left:2px solid var(--card-border);margin-left:6px}
+.mb-body.open{display:block}
+.mb-body a{display:block;padding:6px 8px;border-radius:7px;font-size:12.5px;color:var(--text);text-decoration:none}
+.mb-body a:hover{background:var(--btn-ghost)}
+.mb-body a.active{background:var(--accent);color:#fff}
+.mb-body a .cnt{float:right;font-size:11px;color:var(--muted)}
+/* Modal jawaban */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--card);border:1px solid var(--card-border);border-radius:16px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;padding:20px}
+.modal h3{font-size:16px;margin-bottom:10px}
+.modal .close{float:right;border:none;background:var(--btn-ghost);color:var(--btn-ghost-text);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px}
+.ans-row{display:flex;gap:8px;padding:6px 8px;border-radius:8px;font-size:13px;margin:3px 0}
+.ans-row.ok{background:var(--green-bg);color:var(--green)}
+.ans-row.no{background:var(--red-bg);color:var(--red)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
+.stat-box{background:var(--page-bg);border:1px solid var(--card-border);border-radius:12px;padding:12px;text-align:center}
+.stat-box .num{font-size:22px;font-weight:700}
+.stat-box .lbl{font-size:12px;color:var(--sub);margin-top:2px}
+.tab a{transition:background .15s ease,color .15s ease}
+.fade-in{animation:gezyFade .18s ease}
+@keyframes gezyFade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 </style>
 <div id="app">
 <div id="login-view" class="box">
-<h2>🔐 Rekap Hasil CBT</h2>
+<h2>🔐 Rekap Hasil CBT & Latihan</h2>
 <p>Halaman khusus guru — masuk dengan akun guru untuk melihat rekap & mengunduh CSV.</p>
 <label>Email</label>
 <input type="text" id="g-email" placeholder="email guru" autocomplete="username">
@@ -68,27 +97,35 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 <aside class="sidebar">
 <button class="sidebar-toggle" title="Perkecil/perbesar sidebar" onclick="toggleSidebar()">‹</button>
 <div class="sidebar-title">📋 Navigasi</div>
-<button class="menu-toggle" onclick="toggleExamMenu()">Daftar Ujian <span id="menu-arrow">▾</span></button>
+<button class="menu-toggle" onclick="toggleExamMenu()">📝 Daftar Ujian <span class="arrow" id="menu-arrow">▾</span></button>
 <div id="exam-menu" class="exam-menu"></div>
+<button class="menu-toggle" onclick="toggleLatMenu()">📚 Hasil Latihan <span class="arrow" id="lat-arrow">▾</span></button>
+<div id="lat-menu" class="exam-menu"></div>
 </aside>
 <main class="content-box">
 <div class="box" style="max-width:none">
 <div class="rekap-head">
-<h2>📊 Rekap Hasil CBT <span id="admin-name"></span></h2>
+<h2>📊 Rekap Hasil <span id="admin-name"></span></h2>
 <button class="ghost" style="width:auto;padding:8px 16px;margin:0" onclick="doLogout()">Keluar</button>
 </div>
 <div class="tab">
-<a data-t="ujian" class="active" href="/cbt/hasil/?view=ujian">Per Ujian</a>
-<a data-t="murid" href="/cbt/hasil/?view=murid">Per Murid</a>
+<a data-t="ujian" href="/cbt/hasil/?view=ujian" onclick="event.preventDefault();navTo('ujian')">Per Ujian</a>
+<a data-t="murid" href="/cbt/hasil/?view=murid" onclick="event.preventDefault();navTo('murid')">Per Murid</a>
+<a data-t="latihan" href="/cbt/hasil/?view=latihan" onclick="event.preventDefault();navTo('latihan')">Per Latihan</a>
 </div>
-<div id="ujian-tab"></div>
+<div id="ujian-tab" class="hidden"></div>
 <div id="murid-tab" class="hidden"></div>
+<div id="latihan-tab" class="hidden"></div>
 </div>
 </main>
 </div>
 </div>
+<div id="modal-root"></div>
+</div>
 <script>
-var QUERY=new URLSearchParams(location.search),API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],TAB=QUERY.get("view")==="murid"?"murid":"ujian",SELECTED=(QUERY.get("exam")||"");
+var QUERY=new URLSearchParams(location.search),API="/api",TOK=sessionStorage.getItem("guru_tok")||"",
+    DATA=[],LAT=[],TAB=QUERY.get("view")==="murid"?"murid":(QUERY.get("view")==="latihan"?"latihan":"ujian"),
+    SELECTED=(QUERY.get("exam")||""),LAT_SLUG=(QUERY.get("slug")||"");
 function toggleSidebar(){
   var s=document.querySelector(".sidebar"),l=document.querySelector(".rekap-layout"),collapsed=s.classList.toggle("collapsed");
   l.classList.toggle("sidebar-collapsed",collapsed);
@@ -117,96 +154,253 @@ function doLogout(){TOK="";sessionStorage.removeItem("guru_tok");location.reload
 async function loadData(){
 document.getElementById("login-view").style.display="none";
 document.getElementById("main-view").classList.remove("hidden");
-var el=document.getElementById("ujian-tab");
-el.innerHTML='<div class="loading">⏳ Memuat rekap...</div>';
+var el=document.getElementById(TAB==="latihan"?"latihan-tab":(TAB==="murid"?"murid-tab":"ujian-tab"));
+el.innerHTML='<div class="loading">⏳ Memuat data...</div>';
 try{
-  var r=await fetch(API+"/guru/exam-recap",{headers:hdr()});
-  var d=await r.json();
-  if(d.message&&!d.items){el.innerHTML='<p style="text-align:center;color:var(--red)">'+esc(d.message)+'</p>';return;}
-  DATA=d.items||[];
+  var [r1,r2]=await Promise.all([
+    fetch(API+"/guru/exam-recap",{headers:hdr()}),
+    fetch(API+"/guru/latihan",{headers:hdr()})
+  ]);
+  var d1=await r1.json(),d2=await r2.json();
+  if(d1.message&&!d1.items){el.innerHTML='<p style="text-align:center;color:var(--red)">'+esc(d1.message)+'</p>';return;}
+  DATA=d1.items||[];LAT=(d2.items||[]).filter(function(x){return x.sesi&&x.sesi.length>0});
   renderExamMenu();
+  renderLatMenu();
   renderUjian();
   renderMurid();
+  renderLatihan();
   showTab(TAB);
 }catch(e){el.innerHTML='<p style="text-align:center;color:var(--red)">Gagal: '+esc(e.message)+'</p>'}
 }
 
 function toggleExamMenu(){var m=document.getElementById("exam-menu"),open=m.classList.toggle("open");document.getElementById("menu-arrow").textContent=open?"▴":"▾"}
+function toggleLatMenu(){var m=document.getElementById("lat-menu"),open=m.classList.toggle("open");document.getElementById("lat-arrow").textContent=open?"▴":"▾";if(open&&!document.getElementById("lat-menu").dataset.built)renderLatMenu()}
+
 function renderExamMenu(){
   var m=document.getElementById("exam-menu");
   if(!DATA.length){m.innerHTML='<div class="small">Belum ada ujian.</div>';return;}
-  m.innerHTML=DATA.map(function(ex){return "<a href='/cbt/hasil/?exam="+encodeURIComponent(ex.exam_id)+"' class='"+(SELECTED===ex.exam_id?"active":"")+"'>"+esc(ex.title)+"</a>"}).join("");
-  if(SELECTED)m.classList.add("open");
+  m.innerHTML=DATA.map(function(ex){return "<a href='/cbt/hasil/?view=ujian&exam="+encodeURIComponent(ex.exam_id)+"' data-exam='"+esc(ex.exam_id)+"' class='"+(SELECTED===ex.exam_id?"active":"")+"' onclick='event.preventDefault();navTo(\"ujian\",this.dataset.exam)'>"+esc(ex.title)+"</a>"}).join("");
+  m.classList.add("open");
 }
+
+function renderLatMenu(){
+  var m=document.getElementById("lat-menu");
+  m.dataset.built="1";
+  if(!LAT.length){m.innerHTML='<div class="small">Belum ada hasil latihan.</div>';return;}
+  // kelompokkan: kelas -> bab -> subbab
+  var kelasMap={};
+  LAT.forEach(function(it){
+    if(!kelasMap[it.kelas])kelasMap[it.kelas]={};
+    if(!kelasMap[it.kelas][it.bab])kelasMap[it.kelas][it.bab]=[];
+    kelasMap[it.kelas][it.bab].push(it);
+  });
+  var html="";
+  Object.keys(kelasMap).sort().forEach(function(k){
+    var babs=kelasMap[k],htmlBab="";
+    Object.keys(babs).forEach(function(b){
+      var subs=babs[b];
+      var htmlSub=subs.map(function(it){
+        return "<a href='/cbt/hasil/?view=latihan&slug="+encodeURIComponent(it.slug)+"' data-slug='"+esc(it.slug)+"' class='"+(LAT_SLUG===it.slug?"active":"")+"' onclick='event.preventDefault();navTo(\"latihan\",null,this.dataset.slug)'>"+esc(it.judul.replace(/^Latihan:\s*/,""))+" <span class='cnt'>"+it.sesi.length+"</span></a>";
+      }).join("");
+      htmlBab+="<button class='mb-btn' onclick='tg(this)'>"+esc(b)+" ("+subs.length+") <span class='arrow'>▾</span></button><div class='mb-body'>"+htmlSub+"</div>";
+    });
+    html+="<button class='mg-btn' onclick='tg(this)'>Kelas "+esc(k)+" <span class='arrow'>▾</span></button><div class='mg-body'>"+htmlBab+"</div>";
+  });
+  m.innerHTML=html;
+  m.classList.add("open");
+  // buka otomatis cabang yang berisi LAT_SLUG aktif
+  if(LAT_SLUG){
+    var act=m.querySelector("a.active");
+    if(act){var mb=act.closest(".mb-body"),mg=act.closest(".mg-body");if(mb)mb.classList.add("open");if(mg)mg.classList.add("open");}
+  }
+}
+function tg(btn){var b=btn.nextElementSibling;b.classList.toggle("open");btn.querySelector(".arrow").textContent=b.classList.contains("open")?"▴":"▾"}
+
 function showTab(t){
   TAB=t;
   document.querySelectorAll(".tab a").forEach(function(a){a.classList.toggle("active",a.dataset.t===t)});
   document.getElementById("ujian-tab").classList.toggle("hidden",t!=="ujian");
   document.getElementById("murid-tab").classList.toggle("hidden",t!=="murid");
+  document.getElementById("latihan-tab").classList.toggle("hidden",t!=="latihan");
 }
-function selectExam(id){SELECTED=id;showTab("ujian");renderExamMenu();renderUjian();}
+function selectExam(id){navTo("ujian",id)}
+function syncActive(){
+  document.querySelectorAll("#exam-menu a[data-exam]").forEach(function(a){a.classList.toggle("active",a.getAttribute("data-exam")===SELECTED)});
+  document.querySelectorAll("#lat-menu a[data-slug]").forEach(function(a){a.classList.toggle("active",a.getAttribute("data-slug")===LAT_SLUG)});
+}
+function fadeTab(el){if(!el)return;el.classList.remove("fade-in");void el.offsetWidth;el.classList.add("fade-in")}
+function renderCurrent(){
+  if(TAB==="ujian"){renderUjian();fadeTab(document.getElementById("ujian-tab"))}
+  else if(TAB==="latihan"){renderLatihan();fadeTab(document.getElementById("latihan-tab"))}
+  else {renderMurid();fadeTab(document.getElementById("murid-tab"))}
+}
+function navTo(view,exam,slug){
+  if(exam!==undefined&&exam!==null)SELECTED=String(exam);
+  if(slug!==undefined&&slug!==null)LAT_SLUG=String(slug);
+  TAB=view==="murid"?"murid":(view==="latihan"?"latihan":"ujian");
+  var qs="view="+TAB;
+  if(SELECTED)qs+="&exam="+encodeURIComponent(SELECTED);
+  if(LAT_SLUG)qs+="&slug="+encodeURIComponent(LAT_SLUG);
+  try{history.pushState({view:TAB,exam:SELECTED,slug:LAT_SLUG},"","/cbt/hasil/?"+qs)}catch(e){}
+  showTab(TAB);
+  syncActive();
+  renderCurrent();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+window.addEventListener("popstate",function(e){
+  var st=e.state||{};
+  SELECTED=st.exam||"";LAT_SLUG=st.slug||"";
+  TAB=(st.view==="murid"?"murid":(st.view==="latihan"?"latihan":"ujian"))||"ujian";
+  showTab(TAB);syncActive();renderCurrent();
+});
 
 function renderUjian(){
-if(!SELECTED){document.getElementById("ujian-tab").innerHTML='<div class="loading">Pilih nama ujian pada menu “Daftar Ujian” untuk melihat hasilnya.</div>';return;}
-var html="";
-DATA.filter(function(ex){return ex.exam_id===SELECTED}).forEach(function(ex){
-  var done=ex.sesi.filter(function(s){return s.status==="submitted"});
-  var ongoing=ex.sesi.filter(function(s){return s.status==="ongoing"});
-  html+="<div class='exam-card'><h3>"+esc(ex.title)+" <span class='badge'>"+esc(ex.class_name||"-")+"</span></h3>";
-  html+="<div class='meta'>⏱ "+Math.round((ex.duration||0)/60)+" menit · peserta: "+ex.sesi.length+" (selesai "+done.length+", berjalan "+ongoing.length+")</div>";
-  html+="<div class='btn-line'><button class='btn-csv' onclick='downloadCsv(\""+ex.exam_id+"\")'>⬇ Unduh CSV</button><button class='btn-print' onclick='printExam(\""+ex.exam_id+"\")'>🖨 Cetak</button></div>";
-  html+="<div class='wrap-table'><table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Status</th><th>Nilai</th><th>%</th><th>Mulai</th><th>Selesai</th><th>Detail</th></tr></thead><tbody>";
-  var rows=ex.sesi.slice().sort(function(a,b){return (a.status==="submitted"?0:1)-(b.status==="submitted"?0:1)||b.total_score-a.total_score});
-  rows.forEach(function(s,i){
-    var pct=pctOf(s.total_score,s.max_score);
-    var st=s.status==="submitted"?"<span class='chip submitted'>Selesai</span>":"<span class='chip ongoing'>Berjalan</span>";
-    var val=s.status==="submitted"?(s.total_score+" / "+s.max_score+" ("+pct+"%)"):"-";
-    html+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+st+"</td><td>"+val+"</td><td>"+(s.status==="submitted"?(pct+"% "+(grade(pct))):"-")+"</td><td>"+fmtDate(s.started_at)+"</td><td>"+fmtDate(s.ended_at)+"</td><td><a class='link-pill' target='_blank' href='/cbt/ujian/?session="+s.id+"'>buka</a></td></tr>";
+  var el=document.getElementById("ujian-tab");
+  if(!SELECTED){el.innerHTML='<div class="loading">Pilih nama ujian pada menu “Daftar Ujian” untuk melihat hasilnya.</div>';return;}
+  var html="";
+  DATA.filter(function(ex){return ex.exam_id===SELECTED}).forEach(function(ex){
+    var done=ex.sesi.filter(function(s){return s.status==="submitted"});
+    var ongoing=ex.sesi.filter(function(s){return s.status==="ongoing"});
+    html+="<div class='exam-card'><h3>"+esc(ex.title)+" <span class='badge'>"+esc(ex.class_name||"-")+"</span></h3>";
+    html+="<div class='meta'>⏱ "+Math.round((ex.duration||0)/60)+" menit · peserta: "+ex.sesi.length+" (selesai "+done.length+", berjalan "+ongoing.length+")</div>";
+    html+="<div class='btn-line'><button class='btn-csv' onclick='downloadCsv(\""+ex.exam_id+"\")'>⬇ Unduh CSV</button><button class='btn-print' onclick='printExam(\""+ex.exam_id+"\")'>🖨 Cetak</button></div>";
+    var isSurvey=!!ex.survey;
+    var headCols=isSurvey?"<th>Status</th><th>Profil</th><th>A</th><th>B</th>":"<th>Status</th><th>Nilai</th><th>%</th>";
+    html+="<div class='wrap-table'><table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Sekolah</th>"+headCols+"<th>Mulai</th><th>Selesai</th><th>Detail</th></tr></thead><tbody>";
+    var rows=ex.sesi.slice().sort(function(a,b){return (a.status==="submitted"?0:1)-(b.status==="submitted"?0:1)||(b.profile||"").localeCompare(a.profile||"")});
+    rows.forEach(function(s,i){
+      var pct=pctOf(s.total_score,s.max_score);
+      var st=s.status==="submitted"?"<span class='chip submitted'>Selesai</span>":"<span class='chip ongoing'>Berjalan</span>";
+      var valCols,midCols;
+      if(isSurvey){
+        var profLabel=s.profile==="PPT"?"Pola Pikir Tetap":(s.profile==="PPB"?"Pola Pikir Bertumbuh":(s.profile==="Campuran"?"Campuran":"-"));
+        midCols="<td>"+st+"</td><td>"+(s.status==="submitted"?esc(profLabel):"-")+"</td><td>"+(s.profile_a!=null?s.profile_a:"-")+"</td><td>"+(s.profile_b!=null?s.profile_b:"-")+"</td>";
+        valCols="";
+      }else{
+        valCols="<td>"+(s.status==="submitted"?(s.total_score+" / "+s.max_score+" ("+pct+"%)"):"-")+"</td><td>"+(s.status==="submitted"?(pct+"% "+(grade(pct))):"-")+"</td>";
+        midCols="<td>"+st+"</td>";
+      }
+      html+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+esc(s.sekolah||"")+"</td>"+midCols+valCols+"<td>"+fmtDate(s.started_at)+"</td><td>"+fmtDate(s.ended_at)+"</td><td><a class='link-pill' target='_blank' href='/cbt/ujian/?session="+s.id+"&review=1'>buka</a></td></tr>";
+    });
+    html+="</tbody></table></div></div>";
   });
-  html+="</tbody></table></div></div>";
-});
-document.getElementById("ujian-tab").innerHTML=html;
+  el.innerHTML=html;
 }
 
 function renderMurid(){
-var map={};
-DATA.forEach(function(ex){
-  ex.sesi.forEach(function(s){
-    if(s.status!=="submitted")return;
-    var key=(s.nama||"-")+"|"+(s.kelas||"");
-    if(!map[key])map[key]={nama:s.nama,kelas:s.kelas,rows:[]};
-    map[key].rows.push({title:ex.title,score:s.total_score,max:s.max_score,ended:s.ended_at});
+  var map={};
+  DATA.forEach(function(ex){
+    ex.sesi.forEach(function(s){
+      if(s.status!=="submitted")return;
+      var key=(s.nama||"-")+"|"+(s.kelas||"");
+      if(!map[key])map[key]={nama:s.nama,kelas:s.kelas,rows:[]};
+      map[key].rows.push({title:ex.title,score:s.total_score,max:s.max_score,ended:s.ended_at});
+    });
   });
-});
-var list=Object.keys(map).map(function(k){return map[k]}).sort(function(a,b){return (a.kelas||"").localeCompare(b.kelas||"")||(a.nama||"").localeCompare(b.nama||"")});
-var html="<div class='wrap-table'><table><thead><tr><th>Nama</th><th>Kelas</th><th>Ujian</th><th>Nilai</th><th>%</th><th>Waktu</th></tr></thead><tbody>";
-list.forEach(function(m){
-  var rows=m.rows.map(function(r){return "<tr><td>"+esc(m.nama)+"</td><td>"+esc(m.kelas)+"</td><td>"+esc(r.title)+"</td><td>"+r.score+" / "+r.max+"</td><td>"+pctOf(r.score,r.max)+"% ("+grade(pctOf(r.score,r.max))+")</td><td>"+fmtDate(r.ended)+"</td></tr>"}).join("");
-  html+=rows;
-});
-html+="</tbody></table></div>";
-document.getElementById("murid-tab").innerHTML=html;
+  var list=Object.keys(map).map(function(k){return map[k]}).sort(function(a,b){return (a.kelas||"").localeCompare(b.kelas||"")||(a.nama||"").localeCompare(b.nama||"")});
+  var html="<div class='wrap-table'><table><thead><tr><th>Nama</th><th>Kelas</th><th>Ujian</th><th>Nilai</th><th>%</th><th>Waktu</th></tr></thead><tbody>";
+  list.forEach(function(m){
+    var rows=m.rows.map(function(r){return "<tr><td>"+esc(m.nama)+"</td><td>"+esc(m.kelas)+"</td><td>"+esc(r.title)+"</td><td>"+r.score+" / "+r.max+"</td><td>"+pctOf(r.score,r.max)+"% ("+grade(pctOf(r.score,r.max))+")</td><td>"+fmtDate(r.ended)+"</td></tr>"}).join("");
+    html+=rows;
+  });
+  html+="</tbody></table></div>";
+  document.getElementById("murid-tab").innerHTML=html;
 }
+
+function renderLatihan(){
+  var el=document.getElementById("latihan-tab");
+  if(!LAT_SLUG){
+    el.innerHTML='<div class="loading">Pilih subbab latihan pada menu “Hasil Latihan” di sidebar untuk melihat hasilnya.</div>';
+    return;
+  }
+  var it=LAT.filter(function(x){return x.slug===LAT_SLUG})[0];
+  if(!it){el.innerHTML='<p style="text-align:center;color:var(--red)">Latihan tidak ditemukan.</p>';return;}
+  var sesi=(it.sesi||[]).filter(function(s){return s.status==="submitted"});
+  var total=sesi.length;
+  var avg=total?Math.round(sesi.reduce(function(a,s){return a+s.total_score},0)/total):0;
+  var max=it.sesi.length&&it.sesi[0].max_score?it.sesi[0].max_score:10;
+  var html="<div class='exam-card'><h3>"+esc(it.judul)+" <span class='badge'>Kelas "+esc(it.kelas)+"</span></h3>";
+  html+="<div class='meta'>📖 "+esc(it.bab)+" · selesai "+total+" dari "+it.sesi.length+" sesi</div>";
+  html+="<div class='stat-grid'><div class='stat-box'><div class='num'>"+total+"</div><div class='lbl'>Selesai</div></div><div class='stat-box'><div class='num'>"+avg+"</div><div class='lbl'>Rata-rata / "+max+"</div></div><div class='stat-box'><div class='num'>"+(it.sesi.length-total)+"</div><div class='lbl'>Belum selesai</div></div></div>";
+  html+="<div class='btn-line'><button class='btn-csv' onclick='downloadLatCsv(\""+esc(it.slug)+"\")'>⬇ Unduh CSV</button><button class='btn-print' onclick='printLat(\""+esc(it.slug)+"\")'>🖨 Cetak</button></div>";
+  html+="<div class='wrap-table'><table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Ke-</th><th>Nilai</th><th>%</th><th>Selesai</th><th>Jawaban</th></tr></thead><tbody>";
+  sesi.slice().sort(function(a,b){return b.total_score-a.total_score}).forEach(function(s,i){
+    var pct=pctOf(s.total_score,s.max_score);
+    html+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+(s.attempt||1)+"</td><td>"+s.total_score+" / "+s.max_score+" ("+pct+"%)</td><td>"+pct+"% "+(grade(pct))+"</td><td>"+fmtDate(s.ended_at)+"</td><td><button class='link-pill' onclick='showAns(\""+esc(s.id)+"\")'>lihat</button></td></tr>";
+  });
+  html+="</tbody></table></div></div>";
+  el.innerHTML=html;
+}
+
+function showAns(sid){
+  var it=LAT.filter(function(x){return x.slug===LAT_SLUG})[0];
+  if(!it)return;
+  var s=it.sesi.filter(function(x){return x.id===sid})[0];
+  if(!s||!s.jawaban_json||!s.jawaban_json.length){alert("Tidak ada detail jawaban.");return;}
+  var rows=s.jawaban_json.map(function(j){
+    var cls=j.ok?"ok":"no",label=j.ok?"Benar":"Salah";
+    return "<div class='ans-row "+cls+"'><span>No. "+(j.i+1)+"</span><span>Jawaban: "+esc(j.st)+"</span><span>"+label+"</span></div>";
+  }).join("");
+  document.getElementById("modal-root").innerHTML="<div class='modal-overlay' onclick='closeModal(event)'><div class='modal'><button class='close' onclick='closeModal()'>✕</button><h3>"+esc(s.nama)+" — "+s.total_score+"/"+s.max_score+"</h3>"+rows+"</div></div>";
+}
+function closeModal(e){if(e&&e.target&&!e.target.classList.contains("modal-overlay"))return;document.getElementById("modal-root").innerHTML=""}
 
 function csvEscape(v){var s=String(v==null?"":v);if(/[",;\n]/.test(s))return '"'+s.replace(/"/g,'""')+'"';return s}
 function downloadCsv(examId){
 var ex=DATA.filter(function(e){return e.exam_id===examId})[0];
 if(!ex)return;
-var lines=["Nama,No Absen,Kelas,Status,Nilai,Max,Persen,Grade,Mulai,Selesai"];
+var isSurvey=!!ex.survey;
+var lines=isSurvey?["Nama,No Absen,Kelas,Sekolah,Status,Profil,A,B,Mulai,Selesai"]:["Nama,No Absen,Kelas,Sekolah,Status,Nilai,Max,Persen,Grade,Mulai,Selesai"];
 ex.sesi.forEach(function(s){
   var pct=pctOf(s.total_score,s.max_score);
-  lines.push([s.nama,s.no_absen,s.kelas,s.status==="submitted"?"Selesai":"Berjalan",s.status==="submitted"?s.total_score:"",s.max_score,s.status==="submitted"?pct+"%":"",s.status==="submitted"?grade(pct):"",s.started_at,s.ended_at].map(csvEscape).join(","));
+  if(isSurvey){
+    var profLabel=s.profile==="PPT"?"Pola Pikir Tetap":(s.profile==="PPB"?"Pola Pikir Bertumbuh":(s.profile==="Campuran"?"Campuran":"-"));
+    lines.push([s.nama,s.no_absen,s.kelas,s.sekolah||"",s.status==="submitted"?"Selesai":"Berjalan",s.status==="submitted"?profLabel:"",s.profile_a!=null?s.profile_a:"",s.profile_b!=null?s.profile_b:"",s.started_at,s.ended_at].map(csvEscape).join(","));
+  }else{
+    lines.push([s.nama,s.no_absen,s.kelas,s.sekolah||"",s.status==="submitted"?"Selesai":"Berjalan",s.status==="submitted"?s.total_score:"",s.max_score,s.status==="submitted"?pct+"%":"",s.status==="submitted"?grade(pct):"",s.started_at,s.ended_at].map(csvEscape).join(","));
+  }
 });
 var blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
 var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rekap-"+ex.title.replace(/[^\w\- ]+/g,"").replace(/\s+/g,"-")+".csv";a.click();
 }
-
+function downloadLatCsv(slug){
+var it=LAT.filter(function(x){return x.slug===slug})[0];
+if(!it)return;
+var lines=["Nama,No Absen,Kelas,Percobaan,Nilai,Max,Persen,Grade,Selesai"];
+(it.sesi||[]).forEach(function(s){
+  if(s.status!=="submitted")return;
+  var pct=pctOf(s.total_score,s.max_score);
+  lines.push([s.nama,s.no_absen,s.kelas,s.attempt||1,s.total_score,s.max_score,pct+"%",grade(pct),s.ended_at].map(csvEscape).join(","));
+});
+var blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
+var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rekap-latihan-"+it.judul.replace(/[^\w\- ]+/g,"").replace(/\s+/g,"-")+".csv";a.click();
+}
+function printLat(slug){
+var it=LAT.filter(function(x){return x.slug===slug})[0];
+if(!it)return;
+var w=window.open("","_blank");
+var rows=(it.sesi||[]).filter(function(s){return s.status==="submitted"}).map(function(s,i){return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+s.total_score+" / "+s.max_score+" ("+pctOf(s.total_score,s.max_score)+"%)</td></tr>"}).join("");
+w.document.write("<html><head><title>"+esc(it.judul)+"</title><style>table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--row-border);padding:6px 10px;font-size:13px}th{background:var(--thead-bg)}</style></head><body><h2>"+esc(it.judul)+" — Kelas "+esc(it.kelas)+"</h2><table><thead><tr><th>No</th><th>Nama</th><th>Kelas</th><th>Nilai</th></tr></thead><tbody>"+rows+"</tbody></table><p style='font-size:12px;color:var(--muted)'>Dicetak "+new Date().toLocaleString("id-ID")+"</p></body></html>");
+w.document.close();w.print();
+}
 function printExam(examId){
 var ex=DATA.filter(function(e){return e.exam_id===examId})[0];
 if(!ex)return;
 var w=window.open("","_blank");
-var rows=ex.sesi.filter(function(s){return s.status==="submitted"}).map(function(s,i){return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+s.total_score+" / "+s.max_score+" ("+pctOf(s.total_score,s.max_score)+"%)</td></tr>"}).join("");
-w.document.write("<html><head><title>"+esc(ex.title)+"</title><style>table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--row-border);padding:6px 10px;font-size:13px}th{background:var(--thead-bg)}</style></head><body><h2>"+esc(ex.title)+" — "+esc(ex.class_name)+"</h2><table><thead><tr><th>No</th><th>Nama</th><th>Kelas</th><th>Nilai</th></tr></thead><tbody>"+rows+"</tbody></table><p style='font-size:12px;color:var(--muted)'>Dicetak "+new Date().toLocaleString("id-ID")+"</p></body></html>");
+var isSurvey=!!ex.survey;
+var isLikert=ex.survey_type==="likert";
+var printHead=isSurvey?(isLikert?"<th>No</th><th>Nama</th><th>Kelas</th><th>Kategori</th><th>Skor</th>":"<th>No</th><th>Nama</th><th>Kelas</th><th>Profil</th><th>A</th><th>B</th>"):"<th>No</th><th>Nama</th><th>Kelas</th><th>Nilai</th>";
+var rows=ex.sesi.filter(function(s){return s.status==="submitted"}).map(function(s,i){
+  if(isSurvey){
+    if(isLikert){
+      return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+esc(s.profile||"")+"</td><td>"+(s.profile_a!=null?s.profile_a:"")+"</td></tr>";
+    }
+    var profLabel=s.profile==="PPT"?"Pola Pikir Tetap":(s.profile==="PPB"?"Pola Pikir Bertumbuh":(s.profile==="Campuran"?"Campuran":"-"));
+    return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+esc(profLabel)+"</td><td>"+(s.profile_a!=null?s.profile_a:"")+"</td><td>"+(s.profile_b!=null?s.profile_b:"")+"</td></tr>";
+  }
+  return "<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.kelas)+"</td><td>"+s.total_score+" / "+s.max_score+" ("+pctOf(s.total_score,s.max_score)+"%)</td></tr>";
+}).join("");
+w.document.write("<html><head><title>"+esc(ex.title)+"</title><style>table{width:100%;border-collapse:collapse}th,td{border:1px solid var(--row-border);padding:6px 10px;font-size:13px}th{background:var(--thead-bg)}</style></head><body><h2>"+esc(ex.title)+" — "+esc(ex.class_name)+"</h2><table><thead><tr>"+printHead+"</tr></thead><tbody>"+rows+"</tbody></table><p style='font-size:12px;color:var(--muted)'>Dicetak "+new Date().toLocaleString("id-ID")+"</p></body></html>");
 w.document.close();w.print();
 }
 

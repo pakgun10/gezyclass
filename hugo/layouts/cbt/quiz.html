@@ -63,6 +63,7 @@ body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text
 </div>
 <script>
 var API="/api",sessionId=new URLSearchParams(location.search).get("session"),
+    forceReview=new URLSearchParams(location.search).get("review")==="1",
     state={questions:[],current:0,answers:{},timer:0,interval:null,examTitle:"",sessionData:{}};
 
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}}
@@ -80,13 +81,15 @@ try{
   if(sr.status!=="ongoing"){document.getElementById("loading").innerHTML="Ujian sudah selesai.";return}
   state.timer=sr.duration||1800;
   state.examTitle=sr.exam_title||"Ujian";
+  state.survey=!!sr.survey_mode;
+  state.surveyType=sr.survey_type||"";
   var eqs=await(await fetch(API+"/pub/exam-questions?exam_id="+sr.exam_id)).json();
   state.questions=(eqs.items||[]).map(function(eq){
     var opts=(eq.options||[]).map(function(o){return {text:o.text,oid:o.oid};});
-    shuffle(opts);
+    if(!state.survey)shuffle(opts);
     return {eqId:eq.eqId,qid:eq.qid,question:eq.question,options:opts,points:eq.points||5,type:eq.type||"pg"};
   });
-  shuffle(state.questions);
+  if(!state.survey)shuffle(state.questions);
   startTimer();
   render();
 }catch(e){document.getElementById("loading").innerHTML="Gagal: "+e.message}
@@ -159,8 +162,8 @@ try{
 }catch(e){alert("Gagal mengumpulkan: "+e.message)}
 }
 
-function buildReview(d){
-  if(!d.show_explanation)return "";
+function buildReview(d,force){
+  if(!d.show_explanation&&!force)return "";
   var html="<h3 style='margin:24px 0 12px;font-size:18px'>Review Jawaban</h3>";
   (d.review||[]).forEach(function(q,i){
     var sel=q.selected_index;
@@ -185,9 +188,30 @@ function buildReview(d){
   return html;
 }
 
+function surveyResultHtml(d,hero,withKelas){
+  var meta="<span>📝 "+d.exam_title+"</span><span>👤 "+(d.nama||"")+"</span>"+(withKelas?"<span>🏫 "+(d.kelas||"")+"</span>":"");
+  var scoreLine, info;
+  if(d.survey_type==="likert"){
+    var p=d.profile||{skor:0,kategori:"-"};
+    var kat=p.kategori||"-";
+    scoreLine="<div class='result-score' style='font-size:34px'>"+kat+"</div><div style='font-size:18px;opacity:.9'>Skor: "+p.skor+" / 60</div>";
+    info="<div style='background:var(--info-bg);border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:14px;color:var(--info-text)'>Kategori: <b>Fix Mindset</b> (0–20) · <b>Fix Grow Mindset</b> (21–33) · <b>Grow Fix Mindset</b> (34–44) · <b>Grow Mindset</b> (45–60).</div>";
+  }else{
+    var p=d.profile||{A:0,B:0,label:"-"};
+    var label=p.label==="PPT"?"Pola Pikir Tetap":(p.label==="PPB"?"Pola Pikir Bertumbuh":(p.label==="Campuran"?"Pola Pikir Campuran":"-"));
+    scoreLine="<div class='result-score' style='font-size:34px'>"+label+"</div><div class='result-stats'><div class='result-stat'><div class='num'>"+p.A+"</div><div class='lbl'>Soal ganjil \"Setuju\" (A)</div></div><div class='result-stat'><div class='num'>"+p.B+"</div><div class='lbl'>Soal genap \"Setuju\" (B)</div></div></div>";
+    info="<div style='background:var(--info-bg);border-radius:12px;padding:14px 16px;margin-bottom:12px;font-size:14px;color:var(--info-text)'>Keterangan: jika A lebih besar dari B, peserta terindikasi memiliki <b>pola pikir tetap</b>; jika A sama dengan B, <b>campuran</b>; jika A lebih kecil dari B, <b>pola pikir bertumbuh</b>.</div>";
+  }
+  return "<div class='result-hero'><h2>"+hero+"</h2>"+scoreLine+"<div class='result-meta'>"+meta+"</div></div>"+info+"<div class='result-actions'><a href='/cbt/' class='primary'>Kembali ke CBT</a></div>";
+}
+
 async function showFinished(d){
 document.getElementById("quiz").style.display="none";
 document.getElementById("finished").style.display="block";
+if(d.survey){
+  document.getElementById("finished").innerHTML="<div class='q-container'>"+surveyResultHtml(d,"✅ Asesmen Selesai!",false)+"</div>";
+  return;
+}
 var pct=d.max_score>0?Math.round(d.total_score/d.max_score*100):0;
 var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
 var scoreHtml="";
@@ -203,9 +227,13 @@ document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreH
 async function loadAndShowResults(){
 try{
   var d=await(await fetch(API+"/exam/review?session="+sessionId)).json();
-  if(d.message&&d.total_score===undefined&&!(d.review)){document.getElementById("loading").innerHTML=d.message;return}
+  if(d.message&&d.total_score===undefined&&!(d.review)&&!d.survey){document.getElementById("loading").innerHTML=d.message;return}
   document.getElementById("loading").style.display="none";
   document.getElementById("finished").style.display="block";
+  if(d.survey){
+    document.getElementById("finished").innerHTML="<div class='q-container'>"+surveyResultHtml(d,"📊 Hasil Asesmen",true)+"</div>";
+    return;
+  }
   var pct=d.max_score>0?Math.round(d.total_score/d.max_score*100):0;
   var grade=pct>=90?"A":pct>=80?"B":pct>=70?"C":pct>=60?"D":"E";
   var scoreHtml="";
@@ -215,7 +243,7 @@ try{
     scoreHtml="<div class='result-hero'><h2>📊 Hasil Ujian</h2><p>Ujian telah diselesaikan.</p><div class='result-meta'><span>📝 "+d.exam_title+"</span><span>👤 "+(d.nama||"")+"</span></div></div>";
   }
   var actionsHtml="<div class='result-actions'><a href='/cbt/' class='primary'>Kembali ke CBT</a></div>";
-  document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreHtml+buildReview(d)+actionsHtml+"</div>";
+  document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreHtml+buildReview(d,forceReview)+actionsHtml+"</div>";
 }catch(e){document.getElementById("loading").innerHTML="Gagal memuat hasil: "+e.message}
 }
 
