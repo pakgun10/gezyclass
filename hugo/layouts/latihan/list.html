@@ -66,7 +66,7 @@ async function init(){
   try{
     var r=await jf(API+"/pub/latihan?slug="+encodeURIComponent(SLUG)+"&_t="+Date.now(),{cache:"no-store"});
     if(r.message&&!r.soal){document.getElementById("view-load").innerHTML="Soal latihan belum tersedia untuk subbab ini.<br><small style='font-size:11px;color:var(--muted);word-break:break-all'>slug: "+esc(SLUG)+"<br>pesan: "+esc(r.message)+"</small>";return}
-    LAT={judul:r.judul,kelas:r.kelas,semester:r.semester,bab:r.bab,back_url:r.back_url,soal_json:(r.soal||[]).map(function(q){return {q:q.q,o:q.o}})}; 
+    LAT={judul:r.judul,kelas:r.kelas,semester:r.semester,bab:r.bab,back_url:r.back_url,soal_json:(r.soal||[]).map(function(q,i){return {oi:i,q:q.q,o:q.o}})}; 
     showForm();
   }catch(e){document.getElementById("view-load").innerHTML="Gagal memuat: "+e.message}
 }
@@ -123,8 +123,9 @@ function go(i){state.idx=i;render()}
 async function kumpul(){
   if(!confirm("Yakin ingin mengumpulkan? Jawaban tidak bisa diubah lagi."))return;
   try{
+    var final={};state.soal.forEach(function(q,p){if(state.jwb[p]!==undefined)final[q.oi]=state.jwb[p]});
     var res=await jf(API+"/latihan/submit",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({session_id:SID,answers:state.jwb})});
+      body:JSON.stringify({session_id:SID,answers:final})});
     if(res.message&&!res.total_score){alert(res.message);return}
     var benar=res.correct||0, salah=res.wrong||0, kosong=res.empty||0, total=res.total_score||0, max=res.max_score||1;
     var pct=Math.round(total/max*100);
