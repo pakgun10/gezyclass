@@ -6,10 +6,23 @@
 {{ .Content }}
 <div class="grid">
   {{ range .Pages.ByWeight }}
-  <a href="{{ .RelPermalink }}" class="card">
-    <h3>{{ .Title }}</h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  {{ $icon := "🧮" }}{{ $cls := "b1" }}
+  {{ if eq .Weight 8 }}{{ $icon = "📐" }}{{ $cls = "b2" }}{{ else if eq .Weight 9 }}{{ $icon = "🎓" }}{{ $cls = "b7" }}{{ end }}
+  <a href="{{ .RelPermalink }}" class="card bsk-card">
+    <div class="bsk-icon {{ $cls }}">{{ $icon }}</div>
+    <div>
+      <h3>{{ .Title }}</h3>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bsk-card{display:flex;flex-direction:row;align-items:flex-start;gap:16px}
+.bsk-card .bsk-icon{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:14px;font-size:30px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bsk-card .bsk-icon.b1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bsk-card .bsk-icon.b2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bsk-card .bsk-icon.b7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+@media (max-width:560px){.bsk-card{flex-direction:column}}
+</style>
 {{ end }}

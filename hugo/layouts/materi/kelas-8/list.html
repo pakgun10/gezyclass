@@ -1,30 +1,60 @@
 {{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
 {{ define "main" }}
+{{ $emoji := dict "bilangan-berpangkat" "⚡" "bentuk-akar" "🌱" "bentuk-baku" "🔬" "teorema-pythagoras" "📐" "relasi-dan-fungsi" "🔗" "persamaan-garis-lurus" "📈" "spldv" "⚖️" "statistika" "📊" "peluang" "🎲" "proyek-penguatan-aplikasi-kontekstual" "🚀" }}
+{{ $icons := dict "bilangan-berpangkat" "c5" "bentuk-akar" "c3" "bentuk-baku" "c2" "teorema-pythagoras" "c6" "relasi-dan-fungsi" "c1" "persamaan-garis-lurus" "c3" "spldv" "c8" "statistika" "c7" "peluang" "c4" "proyek-penguatan-aplikasi-kontekstual" "c1" }}
 {{ with .Parent }}
 <a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
 {{ end }}
 
+{{ $sub_emoji := dict "j-game-edukatif" "🎮" "pengertian-dan-notasi-bentuk-akar" "🌱" "menyederhanakan-bentuk-akar" "✂️" "operasi-aljabar-bentuk-akar" "➕" "merasionalkan-penyebut" "🔄" "penerapan-bentuk-akar" "🏗️" "pengertian-bentuk-baku" "🔬" "mengubah-bentuk-baku" "🔄" "penerapan-bentuk-baku" "🚀" "pengertian-dan-notasi-bilangan-berpangkat" "⚡" "sifat-sifat-operasi-bilangan-berpangkat" "⚙️" "pangkat-nol-dan-pangkat-negatif" "🔢" "penerapan-bilangan-berpangkat" "🌍" "e-materi-interaktif" "🎮" "percobaan-acak-dan-ruang-sampel" "🎲" "frekuensi-relatif" "📊" "peluang-teoritik" "🎯" "peluang-pasti-mustahil" "✅" "frekuensi-harapan" "🔮" "penerapan-peluang" "🏗️" "g-materi-interaktif" "🎮" "koordinat-kartesius" "📍" "konsep-gradien" "📈" "gradien-dua-titik" "📐" "persamaan-garis-lurus" "📏" "garis-sejajar-tegak-lurus" "🛤️" "penerapan-pgl" "🏗️" "h-materi-interaktif" "🎮" "perencanaan-pemodelan" "📋" "pelaksanaan-analisis" "🔍" "penyajian-refleksi" "🚀" "konsep-relasi" "🔗" "menyajikan-relasi" "📊" "konsep-fungsi" "⚙️" "nilai-fungsi" "🔢" "grafik-fungsi" "📈" "fungsi-linear-nonlinear" "📉" "korespondensi-satu-satu" "🔁" "penerapan-relasi-fungsi" "🏗️" "i-materi-interaktif" "🎮" "konsep-spldv" "⚖️" "metode-grafik" "📈" "metode-substitusi" "🔄" "metode-eliminasi" "➖" "metode-campuran-dan-penerapan" "🧩" "h-materi-interaktif" "🎮" "i-latihan-interaktif" "🎮" "pengertian-data" "📊" "mean" "🧮" "median-modus" "🔢" "jangkauan-kuartil" "📏" "membandingkan-data" "⚖️" "prediksi-keputusan" "🔮" "pengaruh-perubahan-data" "🔄" "penerapan-statistika" "🏗️" "h-materi-interaktif" "🎮" "menemukan-teorema-pythagoras" "🔍" "menghitung-panjang-sisi" "📐" "tripel-pythagoras" "🔢" "aplikasi-teorema-pythagoras" "🏗️" "segitiga-45-45-90" "🔺" "segitiga-30-60-90" "🔺" "jarak-dua-titik-koordinat" "📍" "penerapan-dan-asesmen" "🏁" "i-materi-interaktif" "🎮" }}
+{{ $sub_warna := dict "j-game-edukatif" "c9" "pengertian-dan-notasi-bentuk-akar" "c3" "menyederhanakan-bentuk-akar" "c5" "operasi-aljabar-bentuk-akar" "c2" "merasionalkan-penyebut" "c8" "penerapan-bentuk-akar" "c1" "pengertian-bentuk-baku" "c2" "mengubah-bentuk-baku" "c1" "penerapan-bentuk-baku" "c5" "pengertian-dan-notasi-bilangan-berpangkat" "c5" "sifat-sifat-operasi-bilangan-berpangkat" "c8" "pangkat-nol-dan-pangkat-negatif" "c3" "penerapan-bilangan-berpangkat" "c1" "e-materi-interaktif" "c9" "percobaan-acak-dan-ruang-sampel" "c4" "frekuensi-relatif" "c1" "peluang-teoritik" "c5" "peluang-pasti-mustahil" "c3" "frekuensi-harapan" "c7" "penerapan-peluang" "c2" "g-materi-interaktif" "c9" "koordinat-kartesius" "c1" "konsep-gradien" "c3" "gradien-dua-titik" "c6" "persamaan-garis-lurus" "c8" "garis-sejajar-tegak-lurus" "c2" "penerapan-pgl" "c7" "h-materi-interaktif" "c9" "perencanaan-pemodelan" "c1" "pelaksanaan-analisis" "c5" "penyajian-refleksi" "c7" "konsep-relasi" "c1" "menyajikan-relasi" "c2" "konsep-fungsi" "c8" "nilai-fungsi" "c3" "grafik-fungsi" "c5" "fungsi-linear-nonlinear" "c6" "korespondensi-satu-satu" "c7" "penerapan-relasi-fungsi" "c2" "i-materi-interaktif" "c9" "konsep-spldv" "c8" "metode-grafik" "c5" "metode-substitusi" "c2" "metode-eliminasi" "c6" "metode-campuran-dan-penerapan" "c4" "h-materi-interaktif" "c9" "i-latihan-interaktif" "c9" "pengertian-data" "c1" "mean" "c2" "median-modus" "c3" "jangkauan-kuartil" "c5" "membandingkan-data" "c4" "prediksi-keputusan" "c7" "pengaruh-perubahan-data" "c8" "penerapan-statistika" "c6" "h-materi-interaktif" "c9" "menemukan-teorema-pythagoras" "c1" "menghitung-panjang-sisi" "c6" "tripel-pythagoras" "c8" "aplikasi-teorema-pythagoras" "c3" "segitiga-45-45-90" "c5" "segitiga-30-60-90" "c4" "jarak-dua-titik-koordinat" "c2" "penerapan-dan-asesmen" "c7" "i-materi-interaktif" "c9" }}
 {{ if .Params.semester }}
-{{/* Bab-level page: list submateri cards normally */}}
+{{/* Bab-level page: list submateri cards with icons */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
 {{ .Content }}
 <div class="grid">
   {{ range .Pages.ByWeight }}
-  <a href="{{ .RelPermalink }}" class="card">
-    <h3>{{ .Title }}</h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  {{ $slug := .File.BaseFileName }}
+  <a href="{{ .RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $sub_warna $slug) }}">{{ default "❓" (index $sub_emoji $slug) }}</div>
+    <div>
+      <h3>{{ .Title }}</h3>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      {{ with .Params.cta_url }}<span class="card-cta" style="display:inline-block;margin-top:10px;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px">{{ with $.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</span>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex!important;flex-direction:row!important;align-items:flex-start!important;gap:14px!important;box-sizing:border-box!important;overflow:hidden!important;min-width:0!important}
+.bab-card>div{min-width:0!important}
+.bab-card .bab-icon{flex-shrink:0!important;width:48px!important;height:48px!important;margin:0!important;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ else }}
 {{/* Kelas-level page: show semester grouping */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">Materi Kelas 8 Semester Ganjil</h1>
 <p>Pilih bab terlebih dahulu. Di dalam setiap bab tersedia kartu-kartu submateri yang bisa dibuka siswa secara terpisah.</p>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "ganjil") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
@@ -32,11 +62,32 @@
 <h2 style="font-size:clamp(20px,3.5vw,28px);margin-top:40px;margin-bottom:8px">Materi Kelas 8 Semester Genap</h2>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "genap") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex!important;flex-direction:row!important;align-items:flex-start!important;gap:14px!important;box-sizing:border-box!important;overflow:hidden!important;min-width:0!important}
+.bab-card>div{min-width:0!important}
+.bab-card .bab-icon{flex-shrink:0!important;width:48px!important;height:48px!important;margin:0!important;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ end }}
 {{ end }}

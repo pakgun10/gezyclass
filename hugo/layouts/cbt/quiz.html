@@ -7,11 +7,12 @@ body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text
 .q-header .progress{font-size:14px;opacity:.8}
 .q-container{max-width:700px;margin:0 auto;padding:16px}
 .q-card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.q-text{font-size:17px;line-height:1.7;margin-bottom:20px}
+.q-text{font-size:17px;line-height:1.7;margin-bottom:20px}.q-text .katex,.q-text .katex-display,.q-option .katex,.bs-table .katex{display:inline!important;margin:0!important;padding:0!important}.q-text .katex-display{overflow:visible}
 .q-option{display:block;width:100%;padding:14px 16px;margin:8px 0;border:2px solid var(--card-border);border-radius:10px;background:var(--card);color:var(--text);font-size:16px;text-align:left;cursor:pointer;transition:all .15s}
 .q-option:hover{border-color:var(--accent)}
 .q-option.selected{border-color:var(--accent);background:var(--sel-bg)}
 .q-option .q-opt-mark{display:inline-block;width:34px;text-align:center;font-weight:700;color:var(--muted);font-size:15px}
+.bs-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}.bs-table th,.bs-table td{border:1px solid var(--card-border);padding:10px 8px;vertical-align:middle}.bs-table th{background:var(--btn-ghost);text-align:center}.bs-table th:first-child,.bs-table td:first-child{width:42px;text-align:center}.bs-table th:not(:first-child):not(:nth-child(2)),.bs-table td:not(:first-child):not(:nth-child(2)){width:70px;text-align:center}.bs-choice{display:inline-flex;width:22px;height:22px;border:2px solid var(--card-border);border-radius:50%;align-items:center;justify-content:center;cursor:pointer;background:var(--card);font-size:12px;line-height:1;padding:0}.bs-choice.selected{border-color:var(--accent);background:var(--sel-bg);color:var(--accent)}
 .q-option.selected .q-opt-mark{color:var(--accent)}
 .q-nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
 .q-nav button{width:40px;height:40px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;cursor:pointer}
@@ -87,7 +88,7 @@ try{
   state.questions=(eqs.items||[]).map(function(eq){
     var opts=(eq.options||[]).map(function(o){return {text:o.text,oid:o.oid};});
     if(!state.survey)shuffle(opts);
-    return {eqId:eq.eqId,qid:eq.qid,question:eq.question,options:opts,points:eq.points||5,type:eq.type||"pg"};
+    return {eqId:eq.eqId,qid:eq.qid,question:eq.question,options:opts,statements:eq.statements||[],points:eq.points||5,type:eq.type||"pg"};
   });
   if(!state.survey)shuffle(state.questions);
   startTimer();
@@ -120,24 +121,34 @@ function render(){
 document.getElementById("loading").style.display="none";
 document.getElementById("quiz").style.display="block";
 var q=state.questions[state.current],optsHtml="",letters=["A","B","C","D","E","F"];
-if(q.options&&q.options.length){
+if(q.type==="bs" && q.statements){
+  var vals=state.answers[q.eqId]||[]; optsHtml="<table class='bs-table'><thead><tr><th>No.</th><th>Pernyataan</th><th>Benar</th><th>Salah</th></tr></thead><tbody>";
+  q.statements.forEach(function(st,i){var v=vals[i];optsHtml+="<tr><td>"+(i+1)+"</td><td>"+st+"</td><td><button class='bs-choice "+(v===true?"selected":"")+"' onclick=\"answerBs('"+q.eqId+"',"+i+",true)\">○</button></td><td><button class='bs-choice "+(v===false?"selected":"")+"' onclick=\"answerBs('"+q.eqId+"',"+i+",false)\">○</button></td></tr>"});
+  optsHtml+="</tbody></table>";
+} else if(q.options&&q.options.length){
   (q.options).forEach(function(o,i){
     var sel=false;
     if(q.type==="pgk"||q.type==="mr"){sel=(state.answers[q.eqId]||[]).indexOf(o.oid)>=0;}
     else{sel=state.answers[q.eqId]===o.oid;}
     var cls=sel?"selected":"";
+    var displayText=o.text;
+    if(/^\$[\s\S]*\$/.test(displayText)) displayText="\\("+displayText.slice(1,-1)+"\\)";
     var mark=sel?((q.type==="pgk"||q.type==="mr")?"☑ ":"● "):((q.type==="pgk"||q.type==="mr")?"☐ ":"○ ");
-    optsHtml+="<button class='q-option "+cls+"' onclick=\"answer('"+q.eqId+"',"+o.oid+",'"+q.type+"')\"><span class='q-opt-mark'>"+mark+letters[i]+".</span> "+o.text+"</button>";
+    optsHtml+="<button class='q-option "+cls+"' onclick=\"answer('"+q.eqId+"',"+o.oid+",'"+q.type+"')\"><span class='q-opt-mark'>"+mark+letters[i]+".</span> "+displayText+"</button>";
   });
 }
 var navHtml="";state.questions.forEach(function(_,i){var cls=i===state.current?"current":"";if(state.answers[state.questions[i].eqId]!==undefined)cls+=" answered";navHtml+="<button class='"+cls+"' onclick='goTo("+i+")'>"+(i+1)+"</button>"});
 var prevBtn=state.current>0?"<button class='btn-prev' onclick='goTo("+(state.current-1)+")'>Sebelumnya</button>":"";
 var nextBtn=state.current<state.questions.length-1?"<button class='btn-next' onclick='goTo("+(state.current+1)+")'>Selanjutnya</button>":"<button class='btn-submit' onclick='submit()'>Selesai Ujian</button>";
-document.getElementById("quiz").innerHTML="<div class='q-header'><span>📐 "+state.examTitle+"</span><span class='timer' id='timer'>"+fmt(state.timer)+"</span><span class='progress'>"+(state.current+1)+"/"+state.questions.length+"</span></div><div class='q-container'><div class='q-card'><span class='q-type-badge'>"+typeLabel(q.type)+"</span><div class='q-text'>"+(state.current+1)+". "+q.question+"</div><div id='opts'>"+optsHtml+"</div>"+((q.type==="pgk"||q.type==="mr")?"<p style='font-size:13px;color:var(--muted);margin-top:8px'>Pilih lebih dari satu jawaban yang benar.</p>":"")+"</div><div class='q-nav'>"+navHtml+"</div><div class='q-actions'>"+prevBtn+nextBtn+"</div></div>";
+var questionPrompt=(q.type==="bs"&&q.statements.length===1)?"Pilihlah Benar atau Salah untuk pernyataan berikut!":q.question;
+document.getElementById("quiz").innerHTML="<div class='q-header'><span>📐 "+state.examTitle+"</span><span class='timer' id='timer'>"+fmt(state.timer)+"</span><span class='progress'>"+(state.current+1)+"/"+state.questions.length+"</span></div><div class='q-container'><div class='q-card'><span class='q-type-badge'>"+typeLabel(q.type)+"</span><div class='q-text'>"+(state.current+1)+". "+questionPrompt+"</div><div id='opts'>"+optsHtml+"</div>"+((q.type==="pgk"||q.type==="mr")?"<p style='font-size:13px;color:var(--muted);margin-top:8px'>Pilih lebih dari satu jawaban yang benar.</p>":"")+"</div><div class='q-nav'>"+navHtml+"</div><div class='q-actions'>"+prevBtn+nextBtn+"</div></div>";
 renderMath();
 }
-function renderMath(){if(typeof renderMathInElement==="function"){renderMathInElement(document.getElementById("quiz"),{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}]})}}
+function renderMathIn(el){if(typeof renderMathInElement==="function"&&el){renderMathInElement(el,{delimiters:[{left:"$",right:"$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:false},{left:"\\(",right:"\\)",display:false}]});el.querySelectorAll('.katex-display').forEach(function(n){n.classList.remove('katex-display');n.style.display='inline';n.style.margin='0';n.style.padding='0'});}}
+function renderMath(){renderMathIn(document.getElementById("quiz"));}
+function renderFinishedMath(){renderMathIn(document.getElementById("finished"));}
 
+function answerBs(eqId,index,value){var arr=(state.answers[eqId]||[]).slice();arr[index]=value;state.answers[eqId]=arr;render()}
 function answer(eqId,oid,type){
   if(type==="pgk"||type==="mr"){
     var arr=(state.answers[eqId]||[]).slice();
@@ -210,6 +221,7 @@ document.getElementById("quiz").style.display="none";
 document.getElementById("finished").style.display="block";
 if(d.survey){
   document.getElementById("finished").innerHTML="<div class='q-container'>"+surveyResultHtml(d,"✅ Asesmen Selesai!",false)+"</div>";
+  renderFinishedMath();
   return;
 }
 var pct=d.max_score>0?Math.round(d.total_score/d.max_score*100):0;
@@ -222,6 +234,7 @@ if(d.show_score){
 }
 var actionsHtml="<div class='result-actions'><a href='/cbt/' class='primary'>Kembali ke CBT</a></div>";
 document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreHtml+buildReview(d)+actionsHtml+"</div>";
+renderFinishedMath();
 }
 
 async function loadAndShowResults(){
@@ -232,6 +245,7 @@ try{
   document.getElementById("finished").style.display="block";
   if(d.survey){
     document.getElementById("finished").innerHTML="<div class='q-container'>"+surveyResultHtml(d,"📊 Hasil Asesmen",true)+"</div>";
+    renderFinishedMath();
     return;
   }
   var pct=d.max_score>0?Math.round(d.total_score/d.max_score*100):0;
@@ -244,6 +258,7 @@ try{
   }
   var actionsHtml="<div class='result-actions'><a href='/cbt/' class='primary'>Kembali ke CBT</a></div>";
   document.getElementById("finished").innerHTML="<div class='q-container'>"+scoreHtml+buildReview(d,forceReview)+actionsHtml+"</div>";
+  renderFinishedMath();
 }catch(e){document.getElementById("loading").innerHTML="Gagal memuat hasil: "+e.message}
 }
 

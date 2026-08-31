@@ -29,6 +29,11 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 .btn-csv{background:var(--accent);color:#fff}
 .btn-print{background:var(--btn-ghost);color:var(--btn-ghost-text)}
 .wrap-table{overflow-x:auto}
+.pagination{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 4px}
+.pagination button{min-width:36px;padding:7px 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--card);color:var(--text);cursor:pointer;font-weight:600}
+.pagination button:hover:not(:disabled),.pagination button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pagination button:disabled{opacity:.45;cursor:not-allowed}
+.pagination-info{font-size:13px;color:var(--sub);text-align:center;margin-top:8px}
 .hidden{display:none}
 .tab{display:flex;gap:8px;margin-bottom:16px}
 .tab a{padding:9px 18px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
@@ -125,7 +130,7 @@ tr:nth-child(even){background:rgba(0,0,0,0.02)}
 <script>
 var QUERY=new URLSearchParams(location.search),API="/api",TOK=sessionStorage.getItem("guru_tok")||"",
     DATA=[],LAT=[],TAB=QUERY.get("view")==="murid"?"murid":(QUERY.get("view")==="latihan"?"latihan":"ujian"),
-    SELECTED=(QUERY.get("exam")||""),LAT_SLUG=(QUERY.get("slug")||"");
+    SELECTED=(QUERY.get("exam")||""),LAT_SLUG=(QUERY.get("slug")||""),EXAM_PAGE=1,EXAM_PAGE_SIZE=20;
 function toggleSidebar(){
   var s=document.querySelector(".sidebar"),l=document.querySelector(".rekap-layout"),collapsed=s.classList.toggle("collapsed");
   l.classList.toggle("sidebar-collapsed",collapsed);
@@ -224,6 +229,11 @@ function showTab(t){
   document.getElementById("latihan-tab").classList.toggle("hidden",t!=="latihan");
 }
 function selectExam(id){navTo("ujian",id)}
+function examPage(page){
+  EXAM_PAGE=Math.max(1,Number(page)||1);
+  renderUjian();
+  window.scrollTo({top:document.getElementById("ujian-tab").offsetTop-20,behavior:"smooth"});
+}
 function syncActive(){
   document.querySelectorAll("#exam-menu a[data-exam]").forEach(function(a){a.classList.toggle("active",a.getAttribute("data-exam")===SELECTED)});
   document.querySelectorAll("#lat-menu a[data-slug]").forEach(function(a){a.classList.toggle("active",a.getAttribute("data-slug")===LAT_SLUG)});
@@ -235,7 +245,7 @@ function renderCurrent(){
   else {renderMurid();fadeTab(document.getElementById("murid-tab"))}
 }
 function navTo(view,exam,slug){
-  if(exam!==undefined&&exam!==null)SELECTED=String(exam);
+  if(exam!==undefined&&exam!==null){SELECTED=String(exam);EXAM_PAGE=1;}
   if(slug!==undefined&&slug!==null)LAT_SLUG=String(slug);
   TAB=view==="murid"?"murid":(view==="latihan"?"latihan":"ujian");
   var qs="view="+TAB;
@@ -268,7 +278,11 @@ function renderUjian(){
     var headCols=isSurvey?"<th>Status</th><th>Profil</th><th>A</th><th>B</th>":"<th>Status</th><th>Nilai</th><th>%</th>";
     html+="<div class='wrap-table'><table><thead><tr><th>No</th><th>Nama</th><th>Absen</th><th>Kelas</th><th>Sekolah</th>"+headCols+"<th>Mulai</th><th>Selesai</th><th>Detail</th></tr></thead><tbody>";
     var rows=ex.sesi.slice().sort(function(a,b){return (a.status==="submitted"?0:1)-(b.status==="submitted"?0:1)||(b.profile||"").localeCompare(a.profile||"")});
-    rows.forEach(function(s,i){
+    var totalRows=rows.length,totalPages=Math.max(1,Math.ceil(totalRows/EXAM_PAGE_SIZE));
+    EXAM_PAGE=Math.min(EXAM_PAGE,totalPages);
+    var pageRows=rows.slice((EXAM_PAGE-1)*EXAM_PAGE_SIZE,EXAM_PAGE*EXAM_PAGE_SIZE);
+    pageRows.forEach(function(s,i){
+      var rowNumber=(EXAM_PAGE-1)*EXAM_PAGE_SIZE+i+1;
       var pct=pctOf(s.total_score,s.max_score);
       var st=s.status==="submitted"?"<span class='chip submitted'>Selesai</span>":"<span class='chip ongoing'>Berjalan</span>";
       var valCols,midCols;
@@ -280,9 +294,14 @@ function renderUjian(){
         valCols="<td>"+(s.status==="submitted"?(s.total_score+" / "+s.max_score+" ("+pct+"%)"):"-")+"</td><td>"+(s.status==="submitted"?(pct+"% "+(grade(pct))):"-")+"</td>";
         midCols="<td>"+st+"</td>";
       }
-      html+="<tr><td>"+(i+1)+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+esc(s.sekolah||"")+"</td>"+midCols+valCols+"<td>"+fmtDate(s.started_at)+"</td><td>"+fmtDate(s.ended_at)+"</td><td><a class='link-pill' target='_blank' href='/cbt/ujian/?session="+s.id+"&review=1'>buka</a></td></tr>";
+      html+="<tr><td>"+rowNumber+"</td><td>"+esc(s.nama)+"</td><td>"+esc(s.no_absen)+"</td><td>"+esc(s.kelas)+"</td><td>"+esc(s.sekolah||"")+"</td>"+midCols+valCols+"<td>"+fmtDate(s.started_at)+"</td><td>"+fmtDate(s.ended_at)+"</td><td><a class='link-pill' target='_blank' href='/cbt/ujian/?session="+s.id+"&review=1'>buka</a></td></tr>";
     });
-    html+="</tbody></table></div></div>";
+    if(totalPages>1){
+      html+="</tbody></table></div><div class='pagination-info'>Menampilkan "+(((EXAM_PAGE-1)*EXAM_PAGE_SIZE)+1)+"–"+Math.min(EXAM_PAGE*EXAM_PAGE_SIZE,totalRows)+" dari "+totalRows+" baris</div><div class='pagination'>";
+      html+="<button onclick='examPage("+(EXAM_PAGE-1)+")' "+(EXAM_PAGE===1?"disabled":"")+">‹</button>";
+      for(var pg=1;pg<=totalPages;pg++)html+="<button class='"+(pg===EXAM_PAGE?"active":"")+"' onclick='examPage("+pg+")'>"+pg+"</button>";
+      html+="<button onclick='examPage("+(EXAM_PAGE+1)+")' "+(EXAM_PAGE===totalPages?"disabled":"")+">›</button></div></div>";
+    }else html+="</tbody></table></div></div>";
   });
   el.innerHTML=html;
 }

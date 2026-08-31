@@ -7,7 +7,14 @@
 .cbt-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .cbt-back{display:inline-block;color:var(--nav-text);text-decoration:none;font-size:14px;margin-bottom:10px}
 .cbt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
-.cbt-card{background:var(--card);border:1px solid var(--card-border);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.08);text-decoration:none;color:var(--text);display:block;transition:transform .15s,box-shadow .15s}
+.cbt-card{background:var(--card);border:1px solid var(--card-border);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.08);text-decoration:none;color:var(--text);display:flex;flex-direction:row;align-items:flex-start;gap:16px;transition:transform .15s,box-shadow .15s}
+.cbt-card .card-icon{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:14px;color:var(--nav-text);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.cbt-card .card-icon.k7{background:linear-gradient(135deg,var(--icon-murid),var(--icon-murid-2))}
+.cbt-card .card-icon.k8{background:linear-gradient(135deg,var(--icon-k8),var(--icon-k8-2))}
+.cbt-card .card-icon.k9{background:linear-gradient(135deg,var(--icon-k9),var(--icon-k9-2))}
+.cbt-card .card-icon.la{background:linear-gradient(135deg,var(--icon-guru),var(--icon-guru-2))}
+.cbt-card .card-icon svg{width:30px;height:30px}
+@media (max-width:560px){.cbt-card{flex-direction:column}}
 .cbt-card:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(15,23,42,.12)}
 .cbt-card h3{font-size:18px;margin-bottom:8px}
 .cbt-card p{color:var(--muted);font-size:14px;line-height:1.5}
@@ -19,6 +26,15 @@
 .exam-card h3{font-size:18px;margin-bottom:8px}
 .exam-card p{color:var(--muted);font-size:14px}
 .exam-card small{display:inline-block;margin-top:10px;color:var(--teal);font-weight:700}
+.exam-icon-card{display:flex;align-items:flex-start;gap:14px}
+.exam-icon{flex-shrink:0;width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.exam-icon.murid{background:linear-gradient(135deg,var(--icon-murid),var(--icon-murid-2))}
+.exam-icon.guru{background:linear-gradient(135deg,var(--icon-guru),var(--icon-guru-2))}
+.exam-icon.uh{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.exam-icon.asesmen{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.exam-icon.latihan{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.exam-icon.def{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.exam-icon svg{width:30px;height:30px}
 .token-box{margin-top:24px;background:var(--card);border:1px solid var(--card-border);border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(15,23,42,.08)}
 .token-box h3{margin-bottom:12px}
 .token-box label{display:block;font-weight:700;margin:14px 0 6px;color:var(--text)}
@@ -38,10 +54,10 @@
 <p>Masuk ke kategori kelas yang sesuai supaya daftar tes yang tampil sudah relevan. Kategori lainnya dipakai untuk ujian campuran, remedial, dan tes khusus.</p>
 </section>
 <div class="cbt-grid">
-<a href="/cbt/kelas7/" class="cbt-card"><h3>Kelas 7</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 7.</p></a>
-<a href="/cbt/kelas8/" class="cbt-card"><h3>Kelas 8</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 8.</p></a>
-<a href="/cbt/kelas9/" class="cbt-card"><h3>Kelas 9</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 9.</p></a>
-<a href="/cbt/lainnya/" class="cbt-card"><h3>Lainnya</h3><p>Ujian campuran, remedial, dan tes khusus di luar kategori kelas utama.</p></a>
+<a href="/cbt/kelas7/" class="cbt-card"><div class="card-icon k7" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg></div><div><h3>Kelas 7</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 7.</p></div></a>
+<a href="/cbt/kelas8/" class="cbt-card"><div class="card-icon k8" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7V4H6l6 8-6 8h12v-3"/></svg></div><div><h3>Kelas 8</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 8.</p></div></a>
+<a href="/cbt/kelas9/" class="cbt-card"><div class="card-icon k9" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div><div><h3>Kelas 9</h3><p>Ujian, latihan, dan simulasi untuk siswa kelas 9.</p></div></a>
+<a href="/cbt/lainnya/" class="cbt-card"><div class="card-icon la" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></div><div><h3>Lainnya</h3><p>Ujian campuran, remedial, dan tes khusus di luar kategori kelas utama.</p></div></a>
 </div>
 <div class="cbt-note">Setelah memilih kategori, siswa akan melihat daftar tes yang sudah disaring sesuai kelasnya.</div>
 {{ else }}
@@ -62,11 +78,13 @@
 <label>Token Ujian</label>
 <input type="text" id="token" placeholder="Masukkan token" autocomplete="off" style="text-transform:uppercase;letter-spacing:2px">
 <label>Nama Lengkap</label>
-<input type="text" id="nama" placeholder="Nama Anda">
+<input type="text" id="nama" placeholder="Contoh: Ahmad Fauzan" maxlength="40" autocomplete="name">
 <label>No. Absen</label>
-<input type="number" id="no_absen" placeholder="No. Absen">
+<input type="text" id="no_absen" placeholder="Contoh: 12" maxlength="4" inputmode="numeric" autocomplete="off">
 <label>Kelas</label>
-<input type="text" id="kelas" placeholder="Contoh: 7A">
+<input type="text" id="kelas" placeholder="Contoh: 7.1, 8.2, 9.5" maxlength="10" autocomplete="off">
+<label>Nama Sekolah</label>
+<input type="text" id="sekolah" placeholder="Contoh: SMP Negeri 1 Punggur" maxlength="30" oninput="this.value=this.value.replace(/[^A-Za-z0-9 ]/g,'')">
 <button onclick="startExam()">Mulai Ujian</button>
 <button onclick="goBack()" class="secondary">Kembali ke daftar</button>
 </div>
@@ -96,9 +114,34 @@ function matchKey(e, classes){
   if (CLASS_KEY === "lainnya") return !key || (key !== "kelas7" && key !== "kelas8" && key !== "kelas9");
   return key === CLASS_KEY;
 }
-function examCard(e){
+function examIcon(t, index){
+  const distinct = [
+    ["murid", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z'/><path d='M22 10v6'/><path d='M6 12.5V16a6 3 0 0 0 12 0v-3.5'/></svg>"],
+    ["asesmen", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9H4.5a2.5 2.5 0 0 1 0-5H6'/><path d='M18 9h1.5a2.5 2.5 0 0 0 0-5H18'/><path d='M4 22h16'/><path d='M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22'/><path d='M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22'/><path d='M18 2H6v7a6 6 0 0 0 12 0V2Z'/></svg>"],
+    ["latihan", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z'/><path d='m15 5 4 4'/></svg>"],
+    ["uh", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='8' y='2' width='8' height='4' rx='1'/><path d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/><path d='M9 12h6'/><path d='M9 16h6'/></svg>"],
+    ["def", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/><path d='M14 2v4a2 2 0 0 0 2 2h4'/><path d='M10 9H8'/><path d='M16 13H8'/><path d='M16 17H8'/></svg>"],
+    ["guru", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z'/><path d='M8 6h8M8 10h8'/></svg>"],
+    ["murid", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/></svg>"]
+  ];
+  if (typeof index === "number") return distinct[index % distinct.length];
+  if (t.indexOf("Pola Pikir") >= 0) {
+    const guru = t.indexOf("Guru") >= 0;
+    if (guru) return ["guru", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/><path d='M12 5v14'/></svg>"];
+    return ["murid", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z'/><path d='M22 10v6'/><path d='M6 12.5V16a6 3 0 0 0 12 0v-3.5'/></svg>"];
+  }
+  if (t.indexOf("Latihan") >= 0) return ["latihan", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z'/><path d='m15 5 4 4'/></svg>"];
+  if (t.indexOf("Asesmen Sumatif") >= 0) return ["asesmen", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9H4.5a2.5 2.5 0 0 1 0-5H6'/><path d='M18 9h1.5a2.5 2.5 0 0 0 0-5H18'/><path d='M4 22h16'/><path d='M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22'/><path d='M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22'/><path d='M18 2H6v7a6 6 0 0 0 12 0V2Z'/></svg>"];
+  if (t.indexOf("UH") >= 0) return ["uh", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='8' y='2' width='8' height='4' rx='1'/><path d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/><path d='M9 12h6'/><path d='M9 16h6'/></svg>"];
+  return ["def", "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/><path d='M14 2v4a2 2 0 0 0 2 2h4'/><path d='M10 9H8'/><path d='M16 13H8'/><path d='M16 17H8'/></svg>"];
+}
+function examCard(e, index){
   const mins = Math.max(1, Math.round((e.duration || 1800) / 60));
-  return "<div class='exam-card' onclick='S(\"" + e.id + "\",\"" + String(e.title).replace(/'/g, "") + "\")'><h3>" + e.title + "</h3><p>" + (e.description || "Tes sesuai kategori ini.") + "</p><small>Durasi " + mins + " menit</small></div>";
+  const t = String(e.title || "");
+  const base = "<h3>" + t + "</h3><p>" + (e.description || "Tes sesuai kategori ini.") + "</p><small>Durasi " + mins + " menit</small>";
+  const cardOn = "onclick='S(\"" + e.id + "\",\"" + t.replace(/'/g, "") + "\")'";
+  const ic = examIcon(t, index);
+  return "<div class='exam-card exam-icon-card' " + cardOn + "><div class='exam-icon " + ic[0] + "' aria-hidden='true'>" + ic[1] + "</div><div>" + base + "</div></div>";
 }
 async function loadExams() {
   try {
@@ -119,8 +162,8 @@ async function loadExams() {
     }
     document.getElementById("exam-list").style.display = "block";
     let html = "";
-    exams.forEach(function(e) {
-      html += examCard(e);
+    exams.forEach(function(e, index) {
+      html += examCard(e, index);
     });
     document.getElementById("exams").innerHTML = html;
   } catch(e) {
@@ -141,11 +184,16 @@ async function startExam() {
   const nama = document.getElementById("nama").value.trim();
   const noAbsen = document.getElementById("no_absen").value.trim();
   const kelas = document.getElementById("kelas").value.trim();
-  if (!token || !nama || !noAbsen || !kelas) { alert("Semua field wajib diisi!"); return; }
+  const sekolah = document.getElementById("sekolah").value.trim();
+  if (!token || !nama || !noAbsen || !kelas || !sekolah) { alert("Semua field wajib diisi!"); return; }
+  if (nama.length > 40 || !/^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/.test(nama)) { alert("Nama Lengkap maksimal 40 karakter dan hanya boleh berisi huruf serta spasi."); return; }
+  if (!/^\d{1,4}$/.test(noAbsen)) { alert("No. Absen hanya boleh berupa angka, maksimal 4 digit."); return; }
+  if (kelas.length > 10 || !/^[0-9.]+$/.test(kelas)) { alert("Kelas maksimal 10 karakter dan hanya boleh berisi angka serta tanda titik."); return; }
+  if (sekolah.length > 30 || !/^[A-Za-z0-9 ]+$/.test(sekolah)) { alert("Nama sekolah maksimal 30 karakter, hanya huruf, angka, dan spasi."); return; }
   try {
     const r = await fetch(API + "/exam/start", {
       method: "POST", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({token, exam_id: examId, nama, no_absen: noAbsen, kelas})
+      body: JSON.stringify({token, exam_id: examId, nama, no_absen: noAbsen, kelas, sekolah})
     });
     const d = await r.json();
     if (!d.id) { alert(d.message || "Token tidak valid atau sudah digunakan!"); return; }

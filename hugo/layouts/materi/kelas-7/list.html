@@ -1,32 +1,59 @@
 {{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
 {{ define "main" }}
+{{ $emoji := dict "bilangan-bulat" "🔢" "bilangan-rasional" "🧮" "aritmetika-sosial" "💰" "rasio" "⚖️" "pola-bilangan" "🧩" "bentuk-aljabar" "✖️" "persamaan-linear-satu-variabel" "🎯" "pertidaksamaan-linear-satu-variabel" "🚦" "garis-dan-sudut" "📐" "segitiga-dan-segiempat" "🔺" "kesebangunan" "🪞" "data-dan-diagram" "📊" "proyek-penguatan-numerasi-literasi" "🚀" }}
+{{ $icons := dict "bilangan-bulat" "c1" "bilangan-rasional" "c2" "aritmetika-sosial" "c3" "rasio" "c4" "pola-bilangan" "c7" "bentuk-aljabar" "c8" "persamaan-linear-satu-variabel" "c1" "pertidaksamaan-linear-satu-variabel" "c5" "garis-dan-sudut" "c6" "segitiga-dan-segiempat" "c5" "kesebangunan" "c2" "data-dan-diagram" "c1" "proyek-penguatan-numerasi-literasi" "c7" }}
 {{ with .Parent }}
 <a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
 {{ end }}
 
+{{ $sub_emoji := dict "aplikasi-bilangan-bulat-dalam-kehidupan" "🌍" "konsep-pecahan-desimal-dan-persen" "🍕" "untung-rugi-dan-persentase" "💰" "diskon-bruto-netto-tara-pajak" "🏷️" "menabung-dan-bunga-sederhana" "🏦" "proyek-perencanaan-keuangan" "📋" "h-materi-interaktif" "🎮" "unsur-aljabar" "🧩" "operasi-hitung-aljabar" "➕" "sifat-operasi-aljabar" "🔁" "bentuk-ekuivalen" "⚖️" "penerapan-aljabar" "🏗️" "f-materi-interaktif" "🎮" "pengantar" "🚪" "konsep-dan-garis-bilangan-bulat" "📏" "membandingkan-dan-mengurutkan-bilangan-bulat" "🔢" "penjumlahan-dan-pengurangan-bilangan-bulat" "➕" "perkalian-pembagian-dan-operasi-campuran" "✖️" "faktorisasi-prima-kpk-fpb" "🧮" "penerapan-literasi-finansial" "💰" "h-materi-interaktif" "🎮" "i-materi-interaktif" "🎮" "j-materi-interaktif" "🎮" "pengertian-dan-bentuk-bilangan-rasional" "🧾" "mengubah-bentuk-bilangan-rasional" "🔄" "membandingkan-dan-mengurutkan-bilangan-rasional" "⚖️" "penjumlahan-dan-pengurangan-bilangan-rasional" "➕" "perkalian-dan-pembagian-bilangan-rasional" "✖️" "penaksiran-dan-estimasi" "🎯" "penerapan-bilangan-rasional" "🌍" "h-materi-interaktif" "🎮" "merumuskan-pertanyaan-data" "❓" "tabel-dan-diagram-batang" "📊" "diagram-lingkaran" "🥧" "sampel-dan-estimasi" "🎯" "pengertian-sudut" "📐" "menamai-dan-jenis-sudut" "🏷️" "dua-garis-berpotongan" "✂️" "garis-sejajar-transversal" "🛤️" "jumlah-sudut-segitiga" "🔺" "menentukan-sudut-belum-diketahui" "🔍" "penerapan-garis-sudut" "🏗️" "h-latihan-interaktif" "🎮" "konsep-kesebangunan" "🪞" "syarat-bangun-sebangun" "✅" "kesebangunan-segitiga" "🔺" "penerapan-kesebangunan" "📐" "pemecahan-masalah-kesebangunan" "🧠" "f-materi-interaktif" "🎮" "konsep-plsv" "⚖️" "memodelkan-plsv" "🧩" "menyelesaikan-plsv-dengan-penjumlahan-pengurangan" "➕" "menyelesaikan-plsv-dengan-perkalian-pembagian" "✖️" "penerapan-plsv" "🏗️" "konsep-ptlsv" "🚦" "menyelesaikan-ptlsv" "🔧" "garis-bilangan-ptlsv" "📏" "model-matematika-ptlsv" "🧩" "penerapan-ptlsv" "🏗️" "konsep-pola-bilangan" "🧩" "pola-barisan-bilangan" "🔢" "pola-susunan-benda" "🧱" "rumus-suku-ke-n" "🧠" "penerapan-pola-bilangan" "🏗️" "perencanaan-proyek" "📋" "pelaksanaan-penyajian-proyek" "🚀" "konsep-rasio" "⚖️" "rasio-senilai-proporsi" "📈" "skala" "🗺️" "laju-perubahan" "🏎️" "rasio-berbalik-nilai" "🔄" "penerapan-rasio" "🏗️" "klasifikasi-segitiga" "🔺" "keliling-luas-segitiga" "📐" "klasifikasi-segiempat" "🔲" "sifat-segiempat" "🧩" "keliling-luas-segiempat-1" "📏" "keliling-luas-segiempat-2" "📏" "segi-banyak-dan-luas-gabungan" "🧩" "penerapan-segitiga-segiempat" "🏗️" }}
+{{ $sub_warna := dict "aplikasi-bilangan-bulat-dalam-kehidupan" "c2" "konsep-pecahan-desimal-dan-persen" "c4" "untung-rugi-dan-persentase" "c3" "diskon-bruto-netto-tara-pajak" "c5" "menabung-dan-bunga-sederhana" "c1" "proyek-perencanaan-keuangan" "c7" "h-materi-interaktif" "c9" "unsur-aljabar" "c8" "operasi-hitung-aljabar" "c2" "sifat-operasi-aljabar" "c7" "bentuk-ekuivalen" "c4" "penerapan-aljabar" "c3" "f-materi-interaktif" "c9" "pengantar" "c1" "konsep-dan-garis-bilangan-bulat" "c1" "membandingkan-dan-mengurutkan-bilangan-bulat" "c5" "penjumlahan-dan-pengurangan-bilangan-bulat" "c3" "perkalian-pembagian-dan-operasi-campuran" "c6" "faktorisasi-prima-kpk-fpb" "c2" "penerapan-literasi-finansial" "c4" "h-materi-interaktif" "c9" "i-materi-interaktif" "c8" "j-materi-interaktif" "c7" "pengertian-dan-bentuk-bilangan-rasional" "c2" "mengubah-bentuk-bilangan-rasional" "c1" "membandingkan-dan-mengurutkan-bilangan-rasional" "c4" "penjumlahan-dan-pengurangan-bilangan-rasional" "c3" "perkalian-dan-pembagian-bilangan-rasional" "c6" "penaksiran-dan-estimasi" "c5" "penerapan-bilangan-rasional" "c2" "h-materi-interaktif" "c9" "merumuskan-pertanyaan-data" "c7" "tabel-dan-diagram-batang" "c1" "diagram-lingkaran" "c4" "sampel-dan-estimasi" "c5" "pengertian-sudut" "c6" "menamai-dan-jenis-sudut" "c4" "dua-garis-berpotongan" "c5" "garis-sejajar-transversal" "c2" "jumlah-sudut-segitiga" "c3" "menentukan-sudut-belum-diketahui" "c8" "penerapan-garis-sudut" "c7" "h-latihan-interaktif" "c9" "konsep-kesebangunan" "c2" "syarat-bangun-sebangun" "c3" "kesebangunan-segitiga" "c6" "penerapan-kesebangunan" "c1" "pemecahan-masalah-kesebangunan" "c7" "f-materi-interaktif" "c9" "konsep-plsv" "c4" "memodelkan-plsv" "c8" "menyelesaikan-plsv-dengan-penjumlahan-pengurangan" "c3" "menyelesaikan-plsv-dengan-perkalian-pembagian" "c6" "penerapan-plsv" "c1" "konsep-ptlsv" "c5" "menyelesaikan-ptlsv" "c3" "garis-bilangan-ptlsv" "c1" "model-matematika-ptlsv" "c8" "penerapan-ptlsv" "c4" "konsep-pola-bilangan" "c7" "pola-barisan-bilangan" "c1" "pola-susunan-benda" "c4" "rumus-suku-ke-n" "c8" "penerapan-pola-bilangan" "c3" "perencanaan-proyek" "c1" "pelaksanaan-penyajian-proyek" "c5" "konsep-rasio" "c4" "rasio-senilai-proporsi" "c3" "skala" "c2" "laju-perubahan" "c6" "rasio-berbalik-nilai" "c8" "penerapan-rasio" "c7" "klasifikasi-segitiga" "c6" "keliling-luas-segitiga" "c1" "klasifikasi-segiempat" "c8" "sifat-segiempat" "c7" "keliling-luas-segiempat-1" "c3" "keliling-luas-segiempat-2" "c5" "segi-banyak-dan-luas-gabungan" "c4" "penerapan-segitiga-segiempat" "c2" }}
 {{ if .Params.semester }}
-{{/* Bab-level page: list submateri cards normally */}}
+{{/* Bab-level page: list submateri cards with icons */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
 {{ .Content }}
 <div class="grid">
   {{ range .Pages.ByWeight }}
-  {{ $pg := . }}
-  <a href="{{ .RelPermalink }}" class="card">
-    <h3>{{ .Title }}</h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
-    {{ with $pg.Params.cta_url }}<span class="card-cta" style="display:block;margin-top:10px"><a href="{{ . }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px">{{ with $pg.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</a></span>{{ end }}
+  {{ $slug := .File.BaseFileName }}
+  <a href="{{ .RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $sub_warna $slug) }}">{{ default "❓" (index $sub_emoji $slug) }}</div>
+    <div>
+      <h3>{{ .Title }}</h3>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      {{ with .Params.cta_url }}<span class="card-cta" style="display:block;margin-top:10px"><a href="{{ . }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px">{{ with $.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</a></span>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex;flex-direction:row;align-items:flex-start;gap:14px}
+.bab-card .bab-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ else }}
 {{/* Kelas-level page: show semester grouping */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">Materi Kelas 7 Semester Ganjil</h1>
 <p>Pilih bab terlebih dahulu. Di dalam setiap bab tersedia kartu-kartu submateri yang bisa dibuka siswa secara terpisah.</p>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "ganjil") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
@@ -34,11 +61,31 @@
 <h2 style="font-size:clamp(20px,3.5vw,28px);margin-top:40px;margin-bottom:8px">Materi Kelas 7 Semester Genap</h2>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "genap") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex;flex-direction:row;align-items:flex-start;gap:14px}
+.bab-card .bab-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ end }}
 {{ end }}
