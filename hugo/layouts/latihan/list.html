@@ -43,10 +43,11 @@ input[type=text],input[type=number]{width:100%;padding:12px 14px;border:1px soli
   <div class="l-hero"><h1 id="f-judul"></h1><p id="f-desc"></p></div>
   <div class="card">
     <h3 style="margin-bottom:6px">Isi data kamu</h3>
-    <p class="note">Nama (maks 20 karakter) · No. Absen (maks 2 angka) · Kelas (maks 4 karakter, contoh 7A). Tanpa password.</p>
+    <p class="note">Nama (maks 20 karakter) · No. Absen (maks 2 angka) · Kelas (maks 4 karakter, contoh 7A) · Nama Sekolah (maks 30 karakter). Tanpa password.</p>
     <label>Nama Lengkap</label><input type="text" id="f-nama" maxlength="20" placeholder="Nama kamu">
     <label>No. Absen</label><input type="text" id="f-absen" maxlength="2" placeholder="Contoh: 12">
     <label>Kelas</label><input type="text" id="f-kelas" maxlength="4" placeholder="Contoh: 7A">
+    <label>Nama Sekolah</label><input type="text" id="f-sekolah" maxlength="30" placeholder="Nama sekolah" oninput="this.value=this.value.replace(/[^A-Za-z0-9 ]/g,'')">
     <button class="btn btn-primary" onclick="mulai()">🚀 Mulai Mengerjakan</button>
   </div>
 </div>
@@ -66,7 +67,7 @@ async function init(){
   try{
     var r=await jf(API+"/pub/latihan?slug="+encodeURIComponent(SLUG)+"&_t="+Date.now(),{cache:"no-store"});
     if(r.message&&!r.soal){document.getElementById("view-load").innerHTML="Soal latihan belum tersedia untuk subbab ini.<br><small style='font-size:11px;color:var(--muted);word-break:break-all'>slug: "+esc(SLUG)+"<br>pesan: "+esc(r.message)+"</small>";return}
-    LAT={judul:r.judul,kelas:r.kelas,semester:r.semester,bab:r.bab,back_url:r.back_url,soal_json:(r.soal||[]).map(function(q){return {q:q.q,o:q.o}})}; 
+    LAT={judul:r.judul,kelas:r.kelas,semester:r.semester,bab:r.bab,back_url:r.back_url,soal_json:(r.soal||[]).map(function(q,i){return {oi:i,q:q.q,o:q.o,type:q.type||"pg",statements:q.statements||[]}})};
     showForm();
   }catch(e){document.getElementById("view-load").innerHTML="Gagal memuat: "+e.message}
 }
@@ -79,14 +80,14 @@ function showForm(){
 
 async function mulai(){
   var nama=document.getElementById("f-nama").value.trim(), absen=document.getElementById("f-absen").value.trim(),
-      kelas=document.getElementById("f-kelas").value.trim();
-  if(!nama||!absen||!kelas){alert("Nama, no. absen, dan kelas wajib diisi!");return}
+      kelas=document.getElementById("f-kelas").value.trim(), sekolah=document.getElementById("f-sekolah").value.trim();
+  if(!nama||!absen||!kelas||!sekolah){alert("Nama, no. absen, kelas, dan nama sekolah wajib diisi!");return}
   if(nama.length>20){alert("Nama maksimal 20 karakter");return}
   if(!/^\d{1,2}$/.test(absen)){alert("No. absen maksimal 2 angka");return}
   if(kelas.length>4){alert("Kelas maksimal 4 karakter");return}
   try{
     var s=await jf(API+"/latihan/start",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({slug:SLUG,nama:nama,no_absen:absen,kelas:kelas})});
+      body:JSON.stringify({slug:SLUG,nama:nama,no_absen:absen,kelas:kelas,sekolah:sekolah})});
     if(!s.id){document.getElementById("view-form").innerHTML="<div class='card'><div class='alert'>⛔ "+esc(s.message||"Gagal mulai")+"</div><a class='btn btn-ghost' href='"+esc(LAT.back_url||"/materi/")+"'>← Kembali ke subbab</a></div>";return}
     SID=s.id;
     state.soal=(LAT.soal_json||[]).map(function(q){return q});
@@ -100,9 +101,15 @@ async function mulai(){
 function render(){
   var q=state.soal[state.idx],i=state.idx;
   var opts=(q.o||[]).map(function(o,oi){
-    var sel=state.jwb[i]===oi?"selected":"";
+    var sel=(Array.isArray(state.jwb[i])?state.jwb[i].indexOf(oi)>=0:state.jwb[i]===oi)?"selected":"";
     return "<button class='q-option "+sel+"' onclick='pilih("+oi+")'>"+esc(o)+"</button>";
   }).join("");
+  if(q.type==="bs"){
+    var bs=Array.isArray(state.jwb[i])?state.jwb[i]:[];
+    opts="<table class='bs-table' style='width:100%;border-collapse:collapse'><thead><tr><th style='padding:8px;border-bottom:1px solid var(--border);text-align:left'>Pernyataan</th><th style='padding:8px;border-bottom:1px solid var(--border);text-align:center'>Benar</th><th style='padding:8px;border-bottom:1px solid var(--border);text-align:center'>Salah</th></tr></thead><tbody>"+
+      (q.statements||[]).map(function(st,si){return "<tr><td>"+(si+1)+". "+st+"</td><td><input type='radio' name='bs-"+i+"-"+si+"' value='B' "+(bs[si]===true?"checked":"")+" onchange='pilihBS("+si+",true)'></td><td><input type='radio' name='bs-"+i+"-"+si+"' value='S' "+(bs[si]===false?"checked":"")+" onchange='pilihBS("+si+",false)'></td></tr>"}).join("")+
+      "</tbody></table>";
+  }
   var nav="";state.soal.forEach(function(_,k){
     var c=k===i?"current":(state.jwb[k]!==undefined?"answered":"");
     nav+="<button class='"+c+"' onclick='go("+k+")'>"+(k+1)+"</button>";
@@ -111,20 +118,31 @@ function render(){
   var next=i<state.soal.length-1?"<button class='btn btn-primary' style='width:auto;padding:12px 28px' onclick='go("+(i+1)+")'>Selanjutnya →</button>":"<button class='btn btn-danger' onclick='kumpul()'>✅ Kumpulkan</button>";
   document.getElementById("view-quiz").innerHTML=
     "<div class='card' style='background:var(--accent);color:#fff;text-align:center'>Soal "+(i+1)+" dari "+state.soal.length+"</div>"+
-    "<div class='card'><div class='q-text'>"+(i+1)+". "+esc(q.q)+"</div><div>"+opts+"</div></div>"+
+    "<div class='card'><div class='q-text'>"+(i+1)+". "+(q.q||"")+"</div><div>"+opts+"</div></div>"+
     "<div class='card' style='padding:14px'><div class='q-nav' style='margin:0'>"+nav+"</div>"+
     "<div style='display:flex;gap:10px'>"+prev+next+"</div></div>";
   renderMath();
 }
 function renderMath(){if(typeof renderMathInElement==="function"){renderMathInElement(document.getElementById("view-quiz"),{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}]})}}
-function pilih(oi){state.jwb[state.idx]=oi;render()}
+function pilihBS(si,val){
+  var a=Array.isArray(state.jwb[state.idx])?state.jwb[state.idx].slice():[]; a[si]=val; state.jwb[state.idx]=a;
+}
+function pilih(oi){
+  var q=state.soal[state.idx];
+  if(q.type==="mr"){
+    var a=Array.isArray(state.jwb[state.idx])?state.jwb[state.idx].slice():[];
+    var p=a.indexOf(oi); p>=0?a.splice(p,1):a.push(oi); a.sort(function(x,y){return x-y}); state.jwb[state.idx]=a;
+  }else{state.jwb[state.idx]=oi}
+  render();
+}
 function go(i){state.idx=i;render()}
 
 async function kumpul(){
   if(!confirm("Yakin ingin mengumpulkan? Jawaban tidak bisa diubah lagi."))return;
   try{
+    var final={};state.soal.forEach(function(q,p){if(state.jwb[p]!==undefined)final[q.oi]=state.jwb[p]});
     var res=await jf(API+"/latihan/submit",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({session_id:SID,answers:state.jwb})});
+      body:JSON.stringify({session_id:SID,answers:final})});
     if(res.message&&!res.total_score){alert(res.message);return}
     var benar=res.correct||0, salah=res.wrong||0, kosong=res.empty||0, total=res.total_score||0, max=res.max_score||1;
     var pct=Math.round(total/max*100);

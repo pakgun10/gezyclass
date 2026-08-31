@@ -7,12 +7,23 @@
 <h1>{{ .Title }}</h1>
 {{ .Content }}
 
-{{ if and (eq .Section "materi") (ne .Kind "section") }}
-{{ $s := strings.TrimSuffix "/" .RelPermalink }}{{ $s = strings.TrimPrefix "/materi/" $s }}
+{{ if eq .Section "osn" }}
+<div class="topic-callout">📘 <strong>Catatan belajar:</strong> Kerjakan bagian “Terapkan pada soal” setelah memahami contoh pada setiap subbab.</div>
+{{ end }}
+
+{{ if and (or (eq .Section "materi") (eq .Section "osn")) (ne .Kind "section") }}
+{{ $s := strings.TrimSuffix "/" .RelPermalink }}
+{{ if eq .Section "materi" }}{{ $s = strings.TrimPrefix "/materi/" $s }}{{ else }}{{ $s = strings.TrimPrefix "/osn/" $s }}{{ end }}
 <div style="text-align:center;margin:36px 0 8px">
-  <a href="/latihan/?s={{ $s }}&v=2" class="card" style="display:inline-block;padding:18px 40px;font-weight:800;font-size:17px;background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:14px;text-decoration:none">
-    📝 Soal Latihan (CBT)
+  {{ if eq $s "kelas-8/teorema-pythagoras/j-game-edukatif" }}
+  <a href="/cbt/kelas8/" class="card" style="display:inline-block;padding:18px 40px;font-weight:800;font-size:17px;background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:14px;text-decoration:none">
+    📝 Latihan CBT untuk Materi Pythagoras
   </a>
+  {{ else }}
+  <a href="/latihan/?s={{ $s }}&v=2" class="card" style="display:inline-block;padding:18px 40px;font-weight:800;font-size:17px;background:linear-gradient(135deg,#111827,#1f3a5f);color:#fff;border-radius:14px;text-decoration:none">
+    📝 Latihan Sumatif
+  </a>
+  {{ end }}
 </div>
 <div style="text-align:center;color:var(--muted);font-size:13px;margin-bottom:12px">Kerjakan soal latihan interaktif — nilai langsung tampil, maksimal 3 kali.</div>
 {{ end }}
@@ -29,31 +40,20 @@
   {{ $prev := $nav.Get "prev" }}
   {{ $next := $nav.Get "next" }}
   {{ if or $prev $next }}
-  <nav class="lesson-nav" aria-label="Navigasi subbab" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--card-border)">
+  <nav class="lesson-nav" aria-label="Navigasi subbab">
     {{ with $prev }}
-    <a href="{{ .RelPermalink }}" class="card" style="margin:0;padding:18px">
-      <span style="display:block;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:6px">← Subbab sebelumnya</span>
-      <strong>{{ .Title }}</strong>
-      {{ with .Description }}<p style="margin-top:6px">{{ . }}</p>{{ end }}
+    <a href="{{ .RelPermalink }}" class="lesson-nav-btn lesson-nav-back" aria-label="Back: {{ .Title }}">
+      <span class="lesson-nav-arrow" aria-hidden="true">←</span><span>Back</span>
     </a>
     {{ else }}
-    <div class="card" aria-disabled="true" style="margin:0;padding:18px;opacity:.55">
-      <span style="display:block;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:6px">← Subbab sebelumnya</span>
-      <strong>Ini subbab pertama</strong>
-    </div>
+    <span class="lesson-nav-btn lesson-nav-back is-disabled" aria-disabled="true"><span class="lesson-nav-arrow" aria-hidden="true">←</span><span>Back</span></span>
     {{ end }}
-
     {{ with $next }}
-    <a href="{{ .RelPermalink }}" class="card" style="margin:0;padding:18px;text-align:right">
-      <span style="display:block;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:6px">Subbab berikutnya →</span>
-      <strong>{{ .Title }}</strong>
-      {{ with .Description }}<p style="margin-top:6px">{{ . }}</p>{{ end }}
+    <a href="{{ .RelPermalink }}" class="lesson-nav-btn lesson-nav-next" aria-label="Next: {{ .Title }}">
+      <span>Next</span><span class="lesson-nav-arrow" aria-hidden="true">→</span>
     </a>
     {{ else }}
-    <div class="card" aria-disabled="true" style="margin:0;padding:18px;text-align:right;opacity:.55">
-      <span style="display:block;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:6px">Subbab berikutnya →</span>
-      <strong>Ini subbab terakhir</strong>
-    </div>
+    <span class="lesson-nav-btn lesson-nav-next is-disabled" aria-disabled="true"><span>Next</span><span class="lesson-nav-arrow" aria-hidden="true">→</span></span>
     {{ end }}
   </nav>
   {{ end }}

@@ -1,30 +1,59 @@
 {{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
 {{ define "main" }}
+{{ $emoji := dict "transformasi" "🪞" "kekongruenan" "🔲" "lingkaran" "⭕" "bangun-ruang-sisi-lengkung" "⚽" "bangun-ruang-sisi-datar" "🧊" "perubahan-proporsional" "🔍" "review-penguatan-asesmen-akhir" "🏁" }}
+{{ $icons := dict "transformasi" "c2" "kekongruenan" "c1" "lingkaran" "c6" "bangun-ruang-sisi-lengkung" "c3" "bangun-ruang-sisi-datar" "c8" "perubahan-proporsional" "c4" "review-penguatan-asesmen-akhir" "c5" }}
 {{ with .Parent }}
 <a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
 {{ end }}
 
+{{ $sub_emoji := dict "jaring-jaring-bangun-ruang-sisi-datar" "🧩" "kubus" "🧊" "balok" "📦" "prisma" "🏢" "limas" "🔻" "gabungan-bangun-ruang" "🧩" "penerapan" "🏗️" "asesmen-sumatif" "🏁" "i-materi-interaktif" "🎮" "j-materi-interaktif" "🎮" "tabung-unsur-jaring" "🥫" "luas-permukaan-tabung" "📏" "volume-tabung" "🪣" "kerucut-luas-permukaan" "🍦" "volume-kerucut" "🍦" "bola-luas-volume" "⚽" "bangun-gabungan-penerapan" "🧩" "h-materi-interaktif" "🎮" "i-materi-interaktif" "🎮" "review-kesebangunan" "🪞" "konsep-kekongruenan" "🔲" "syarat-sss" "📏" "syarat-ssd" "📐" "syarat-sds" "🔺" "kekongruenan-segiempat" "🔳" "penerapan-kekongruenan" "🏗️" "h-materi-interaktif" "🎮" "unsur-unsur-lingkaran" "⭕" "keliling-lingkaran" "📏" "luas-lingkaran" "🥧" "sudut-pusat-dan-sudut-keliling" "📐" "panjang-busur" "🏹" "luas-juring-dan-penerapan" "🎂" "g-materi-interaktif" "🎮" "panjang-sudut" "📏" "pengaruh-luas" "📐" "pengaruh-volume" "🧊" "review-materi-esensial" "📚" "latihan-pemecahan-masalah" "🏁" "refleksi" "🪞" "translasi" "➡️" "rotasi" "🔄" "dilatasi" "🔎" "transformasi-titik" "📍" "transformasi-garis" "📏" "transformasi-bangun-datar" "🧩" "h-materi-interaktif" "🎮" "i-lembar-kerja-interaktif" "✏️" }}
+{{ $sub_warna := dict "jaring-jaring-bangun-ruang-sisi-datar" "c8" "kubus" "c1" "balok" "c3" "prisma" "c5" "limas" "c6" "gabungan-bangun-ruang" "c7" "penerapan" "c2" "asesmen-sumatif" "c5" "i-materi-interaktif" "c9" "j-materi-interaktif" "c8" "tabung-unsur-jaring" "c1" "luas-permukaan-tabung" "c3" "volume-tabung" "c5" "kerucut-luas-permukaan" "c2" "volume-kerucut" "c4" "bola-luas-volume" "c3" "bangun-gabungan-penerapan" "c7" "h-materi-interaktif" "c9" "i-materi-interaktif" "c8" "review-kesebangunan" "c2" "konsep-kekongruenan" "c1" "syarat-sss" "c3" "syarat-ssd" "c5" "syarat-sds" "c6" "kekongruenan-segiempat" "c8" "penerapan-kekongruenan" "c4" "h-materi-interaktif" "c9" "unsur-unsur-lingkaran" "c6" "keliling-lingkaran" "c1" "luas-lingkaran" "c4" "sudut-pusat-dan-sudut-keliling" "c5" "panjang-busur" "c3" "luas-juring-dan-penerapan" "c7" "g-materi-interaktif" "c9" "panjang-sudut" "c1" "pengaruh-luas" "c3" "pengaruh-volume" "c8" "review-materi-esensial" "c1" "latihan-pemecahan-masalah" "c5" "refleksi" "c2" "translasi" "c1" "rotasi" "c3" "dilatasi" "c8" "transformasi-titik" "c4" "transformasi-garis" "c6" "transformasi-bangun-datar" "c7" "h-materi-interaktif" "c9" "i-lembar-kerja-interaktif" "c4" }}
 {{ if .Params.semester }}
-{{/* Bab-level page: list submateri cards normally */}}
+{{/* Bab-level page: list submateri cards with icons */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">{{ .Title }}</h1>
 {{ .Content }}
 <div class="grid">
   {{ range .Pages.ByWeight }}
-  <a href="{{ .RelPermalink }}" class="card">
-    <h3>{{ .Title }}</h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  {{ $slug := .File.BaseFileName }}
+  <a href="{{ .RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $sub_warna $slug) }}">{{ default "❓" (index $sub_emoji $slug) }}</div>
+    <div>
+      <h3>{{ .Title }}</h3>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      {{ with .Params.cta_url }}<span class="card-cta" style="display:block;margin-top:10px"><a href="{{ . }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--btn-bg);color:var(--btn-text);padding:6px 14px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px">{{ with $.Params.cta_label }}{{ . }}{{ else }}Buka{{ end }}</a></span>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex;flex-direction:row;align-items:flex-start;gap:14px}
+.bab-card .bab-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ else }}
 {{/* Kelas-level page: show semester grouping */}}
 <h1 style="font-size:clamp(22px,4vw,32px);margin-bottom:8px">Materi Kelas 9 Semester Ganjil</h1>
 <p>Pilih bab terlebih dahulu. Di dalam setiap bab tersedia kartu-kartu submateri yang bisa dibuka siswa secara terpisah.</p>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "ganjil") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
@@ -32,11 +61,31 @@
 <h2 style="font-size:clamp(20px,3.5vw,28px);margin-top:40px;margin-bottom:8px">Materi Kelas 9 Semester Genap</h2>
 <div class="grid">
   {{ range $i, $page := (where .Pages.ByWeight ".Params.semester" "eq" "genap") }}
-  <a href="{{ $page.RelPermalink }}" class="card">
-    <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
-    {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+  {{ $dir := strings.TrimSuffix "/" $page.File.Dir }}
+  {{ $parts := strings.Split $dir "/" }}
+  {{ $slug := index $parts (sub (len $parts) 1) }}
+  <a href="{{ $page.RelPermalink }}" class="card bab-card">
+    <div class="bab-icon {{ default "c9" (index $icons $slug) }}">{{ default "❓" (index $emoji $slug) }}</div>
+    <div>
+      <h3>{{ add $i 1 }}. {{ $page.Title }}</h3>
+      {{ with $page.Description }}<p>{{ . }}</p>{{ end }}
+    </div>
   </a>
   {{ end }}
 </div>
+<style>
+.bab-card{display:flex;flex-direction:row;align-items:flex-start;gap:14px}
+.bab-card .bab-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.bab-card .bab-icon.c1{background:linear-gradient(135deg,var(--bc1a),var(--bc1b))}
+.bab-card .bab-icon.c2{background:linear-gradient(135deg,var(--bc2a),var(--bc2b))}
+.bab-card .bab-icon.c3{background:linear-gradient(135deg,var(--bc3a),var(--bc3b))}
+.bab-card .bab-icon.c4{background:linear-gradient(135deg,var(--bc4a),var(--bc4b))}
+.bab-card .bab-icon.c5{background:linear-gradient(135deg,var(--bc5a),var(--bc5b))}
+.bab-card .bab-icon.c6{background:linear-gradient(135deg,var(--bc6a),var(--bc6b))}
+.bab-card .bab-icon.c7{background:linear-gradient(135deg,var(--bc7a),var(--bc7b))}
+.bab-card .bab-icon.c8{background:linear-gradient(135deg,var(--bc8a),var(--bc8b))}
+.bab-card .bab-icon.c9{background:linear-gradient(135deg,var(--bc9a),var(--bc9b))}
+@media (max-width:560px){.bab-card{flex-direction:column}}
+</style>
 {{ end }}
 {{ end }}

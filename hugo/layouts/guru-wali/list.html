@@ -1,7 +1,7 @@
 {{ define "title" }}{{ .Title }} — {{ .Site.Title }}{{ end }}
 {{ define "main" }}
-{{ $emoji := dict "10-menit-terakhir-yang-sering-terlewat" "⏱️" "ai-untuk-belajar" "🤖" "belajar-berpasangan" "👥" "bijak-bermedia-sosial" "📱" "cegah-bullying" "🛡️" "dari-tanya-jawab-ke-diskusi" "💬" "gaya-belajar" "🎨" "kelas-dimulai-sebelum-guru-masuk" "⏰" "kenapa-murid-diam-saat-ditanya" "🤔" "kerja-sama-tim" "🤝" "komunikasi-guru-murid" "🗣️" "mengatasi-malas-belajar" "🔥" "mengelola-emosi-pubertas" "🎢" "menghargai-waktu-belajar" "⏳" "menulis-itu-skill-bukan-bakat" "✍️" "metode-mengajar-kreatif" "💡" "percaya-diri" "💪" "pola-hidup-sehat" "🥗" "rutinitas-5-menit-pembuka-kelas" "🚀" "ujian-tanpa-stres" "📝" }}
-{{ $warna := dict "10-menit-terakhir-yang-sering-terlewat" "c4" "ai-untuk-belajar" "c8" "belajar-berpasangan" "c2" "bijak-bermedia-sosial" "c1" "cegah-bullying" "c6" "dari-tanya-jawab-ke-diskusi" "c2" "gaya-belajar" "c7" "kelas-dimulai-sebelum-guru-masuk" "c4" "kenapa-murid-diam-saat-ditanya" "c5" "kerja-sama-tim" "c3" "komunikasi-guru-murid" "c1" "mengatasi-malas-belajar" "c5" "mengelola-emosi-pubertas" "c9" "menghargai-waktu-belajar" "c4" "menulis-itu-skill-bukan-bakat" "c7" "metode-mengajar-kreatif" "c8" "percaya-diri" "c9" "pola-hidup-sehat" "c3" "rutinitas-5-menit-pembuka-kelas" "c8" "ujian-tanpa-stres" "c5" }}
+{{ $emoji := dict "guru-wali" "📋" "wali-kelas" "👨‍🏫" "fasilitasi" "🤝" }}
+{{ $warna := dict "guru-wali" "c1" "wali-kelas" "c4" "fasilitasi" "c7" }}
 {{ with .Parent }}
 <a href="{{ .RelPermalink }}" class="back-link">← Kembali ke {{ .Title }}</a>
 {{ end }}
