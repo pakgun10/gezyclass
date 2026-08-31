@@ -4,7 +4,7 @@
 .monitor-login{max-width:520px;margin:32px auto;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
 .monitor-login h2{margin:0 0 8px;text-align:center;font-size:22px}.monitor-login p{color:var(--sub);font-size:14px;text-align:center}.monitor-login label{display:block;font-weight:600;margin:14px 0 4px}.monitor-login input{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
 .btn{border:0;border-radius:9px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.monitor-login .btn{width:100%;margin-top:18px;padding:14px;font-size:16px}.hidden{display:none!important}
-.monitor-layout{max-width:1280px;margin:32px auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}.monitor-sidebar{position:sticky;top:20px;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,.06)}.monitor-sidebar h3{font-size:16px;margin:0 0 12px}.monitor-sidebar a{display:block;text-decoration:none;padding:11px;border-radius:9px;color:var(--text);font-size:14px;font-weight:700;margin-top:5px}.monitor-sidebar a:hover,.monitor-sidebar a.active{background:var(--accent);color:#fff}
+.monitor-layout{max-width:1280px;margin:32px auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}.monitor-sidebar{position:sticky;top:20px;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,.06)}.monitor-sidebar h3{font-size:16px;margin:0 0 12px}.monitor-sidebar a{display:block;text-decoration:none;padding:11px;border-radius:9px;color:var(--text);font-size:14px;font-weight:700;margin-top:5px}.monitor-sidebar a:hover,.monitor-sidebar a.active{background:var(--accent);color:#fff}.monitor-sidebar-toggle{float:right;width:28px;height:28px;padding:0;border:1px solid var(--card-border);border-radius:7px;background:var(--btn-ghost);color:var(--btn-ghost-text);cursor:pointer;font-weight:700}.monitor-layout.sidebar-collapsed{grid-template-columns:58px minmax(0,1fr)}.monitor-sidebar.collapsed{padding:10px}.monitor-sidebar.collapsed h3,.monitor-sidebar.collapsed a{display:none}.monitor-sidebar.collapsed .monitor-sidebar-toggle{float:none;width:36px;height:36px}
 .monitor-panel{min-width:0;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,.06)}.monitor-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}.monitor-head h1{font-size:24px;margin:0 0 5px}.monitor-head p{margin:0;color:var(--sub);font-size:14px}.head-actions{display:flex;align-items:center;gap:10px}.live{display:inline-flex;align-items:center;gap:7px;background:var(--green-bg);color:var(--green);font-size:12px;font-weight:800;padding:7px 11px;border-radius:999px}.live-dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.5s infinite}@keyframes pulse{50%{opacity:.35}}
 .summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin:22px 0}.summary-card{border:1px solid var(--card-border);border-radius:13px;padding:15px;background:var(--page-bg)}.summary-card strong{display:block;font-size:25px}.summary-card span{font-size:12px;color:var(--sub);font-weight:700}
 .filters{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr;gap:10px;margin-bottom:18px}.filters select,.filters input{width:100%;padding:10px 12px;border:1px solid var(--input-border);border-radius:9px;background:var(--input-bg);color:var(--text);font-size:14px}
@@ -28,6 +28,7 @@
 <div id="monitor-view" class="hidden">
   <div class="monitor-layout">
     <aside class="monitor-sidebar">
+      <button class="monitor-sidebar-toggle" type="button" title="Perkecil sidebar" aria-label="Perkecil sidebar" aria-expanded="true" onclick="toggleMonitorSidebar()">‹</button>
       <h3>📋 Navigasi Admin</h3>
       <a href="/cbt/hasil/">📊 Rekap Hasil</a>
       <a class="active" href="/cbt/progress/">● Progress Peserta</a>
@@ -64,6 +65,17 @@
 
 <script>
 var API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],SERVER_NOW=Date.now(),TIMER=null,INACTIVE_MS=120000;
+function toggleMonitorSidebar(){
+  var sidebar=document.querySelector(".monitor-sidebar"),layout=document.querySelector(".monitor-layout"),button=document.querySelector(".monitor-sidebar-toggle");
+  var collapsed=sidebar.classList.toggle("collapsed");
+  layout.classList.toggle("sidebar-collapsed",collapsed);
+  button.textContent=collapsed?"›":"‹";
+  button.title=collapsed?"Perbesar sidebar":"Perkecil sidebar";
+  button.setAttribute("aria-label",button.title);
+  button.setAttribute("aria-expanded",collapsed?"false":"true");
+  try{localStorage.setItem("gezyclass-sidebar-collapsed",collapsed?"1":"0")}catch(e){}
+}
+try{if(localStorage.getItem("gezyclass-sidebar-collapsed")==="1")toggleMonitorSidebar()}catch(e){}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function hdr(){return {"Authorization":TOK}}
 function stamp(v){var n=Date.parse(v||"");return isNaN(n)?0:n}
