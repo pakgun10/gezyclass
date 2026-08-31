@@ -645,14 +645,19 @@ routerAdd("GET", "/api/guru/exam-progress", function (c) {
     var classesCol = $app.findCollectionByNameOrId("classes");
     var items = [];
     var examOptions = [];
-    var answerStats = [];
+    var answerStats = arrayOf(new DynamicModel({
+      sessionId: "",
+      answered: 0,
+      lastActivityUnix: 0
+    }));
     var answerStatsBySession = {};
     $app.db().newQuery(
-      "SELECT session_id, COUNT(*) AS answered, MAX(submitted_at) AS last_activity " +
+      "SELECT session_id AS sessionId, COUNT(*) AS answered, " +
+      "unixepoch(MAX(submitted_at)) AS lastActivityUnix " +
       "FROM exam_answers GROUP BY session_id"
     ).all(answerStats);
     for (var statIndex = 0; statIndex < answerStats.length; statIndex++) {
-      answerStatsBySession[String(answerStats[statIndex].session_id || "")] = answerStats[statIndex];
+      answerStatsBySession[String(answerStats[statIndex].sessionId || "")] = answerStats[statIndex];
     }
 
     for (var i = 0; i < exams.length; i++) {
@@ -676,9 +681,13 @@ routerAdd("GET", "/api/guru/exam-progress", function (c) {
       for (var k = 0; k < sessions.length; k++) {
         var session = sessions[k];
         var answerStat = answerStatsBySession[session.id] || {};
-        var lastActivity = session.get("started_at") || "";
-        if (answerStat.last_activity) lastActivity = answerStat.last_activity;
-        if (session.get("ended_at")) lastActivity = session.get("ended_at");
+        var startedAt = session.getDateTime("started_at");
+        var endedAt = session.getDateTime("ended_at");
+        var lastActivity = startedAt.isZero() ? "" : startedAt.string();
+        if (answerStat.lastActivityUnix) {
+          lastActivity = new Date(answerStat.lastActivityUnix * 1000).toISOString();
+        }
+        if (!endedAt.isZero()) lastActivity = endedAt.string();
 
         items.push({
           id: session.id,
