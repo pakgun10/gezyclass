@@ -504,6 +504,87 @@ routerAdd("GET", "/api/guru/exam-recap", function (c) {
   }
 });
 
+// ---------- GURU: monitoring progress CBT (auth guru) ----------
+routerAdd("GET", "/api/guru/exam-progress", function (c) {
+  try {
+    var ri = c.requestInfo();
+    if (!ri.auth || ri.auth.collection().name !== "guru") {
+      return c.json(403, { message: "Akses khusus guru." });
+    }
+
+    var qs = function(v){ return "'" + String(v == null ? "" : v).replace(/'/g, "''") + "'"; };
+    var exams = $app.findRecordsByFilter(
+      $app.findCollectionByNameOrId("exams"),
+      "is_active = true", "title", 500, 0
+    );
+    var sessionsCol = $app.findCollectionByNameOrId("exam_sessions");
+    var questionsCol = $app.findCollectionByNameOrId("exam_questions");
+    var classesCol = $app.findCollectionByNameOrId("classes");
+    var items = [];
+    var examOptions = [];
+    var answerStats = [];
+    var answerStatsBySession = {};
+    $app.db().newQuery(
+      "SELECT session_id, COUNT(*) AS answered, MAX(submitted_at) AS last_activity " +
+      "FROM exam_answers GROUP BY session_id"
+    ).all(answerStats);
+    for (var statIndex = 0; statIndex < answerStats.length; statIndex++) {
+      answerStatsBySession[String(answerStats[statIndex].session_id || "")] = answerStats[statIndex];
+    }
+
+    for (var i = 0; i < exams.length; i++) {
+      var exam = exams[i];
+      var className = "";
+      var classID = String(exam.get("class_id") || "");
+      if (classID) {
+        try {
+          className = String($app.findRecordById(classesCol, classID).get("name") || "");
+        } catch (classErr) {}
+      }
+
+      var totalQuestions = $app.findRecordsByFilter(
+        questionsCol, "exam_id = " + qs(exam.id), "", 500, 0
+      ).length;
+      examOptions.push({ id: exam.id, title: exam.get("title") || "Ujian", class_name: className });
+
+      var sessions = $app.findRecordsByFilter(
+        sessionsCol, "exam_id = " + qs(exam.id), "-started_at", 1000, 0
+      );
+      for (var k = 0; k < sessions.length; k++) {
+        var session = sessions[k];
+        var answerStat = answerStatsBySession[session.id] || {};
+        var lastActivity = session.get("started_at") || "";
+        if (answerStat.last_activity) lastActivity = answerStat.last_activity;
+        if (session.get("ended_at")) lastActivity = session.get("ended_at");
+
+        items.push({
+          id: session.id,
+          exam_id: exam.id,
+          exam_title: exam.get("title") || "Ujian",
+          class_name: className,
+          nama: session.get("nama") || "",
+          no_absen: session.get("no_absen"),
+          kelas: session.get("kelas") || className,
+          status: session.get("status") || "ongoing",
+          answered: parseInt(answerStat.answered, 10) || 0,
+          total_questions: totalQuestions,
+          started_at: session.get("started_at") || "",
+          ended_at: session.get("ended_at") || "",
+          last_activity: lastActivity
+        });
+      }
+    }
+
+    return c.json(200, {
+      items: items,
+      exams: examOptions,
+      server_time: new Date().toISOString()
+    });
+  } catch (e) {
+    return c.json(500, { message: "Terjadi kesalahan: " + e.message });
+  }
+});
+
 // ---------- EXAM: autosave jawaban ----------
 routerAdd("POST", "/api/exam/autosave", function (c) {
   try {
@@ -560,9 +641,21 @@ routerAdd("POST", "/api/exam/autosave", function (c) {
       var existing = $app.findRecordsByFilter(anCol,
         "session_id = " + qs(sessionId) + " && question_id = " + qs(qr.id), "", 1, 0);
       var rec;
-      if (existing.length) rec = existing[0];
-      else { rec = new Record(anCol); rec.set("session_id", sessionId); rec.set("question_id", qr.id); }
-      rec.set("answer_json", { selected_index: Array.isArray(sel) ? selArr : sel });
+      var selectedValue = Array.isArray(sel) ? selArr : sel;
+      if (existing.length) {
+        rec = existing[0];
+        var previousAnswer = j(rec, "answer_json") || {};
+        var previousValue = previousAnswer.selected_index;
+        var unchanged = Array.isArray(selectedValue) && Array.isArray(previousValue)
+          ? eqArr(selectedValue, previousValue)
+          : String(previousValue) === String(selectedValue);
+        if (unchanged) continue;
+      } else {
+        rec = new Record(anCol);
+        rec.set("session_id", sessionId);
+        rec.set("question_id", qr.id);
+      }
+      rec.set("answer_json", { selected_index: selectedValue });
       rec.set("is_correct", isCorrect);
       rec.set("score", isCorrect ? (eq.get("points") || 5) : 0);
       rec.set("max_score", eq.get("points") || 5);

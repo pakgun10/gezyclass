@@ -1,0 +1,99 @@
+{{ define "main" }}
+<style>
+*{box-sizing:border-box}
+.monitor-login{max-width:520px;margin:32px auto;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.monitor-login h2{margin:0 0 8px;text-align:center;font-size:22px}.monitor-login p{color:var(--sub);font-size:14px;text-align:center}.monitor-login label{display:block;font-weight:600;margin:14px 0 4px}.monitor-login input{width:100%;padding:12px 14px;border:1px solid var(--input-border);border-radius:10px;font-size:16px;background:var(--input-bg);color:var(--text)}
+.btn{border:0;border-radius:9px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.monitor-login .btn{width:100%;margin-top:18px;padding:14px;font-size:16px}.hidden{display:none!important}
+.monitor-layout{max-width:1280px;margin:32px auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}.monitor-sidebar{position:sticky;top:20px;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,.06)}.monitor-sidebar h3{font-size:16px;margin:0 0 12px}.monitor-sidebar a{display:block;text-decoration:none;padding:11px;border-radius:9px;color:var(--text);font-size:14px;font-weight:700;margin-top:5px}.monitor-sidebar a:hover,.monitor-sidebar a.active{background:var(--accent);color:#fff}
+.monitor-panel{min-width:0;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:24px;box-shadow:0 4px 24px rgba(0,0,0,.06)}.monitor-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}.monitor-head h1{font-size:24px;margin:0 0 5px}.monitor-head p{margin:0;color:var(--sub);font-size:14px}.head-actions{display:flex;align-items:center;gap:10px}.live{display:inline-flex;align-items:center;gap:7px;background:var(--green-bg);color:var(--green);font-size:12px;font-weight:800;padding:7px 11px;border-radius:999px}.live-dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.5s infinite}@keyframes pulse{50%{opacity:.35}}
+.summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin:22px 0}.summary-card{border:1px solid var(--card-border);border-radius:13px;padding:15px;background:var(--page-bg)}.summary-card strong{display:block;font-size:25px}.summary-card span{font-size:12px;color:var(--sub);font-weight:700}
+.filters{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr;gap:10px;margin-bottom:18px}.filters select,.filters input{width:100%;padding:10px 12px;border:1px solid var(--input-border);border-radius:9px;background:var(--input-bg);color:var(--text);font-size:14px}
+.table-wrap{overflow-x:auto}.progress-table{width:100%;border-collapse:collapse;font-size:13px}.progress-table th,.progress-table td{padding:11px 10px;border-bottom:1px solid var(--row-border);text-align:left;vertical-align:middle}.progress-table th{background:var(--thead-bg);font-size:12px;white-space:nowrap}.participant strong{display:block}.participant small{color:var(--sub)}.status{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-weight:700;font-size:12px}.status-dot{width:9px;height:9px;border-radius:50%;flex:none}.doing .status-dot{background:#22c55e}.login .status-dot{background:#eab308}.inactive .status-dot{background:#f97316}.finished .status-dot{background:#3b82f6}
+.progress-cell{min-width:150px}.progress-line{display:flex;align-items:center;gap:8px}.progress-track{height:8px;flex:1;background:var(--row-border);border-radius:99px;overflow:hidden}.progress-fill{height:100%;background:var(--accent);border-radius:99px}.progress-pct{min-width:34px;text-align:right;font-weight:700}.empty-row{text-align:center!important;color:var(--sub);padding:32px!important}.error{color:var(--red);font-size:13px;margin-top:10px}.updated{color:var(--sub);font-size:12px;text-align:right;margin-top:12px}
+@media(max-width:900px){.summary{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr 1fr}.monitor-layout{display:block;margin:16px 12px}.monitor-sidebar{position:static;margin-bottom:14px;display:flex;gap:6px;align-items:center}.monitor-sidebar h3{display:none}.monitor-sidebar a{margin:0}.monitor-panel{padding:18px}}
+@media(max-width:560px){.filters{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.head-actions{width:100%;justify-content:space-between}}
+</style>
+
+<div id="login-view" class="monitor-login">
+  <h2>🔐 Progress Peserta CBT</h2>
+  <p>Masuk dengan akun guru untuk membuka monitor realtime.</p>
+  <label for="g-email">Email</label>
+  <input type="text" id="g-email" placeholder="email guru" autocomplete="username">
+  <label for="g-pass">Password</label>
+  <input type="password" id="g-pass" placeholder="password" autocomplete="current-password">
+  <button class="btn" onclick="doLogin()">Masuk</button>
+  <p id="login-msg" class="error"></p>
+</div>
+
+<div id="monitor-view" class="hidden">
+  <div class="monitor-layout">
+    <aside class="monitor-sidebar">
+      <h3>📋 Navigasi Admin</h3>
+      <a href="/cbt/hasil/">📊 Rekap Hasil</a>
+      <a class="active" href="/cbt/progress/">● Progress Peserta</a>
+    </aside>
+    <main class="monitor-panel">
+      <div class="monitor-head">
+        <div><h1>Progress Peserta CBT</h1><p>Aktivitas dan pengerjaan peserta diperbarui otomatis.</p></div>
+        <div class="head-actions"><span id="live" class="live"><span class="live-dot"></span> Live</span><button class="btn" onclick="doLogout()">Keluar</button></div>
+      </div>
+      <div class="summary">
+        <div class="summary-card"><strong id="sum-total">0</strong><span>Total peserta</span></div>
+        <div class="summary-card"><strong id="sum-doing">0</strong><span>Sedang mengerjakan</span></div>
+        <div class="summary-card"><strong id="sum-login">0</strong><span>Belum mulai</span></div>
+        <div class="summary-card"><strong id="sum-finished">0</strong><span>Selesai</span></div>
+        <div class="summary-card"><strong id="sum-inactive">0</strong><span>Tidak aktif</span></div>
+      </div>
+      <div class="filters">
+        <select id="filter-exam" aria-label="Filter ujian"><option value="">Semua ujian</option></select>
+        <select id="filter-class" aria-label="Filter kelas"><option value="">Semua kelas</option></select>
+        <select id="filter-status" aria-label="Filter status"><option value="">Semua status</option><option value="doing">Mengerjakan</option><option value="login">Belum mulai</option><option value="inactive">Tidak aktif</option><option value="finished">Selesai</option></select>
+        <input id="filter-search" type="search" placeholder="Cari nama peserta..." aria-label="Cari nama peserta">
+      </div>
+      <div class="table-wrap">
+        <table class="progress-table">
+          <thead><tr><th>Peserta</th><th>Kelas</th><th>Ujian</th><th>Status</th><th>Progress</th><th>Terjawab</th><th>Total Soal</th><th>Terakhir Aktif</th></tr></thead>
+          <tbody id="progress-body"><tr><td colspan="8" class="empty-row">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+      <p id="monitor-error" class="error"></p>
+      <div id="updated-at" class="updated"></div>
+    </main>
+  </div>
+</div>
+
+<script>
+var API="/api",TOK=sessionStorage.getItem("guru_tok")||"",DATA=[],SERVER_NOW=Date.now(),TIMER=null,INACTIVE_MS=120000;
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function hdr(){return {"Authorization":TOK}}
+function stamp(v){var n=Date.parse(v||"");return isNaN(n)?0:n}
+function statusOf(row){if(row.status==="submitted"||row.status==="timeout")return "finished";if(SERVER_NOW-stamp(row.last_activity)>=INACTIVE_MS)return "inactive";return row.answered>0?"doing":"login"}
+function statusLabel(status){return status==="doing"?"Sedang Mengerjakan":status==="login"?"Login/Belum Mengerjakan":status==="inactive"?"Tidak Aktif":"Selesai"}
+function relativeTime(value){var diff=Math.max(0,SERVER_NOW-stamp(value)),sec=Math.floor(diff/1000);if(sec<10)return "Baru saja";if(sec<60)return sec+" detik lalu";var min=Math.floor(sec/60);if(min<60)return min+" menit lalu";var hour=Math.floor(min/60);if(hour<24)return hour+" jam lalu";return Math.floor(hour/24)+" hari lalu"}
+function percent(row){return row.total_questions>0?Math.min(100,Math.round(row.answered/row.total_questions*100)):0}
+
+async function doLogin(){
+  var email=document.getElementById("g-email").value.trim(),password=document.getElementById("g-pass").value,msg=document.getElementById("login-msg");msg.textContent="Memeriksa...";
+  try{var r=await fetch(API+"/collections/guru/auth-with-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identity:email,password:password})});var d=await r.json();if(!d.token){msg.textContent="Login gagal: email/password salah.";return}TOK=d.token;sessionStorage.setItem("guru_tok",TOK);openMonitor()}catch(e){msg.textContent="Gagal terhubung: "+e.message}
+}
+function doLogout(){if(TIMER)clearInterval(TIMER);sessionStorage.removeItem("guru_tok");location.reload()}
+function openMonitor(){document.getElementById("login-view").classList.add("hidden");document.getElementById("monitor-view").classList.remove("hidden");loadData();TIMER=setInterval(loadData,10000)}
+
+async function loadData(){
+  var live=document.getElementById("live"),err=document.getElementById("monitor-error");live.style.opacity=".55";
+  try{var r=await fetch(API+"/guru/exam-progress",{headers:hdr()});var d=await r.json();if(!r.ok)throw new Error(d.message||"Gagal memuat data");DATA=d.items||[];SERVER_NOW=stamp(d.server_time)||Date.now();setOptions(d.exams||[]);render();err.textContent="";document.getElementById("updated-at").textContent="Diperbarui "+new Date().toLocaleTimeString("id-ID");live.style.opacity="1"}catch(e){err.textContent=e.message;if(e.message==="Akses khusus guru.")doLogout();live.style.opacity=".45"}
+}
+function setOptions(exams){
+  var exam=document.getElementById("filter-exam"),current=exam.value,known={};Array.prototype.forEach.call(exam.options,function(o){known[o.value]=true});exams.forEach(function(x){if(!known[x.id])exam.add(new Option(x.title,x.id))});exam.value=current;
+  var cls=document.getElementById("filter-class"),selected=cls.value,classes={};DATA.forEach(function(x){if(x.kelas)classes[x.kelas]=true});cls.innerHTML='<option value="">Semua kelas</option>'+Object.keys(classes).sort().map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>'}).join("");cls.value=selected;
+}
+function filtered(){var exam=document.getElementById("filter-exam").value,cls=document.getElementById("filter-class").value,status=document.getElementById("filter-status").value,q=document.getElementById("filter-search").value.trim().toLowerCase();return DATA.filter(function(x){return(!exam||x.exam_id===exam)&&(!cls||x.kelas===cls)&&(!status||statusOf(x)===status)&&(!q||(x.nama||"").toLowerCase().indexOf(q)>=0)})}
+function render(){
+  var rows=filtered();document.getElementById("sum-total").textContent=rows.length;["doing","login","finished","inactive"].forEach(function(s){document.getElementById("sum-"+s).textContent=rows.filter(function(x){return statusOf(x)===s}).length});
+  var body=document.getElementById("progress-body");if(!rows.length){body.innerHTML='<tr><td colspan="8" class="empty-row">Tidak ada peserta yang sesuai filter.</td></tr>';return}
+  rows.sort(function(a,b){var order={doing:0,login:1,inactive:2,finished:3},d=order[statusOf(a)]-order[statusOf(b)];return d||(a.nama||"").localeCompare(b.nama||"")});body.innerHTML=rows.map(function(x){var st=statusOf(x),pct=percent(x);return '<tr><td class="participant"><strong>'+esc(x.nama)+'</strong><small>No. '+esc(x.no_absen)+'</small></td><td>'+esc(x.kelas||"-")+'</td><td>'+esc(x.exam_title)+'</td><td><span class="status '+st+'"><span class="status-dot"></span>'+statusLabel(st)+'</span></td><td class="progress-cell"><div class="progress-line"><div class="progress-track"><div class="progress-fill" style="width:'+pct+'%"></div></div><span class="progress-pct">'+pct+'%</span></div></td><td>'+x.answered+'</td><td>'+x.total_questions+'</td><td title="'+esc(x.last_activity)+'">'+relativeTime(x.last_activity)+'</td></tr>'}).join("")
+}
+["filter-exam","filter-class","filter-status"].forEach(function(id){document.getElementById(id).addEventListener("change",render)});document.getElementById("filter-search").addEventListener("input",render);
+if(TOK)openMonitor();
+</script>
+{{ end }}

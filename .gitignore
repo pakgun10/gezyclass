@@ -18,6 +18,10 @@ repo/
 # Konten GezyClass tidak disimpan di Git — ambil dari backup
 hugo/content/*
 !hugo/content/README.md
+!hugo/content/cbt/
+hugo/content/cbt/*
+!hugo/content/cbt/progress/
+!hugo/content/cbt/progress/_index.md
 hugo/static/images/*
 !hugo/static/images/README.md
 hugo/.hugo_build.lock
