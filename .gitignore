@@ -38,6 +38,10 @@ hugo/static/latihan/data/
 
 # Folder sementara
 tmp-*/
+tmp-*.json
+
+# Backup lokal / rollback sementara
+*.bak-*
 
 # File sudah tak dipakai
 /bilangan-bulat.html
