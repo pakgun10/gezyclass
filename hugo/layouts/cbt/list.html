@@ -110,6 +110,8 @@ function resolveKey(e, classes){
   return inferKey(e);
 }
 function matchKey(e, classes){
+  const explicit = String(e.description || "").toLowerCase();
+  if (explicit.indexOf("[kategori: lainnya]") >= 0) return CLASS_KEY === "lainnya";
   const key = resolveKey(e, classes);
   if (CLASS_KEY === "lainnya") return !key || (key !== "kelas7" && key !== "kelas8" && key !== "kelas9");
   return key === CLASS_KEY;
