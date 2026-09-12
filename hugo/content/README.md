@@ -1,7 +1,9 @@
-# Konten Materi (tidak disimpan di Git)
+# Konten GezyClass (tidak disimpan di Git)
 
-Folder ini berisi konten GezyClass (markdown bab/subab + CBT) dan **tidak di-commit ke repository**.
+Konten materi, soal latihan, dan soal CBT **tidak di-commit ke repository**.
 Sumber konten adalah **backup harian**, bukan Git.
+
+Selain folder ini, data soal latihan JSON berada di `hugo/static/latihan/data/`.
 
 ## Sumber backup
 - VPS: `/home/pgun/backup-gezyclass/archives/backup-gezyclass-*.tar.gz`

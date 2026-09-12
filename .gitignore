@@ -34,6 +34,7 @@ hugo/_arsip-content/
 hugo/static/bank-soal/
 hugo/static/guru-wali/
 hugo/static/materi-interaktif/
+hugo/static/latihan/data/
 
 # Folder sementara
 tmp-*/
